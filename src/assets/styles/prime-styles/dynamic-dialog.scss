@@ -1,0 +1,76 @@
+@import '../variables.scss';
+@import '../mixins.scss';
+
+.p-dynamic-dialog, .p-dynamic-dialog-card {
+  width: fit-content;
+  max-height: 760px;
+  padding: 32px;
+  background: $white-color;
+
+  .popup {
+    &__header {
+      color: $dark-color;
+      margin: 0;
+      @include text-base(20px);
+      font-weight: bold;
+      margin-bottom: 16px;
+
+      &__files {
+        margin-bottom: 30px;
+      }
+    }
+
+    &__text {
+      @include text-base(14px);
+      margin-bottom: 20px;
+    }
+
+    &__icon {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+
+      &--close {
+        @include base-icon-wrapper;
+      }
+    }
+
+    &__indent {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    &__buttons {
+      display: flex;
+      justify-content: flex-end;
+      padding: 5px;
+    }
+  }
+
+  &__dynamic-section-mark {
+    @include font-regular;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 150%;
+    text-transform: uppercase;
+    color: $grey-color-2;
+    margin-bottom: 9px;
+  }
+}
+
+.p-dialog-header {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.dialog-non-scroll {
+  .p-dialog-content {
+    overflow-y: unset !important;
+  }
+}
+
+.dialog-card {
+  width: 760px;
+  max-height: fit-content;
+}

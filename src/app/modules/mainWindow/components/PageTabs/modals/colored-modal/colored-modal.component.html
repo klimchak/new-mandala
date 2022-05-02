@@ -1,0 +1,6 @@
+<div>
+  <h5 class="mt-2">Загрузить изображение для палитры</h5>
+  <input type="file" name="img[]" class="file" accept="image/*" (change)="onSelectFile($event)">
+</div>
+
+<app-color-picker *ngIf="imageIsUploaded" (outputColor)="setColor($event)" [showInputs]="false"></app-color-picker>

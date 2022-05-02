@@ -1,0 +1,127 @@
+@import '../variables.scss';
+@import '../mixins.scss';
+
+.c-prime__button {
+  display: flex !important;
+  align-items: center !important;
+  @include font-regular;
+  padding: 6px 16px !important;
+  height: 34px !important;
+  font-weight: bold !important;
+
+  &.p-button {
+    outline: none;
+    border: none;
+    font-weight: 500;
+    font-size: 14px;
+    height: 35px;
+    line-height: 21px;
+    border-radius: 4px;
+    padding: 0 16px;
+  }
+
+  &--danger {
+    background: $primary-color !important;
+    color: $white-color;
+
+    &:hover {
+      background: $primary-hover-color !important;
+    }
+    &__icon{
+      display: flex;
+      align-items: center;
+      margin-right: 8px;
+      path {
+        fill: #ffffff !important;
+      }
+    }
+
+    .c-prime__button-icon {
+      path {
+        fill: #ffffff !important;
+      }
+    }
+  }
+
+  &--danger-text {
+    background: none !important;
+    color: $primary-color !important;
+
+    &:hover {
+      background: $prime-grey-color !important;
+    }
+  }
+
+  &--danger-outline {
+    background: none !important;
+    border: 1px solid $primary-color !important;
+    color: $primary-color !important;
+    @include text-base(14px);
+    font-weight: bold;
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    &__icon{
+      display: flex;
+      align-items: center;
+      margin-right: 8px;
+    }
+    .p-button-label{
+        flex: unset!important;
+      }
+
+    &:hover, &:enabled:focus{
+      background: inherit;
+      border: 1px solid $primary-hover-color !important;
+      color: $primary-hover-color !important;
+      box-shadow: none;
+    }
+  }
+
+  .ui-button-text {
+    padding: 0 !important;
+  }
+
+  &--grey {
+    background: $grey-color-5 !important;
+    color: $dark-color !important;
+
+    &:hover {
+      background: $table-border-color !important;
+    }
+
+    .c-prime__button-icon {
+      path {
+        fill: $dark-color !important;
+      }
+    }
+  }
+
+  &--grey-text {
+    background: none !important;
+    color: $secondary-grey-color !important;
+
+    &:hover {
+      background: $prime-grey-color !important;
+    }
+  }
+
+  &:focus {
+    box-shadow: 0 0 1px 2px rgba(41, 116, 255, 0.15);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+  }
+
+  &-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    cursor: pointer;
+  }
+}
+
+.p-button~.p-button {
+  margin-left: 10px;
+}

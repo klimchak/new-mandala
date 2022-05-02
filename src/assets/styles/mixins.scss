@@ -1,0 +1,276 @@
+@import 'variables.scss';
+
+@mixin form-control-base {
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+}
+
+@mixin form-control($height, $width) {
+  @include form-control-base;
+  height: $height;
+  width: $width;
+}
+
+@mixin circle($diameter) {
+  border-radius: 50%;
+  height: $diameter;
+  width: $diameter;
+}
+
+@mixin flexable-row {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+}
+
+@mixin arrow($width, $height, $color, $angle, $depth) {
+  width: $width;
+  height: $height;
+  border: 0;
+  border-left: $depth solid $color;
+  border-top: $depth solid $color;
+  transform: rotate($angle);
+}
+
+@mixin cut-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin modal-header {
+  font-family: $roboto-font;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 1.4rem;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.87);
+  mix-blend-mode: normal;
+}
+
+@mixin modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@mixin modal-content {
+  width: 13rem;
+  padding: 0.1rem 0 0.1rem 0;
+
+  @media #{$tablet} {
+    width: 20rem;
+    padding: 0.3rem 0 0.3rem 0;
+  }
+
+  @media #{$desktop} {
+    width: 25rem;
+    padding: 0.5rem 0 0.5rem 0;
+  }
+}
+
+@mixin no-data {
+  color: $elinext-sub-title-color;
+  font-size: $big-font-size;
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+@mixin page-header {
+  text-transform: uppercase;
+  font-family: $sifonn-font;
+  font-size: $big-font-size;
+  margin: 0;
+}
+
+@mixin setSvgColor($color) {
+
+  svg rect,
+  rect {
+    fill: $color;
+  }
+}
+
+@mixin baseTransition($target:all, $speed:.3s) {
+  transition: $target $speed ease-in-out;
+}
+
+@mixin text-base($fs:16px) {
+  font-size: $fs;
+  font-style: normal;
+  line-height: 150%;
+  font-family: $inter-font;
+}
+
+@mixin base-icon-wrapper {
+  transition: .3s;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background: $prime-grey-color;
+  }
+}
+
+@mixin font-regular {
+  font-family: "Inter" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 14px !important;
+}
+
+@mixin rect-size($height, $width) {
+  height: $height;
+  width: $width;
+}
+
+@mixin scroll-styles($widthScroll : 4px) {
+  &::-webkit-scrollbar {
+    width: $widthScroll;
+    border-radius: $widthScroll;
+    &-track-piece {
+      background-color: $grey-color-7;
+    }
+    &-thumb {
+      width: $widthScroll;
+      background-color: $grey-color-3;
+      border-radius: $widthScroll;
+      &:hover{
+        background-color: $grey-color-2;
+      }
+    }
+  }
+  scrollbar-color: $grey-color-3 $grey-color-7;
+  scrollbar-width: thin;
+}
+
+@mixin scroll-disable() {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+
+  &::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+
+@mixin row-body-action-styles{
+  text-align: right !important;
+  text-overflow: clip;
+  padding-left: 0 !important;
+  display: flex;
+  flex-direction: row;
+  visibility: hidden;
+
+  &-conteiner, &-conteiner__with-text  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    min-width: 32px;
+    min-height: 32px;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 16px;
+    margin: 0 8px;
+    &:hover{
+      background: $grey-color-7;
+    }
+    &-ico{
+      @include rect-size(20px, 20px);
+    }
+  }
+  &-conteiner__with-text  {
+    padding: 0 .5rem;
+    width: fit-content;
+    height: fit-content;
+    &--title{
+      margin-left: .5rem;
+    }
+  }
+}
+
+// table
+
+@mixin row-item-base($width : auto) {
+  height: 42px;
+  line-height: 42px;
+  min-width: $width;
+  max-width: $width;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin table-cell-width($width) {
+  width: $width;
+  min-width: $width;
+  max-width: $width;
+}
+
+@mixin table-body-cell($width) {
+  width: $width;
+  min-width: $width;
+  max-width: $width;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+@mixin table-body-action-cell($width : auto) {
+  width: $width;
+  min-width: $width;
+  max-width: $width;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 !important;
+}
+
+@mixin row-body-action-cell($width : auto) {
+  width: $width;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 !important;
+}
+
+@mixin paginator-styles(){
+  .p-paginator-element {
+    box-shadow: none !important;
+  }
+
+  .p-paginator-pages {
+    .p-paginator-page {
+      border-radius: 2px;
+      box-shadow: none !important;
+
+      &.p-highlight {
+        background: #f0f3f7;
+        color: $primary-color;
+      }
+    }
+  }
+
+  .p-paginator-element {
+    color: #231f20;
+
+    .p-paginator-icon {
+      font-size: 14px;
+      font-weight: normal;
+    }
+  }
+}
+
+@mixin devider {
+  opacity: .2;
+  border: none;
+  height: 1px;
+  background-color: #C5D0DE;
+}

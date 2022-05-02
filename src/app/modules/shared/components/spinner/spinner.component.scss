@@ -1,0 +1,41 @@
+@import "../../../../../assets/styles/variables.scss";
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.c-spinner {
+  &__container {
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    margin: 0 -24px;
+    position: fixed;
+    width: 102%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2001;
+    overflow: hidden;
+  }
+
+  &__loader {
+    border: 6px solid $elinext-yellow-color;
+    border-radius: 50%;
+    border-top: 6px solid $primary-color;
+    width: 40px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+  }
+}

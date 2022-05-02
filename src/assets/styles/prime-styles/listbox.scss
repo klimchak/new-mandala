@@ -1,0 +1,16 @@
+@import '../mixins.scss';
+@import '../variables.scss';
+
+.c-prime-listbox {
+  .p-listbox{
+    &-list-wrapper {
+      @include scroll-styles();
+      height: 187px;
+      width: 240px;
+    }
+    &-header {
+      padding: 0.5rem .5rem !important;
+      background: unset !important;
+    }
+  }
+}

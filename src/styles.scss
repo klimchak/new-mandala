@@ -1,1 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+@import './assets/styles/variables.scss';
+@import './assets/styles/notifications.scss';
+
+@import './assets/styles/base.scss';
+
+@import './assets/styles/prime-styles/dynamic-dialog.scss';
+@import './assets/styles/prime-styles/input.scss';
+@import './assets/styles/prime-styles/dialog.scss';
+@import './assets/styles/prime-styles/button.scss';
+@import './assets/styles/prime-styles/table.scss';
+@import './assets/styles/prime-styles/overlay-panel.scss';
+@import './assets/styles/prime-styles/dropdown.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  a {
+    text-decoration: none;
+  }
+}
+
+.modal-container__content {
+  max-width: 600px !important;
+}

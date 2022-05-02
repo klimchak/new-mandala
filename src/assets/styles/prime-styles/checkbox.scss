@@ -1,0 +1,63 @@
+@import '../variables.scss';
+@import '../mixins.scss';
+
+.c-prime__checkbox, .c-prime__checkbox-without-margin {
+  margin-bottom: 16px;
+  &__invalid{
+    .p-checkbox {
+      &-label-active{
+        color: $primary-color !important;
+      }
+    }
+  }
+  .p-checkbox {
+    &-label-active{
+      color: $dark-color;
+    }
+    &:not(.p-checkbox-disabled) {
+      .p-checkbox-box {
+        &:hover {
+          border-color: $secondary-grey-color;
+        }
+
+        &.p-highlight {
+          &:hover {
+            background: $primary-hover-color;
+            border-color: $primary-hover-color;
+          }
+
+          &.p-focus {
+            box-shadow: 0 0 1px 2px rgba(41, 116, 255, 0.15) !important;
+          }
+        }
+      }
+    }
+
+    .p-checkbox-box {
+      border: 1px solid $table-border-color;
+      border-radius: 2px;
+
+      &.p-highlight {
+        background: $primary-color;
+        border-color: $primary-color;
+      }
+
+      &.p-focus {
+        box-shadow: 0 0 1px 2px rgba(41, 116, 255, 0.15) !important;
+      }
+
+      .p-checkbox-icon {
+        font-size: 12px;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .p-checkbox-label {
+    @include font-regular;
+  }
+}
+
+.c-prime__checkbox-without-margin{
+  margin-bottom: 0;
+}

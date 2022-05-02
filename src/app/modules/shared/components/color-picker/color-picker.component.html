@@ -1,0 +1,13 @@
+<div class="main">
+  <canvas width="500" height="400" #canvas (mousemove)="getPixel($event)"></canvas>
+  <div class="color-box">
+    <p class="color-box--title">Выбранный цвет</p>
+    <div #colorBox class="color-box_view--value"></div>
+    <ng-container *ngIf="showInputs">
+      <p class="color-box--title">HEX Value:</p>
+      <input class="color-box_hex--value" type="text" [value]="_hexValue">
+      <p class="color-box--title">RGBA Value:</p>
+      <input class="color-box_rgb--value" type="text" [value]="_rgbaValue">
+    </ng-container>
+  </div>
+</div>

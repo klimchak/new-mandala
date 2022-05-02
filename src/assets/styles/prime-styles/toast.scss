@@ -1,0 +1,59 @@
+@import '../mixins.scss';
+@import '../variables.scss';
+
+.p-toast{
+  opacity: 1 !important;
+  &-summary{
+    @include text-base();
+    color: $dark-color;
+  }
+  &-detail{
+    @include text-base(14px);
+    color: $dark-color;
+  }
+  &-icon-close{
+    height: unset !important;
+  }
+  &-message{
+    &-icon{
+      width: 32px;
+      height: 32px;
+      margin-right: 4px;
+    }
+    &-success, &-info, &-warn, &-error{
+      background: $white-color !important;
+      border: none !important;
+    }
+    &-error{
+      .p-toast-message-icon{
+        content: url("../../icons/toast-error.svg");
+      }
+    }
+    &-warn{
+      .p-toast-message-icon{
+        content: url("../../icons/toast-warn.svg");
+      }
+    }
+    &-info {
+      .p-toast-message-icon{
+        content: url("../../icons/toast-info.svg");
+      }
+    }
+    &-success {
+      .p-toast-message-icon{
+        content: url("../../icons/toast-success.svg");
+      }
+    }
+    &-text {
+      flex: unset;
+      width: 299px;
+    }
+    &-content{
+      box-shadow: 0 0 32px rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      .pi-times {
+        color: $secondary-grey-color;
+      }
+    }
+  }
+}

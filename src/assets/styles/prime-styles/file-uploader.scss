@@ -1,0 +1,102 @@
+@import '../variables.scss';
+@import '../mixins.scss';
+
+.c-base__uploader {
+
+  &.btn-grey {
+    .p-fileupload {
+      height: 34px;
+
+      &-content {
+        display: none !important;
+      }
+
+      &-buttonbar {
+        padding: 0 !important;
+      }
+
+      &-choose {
+        background-color: $grey-color-5 !important;
+        border: none !important;
+        color: $dark-color !important;
+        font-weight: bold;
+        @include text-base(14px);
+        height: 34px !important;
+      }
+    }
+  }
+
+  &.ic-download {
+    .p-button-icon {
+      &::before {
+        content: url('../../icons/download.svg') !important;
+      }
+    }
+  }
+
+  &.ic-update {
+    .p-button-icon {
+      &::before {
+        content: url('../../icons/sync.svg') !important;
+      }
+    }
+  }
+
+  &-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 21px;
+    margin-bottom: .5rem;
+
+    &__description-group {
+      display: flex;
+      flex-direction: row;
+
+      &-title {
+        font-family: $inter-font;
+        font-size: 14px;
+        line-height: 150%;
+        color: $dark-color;
+        width: fit-content;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  .p-fileupload {
+    display: flex;
+    flex-direction: column-reverse;
+
+    &-buttonbar {
+      .p-button.p-fileupload-choose {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: $white-color;
+        border: 1px solid $primary-color;
+        color: $primary-color;
+        border-radius: 4px;
+
+        .p-button-label {
+          flex: unset;
+        }
+      }
+    }
+
+    &-content {
+      .p-progressbar {
+        display: none;
+      }
+    }
+
+    &-buttonbar,
+    &-content {
+      padding: 0 0 .5rem 0 !important;
+      border-color: transparent !important;
+      background: $white-color !important;
+    }
+  }
+}

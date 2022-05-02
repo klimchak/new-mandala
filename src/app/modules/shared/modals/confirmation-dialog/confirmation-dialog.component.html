@@ -1,0 +1,5 @@
+<div class="popup__text">{{ headerText }}</div>
+<div class="popup__buttons">
+  <button pButton class="c-prime__button c-prime__button--grey-text" (click)="close()">{{acceptText ? 'No' : 'Cancel'}}</button>
+  <button pButton class="c-prime__button c-prime__button--danger" (click)="close(true)">{{acceptText ? 'Yes' : 'Confirm'}}</button>
+</div>

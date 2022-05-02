@@ -1,0 +1,83 @@
+<h2 class="popup__header">Edit personal info</h2>
+
+<div class="c-edit">
+
+  <div class="c-edit__general">
+    <div class="c-edit__general__avatar">
+
+      <div @inflate class="c-edit__general__avatar_default" *ngIf="imageUrl && !uploadNewImage"
+           (mouseenter)="mouseLeaveBackDrop(true)" (mouseleave)="mouseLeaveBackDrop(false)">
+        <img [src]="imageUrl" alt="Image" class="c-edit__general__avatar_default--photo"/>
+        <div class="c-edit__general__avatar_default--action" @inflate *ngIf="showBackDrop" (click)="uploadImage()">
+          <svg-icon src="assets/icons/edit.svg" pTooltip="Edit photo" tooltipPosition="bottom"></svg-icon>
+        </div>
+      </div>
+
+      <div @inflate class="c-edit__general__avatar_new" *ngIf="uploadNewImage">
+        <div class="c-edit__general__avatar_new--cropper">
+          <image-cropper format="png" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="1 / 1"
+                         (imageCropped)="imageCropped($event)" (loadImageFailed)="loadImageFailed()" (imageLoaded)="imageLoaded($event)"
+                         (mouseenter)="mouseActionImageCropper(true)" (mouseleave)="mouseActionImageCropper(false)"></image-cropper>
+        </div>
+        <div class="c-edit__general__avatar_new--actions">
+          <div class="c-edit__general__avatar_new--actions-edit">
+            <svg-icon src="assets/icons/reload.svg" pTooltip="Change photo" tooltipPosition="bottom" (click)="uploadImage()"></svg-icon>
+          </div>
+          <div class="c-edit__general__avatar_new--actions-reset">
+            <svg-icon src="assets/icons/close.svg" pTooltip="Reset all changes" tooltipPosition="bottom" (click)="resetImage()"></svg-icon>
+          </div>
+        </div>
+        <div class="c-edit__general__avatar_new--photo" *ngIf="inImageCropper">
+          <p-image [src]="croppedImage" alt="Image" width="250"></p-image>
+        </div>
+      </div>
+      <input type="file" class="c-edit__general__avatar--hiddenInput" #fileInput (change)="fileChangeEvent($event)"/>
+    </div>
+
+    <form class="c-edit__general__info" [formGroup]="userInfoForm" [ngClass]="{'c-edit__general__info--upd-photo' : uploadNewImage}">
+      <div class="c-base__form-field">
+        <label class="c-base__form-field-label">Email address </label>
+        <input type="text" pInputText class="c-prime-input" formControlName="userName"/>
+      </div>
+      <div class="c-base__form-field">
+        <label class="c-base__form-field-label">Skype </label>
+        <input type="text" pInputText class="c-prime-input" formControlName="skype"/>
+      </div>
+      <div class="c-base__form-field">
+        <label class="c-base__form-field-label">Office </label>
+        <p-dropdown class="c-prime__dropdown" panelStyleClass="c-prime__dropdown--panel" placeholder="Choose your manager" appendTo="body"
+                    formControlName="managerId" [options]="dropdownManager" [filter]="showFilterManagers"
+                    optionLabel="text" optionValue="value"></p-dropdown>
+      </div>
+      <div class="c-base__form-field">
+        <label class="c-base__form-field-label">Office </label>
+        <p-dropdown class="c-prime__dropdown" panelStyleClass="c-prime__dropdown--panel" placeholder="Choose your office" appendTo="body"
+                    formControlName="office" [options]="dropdownOffice" [filter]="showFilterOffice"
+                    optionLabel="text" optionValue="value"></p-dropdown>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="popup__buttons">
+  <button pButton class="c-prime__button c-prime__button--grey-text" (click)="closeModalWindow()">Cancel</button>
+  <button pButton class="c-prime__button c-prime__button--danger" (click)="processForm()">Confirm</button>
+</div>
+
+<!-- <emk-modal (closeModal)="closeModalWindow()" *ngIf="isOpen" [isOpen]="isOpen">
+  <emk-modal-header>
+    <span class="cv-modal__title">{{ targetCV ? 'Update CV' : 'Upload CV' }}</span>
+  </emk-modal-header>
+  <emk-modal-body>
+    <div class="cv-modal__content">
+      <emk-form-field>
+        <emk-drop-zone [control]="cvFile"></emk-drop-zone>
+      </emk-form-field>
+      <span *ngIf="cvFile.value" class="validation-error">{{cvFile.errors?.message}}</span>
+    </div>
+    <div class="cv-modal__footer">
+      <emk-button (click)="closeModalWindow()" class="cv-modal__footer-cancel" label="Cancel" type="basic"></emk-button>
+      <emk-button (click)="processModal()" [disabled]="cvFile.invalid" class="cv-modal__footer-confirm" label="Confirm" type="basic"></emk-button>
+    </div>
+  </emk-modal-body>
+</emk-modal> -->

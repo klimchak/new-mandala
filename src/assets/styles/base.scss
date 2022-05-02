@@ -1,0 +1,135 @@
+@import 'variables.scss';
+@import "mixins.scss";
+
+.c-base {
+  &__form {
+    &-field, &-double-field {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 16px;
+      position: relative;
+
+      &_no-margin {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0;
+        position: relative;
+      }
+
+      &-label {
+        font-family: $inter-font;
+        font-weight: 600;
+        font-size: 14px;
+        color: $grey-color-1;
+        margin-bottom: 4px;
+      }
+
+      &-image-button{
+        margin-left: 26px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    &-row-group, &-row-group-switchs,  &-row-group-radiobuttons {
+      display: flex;
+      flex-direction: row;
+
+      & > .c-base__form-field {
+        width: 100%;
+      }
+      & > .c-base__form-double-field {
+        width: 198px;
+      }
+    }
+
+    &-row-group {
+      gap: 20px;
+    }
+
+    &-row-group-switchs {
+      justify-content: space-between;
+    }
+
+    &-row-group-radiobuttons {
+      gap: 40px;
+      margin-top: 4px;
+    }
+
+    &-switch-container {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+
+      label {
+        @include font-regular;
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: row;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    &-wrapper {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &-icon {
+      width: 20px;
+      height: 20px;
+
+      &:hover {
+        fill: $primary-hover-color !important;
+
+        path {
+          fill: $primary-hover-color !important;
+        }
+      }
+    }
+  }
+}
+
+.label {
+  display: flex;
+  justify-content: center;
+  margin: 0 4px 8px 0;
+  padding: 4px 14px;
+  border: 1px solid $grey-color-6;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+  align-items: center;
+  background: $grey-color-6;
+  line-height: 21px;
+  @include font-regular;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+}
+
+.label-icon {
+  margin-left: 6px;
+  margin-right: -6px;
+  display: flex;
+
+  svg {
+    width: 10px;
+    height: 10px;
+
+    path {
+      stroke: $dark-color;
+    }
+  }
+}

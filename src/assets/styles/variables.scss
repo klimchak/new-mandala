@@ -1,0 +1,97 @@
+$primary-hover-color: #C70728;
+$focus-color: #2974FF;
+$error-color: #F2431C;
+$pending-color: #FF8A00;
+$success-color: #04AF00;
+$dark-hover-color:#22262E;
+$dark-color:#2C333F;
+$grey-color-1:#525962;
+$grey-color-2:#798494;
+$grey-color-3:#C5D0DE;
+$grey-color-4:#CED7E3;
+$grey-color-5:#D6DEE8;
+$grey-color-6:#DFE5ED;
+$grey-color-7:#E8ECF2;
+$grey-color-8:#F9FAFC;
+
+$black-color: #000000;
+$active-color: #F2C94C;
+$grey-color: #b7b7b7;
+$border-color: #dee2e6;
+$table-border-color: #C5D0DE;
+$secondary-grey-color: #798594;
+$prime-grey-color: #F0F3F7;
+
+//Base corporate colors
+$primary-color: #EF0D33;
+$elinext-yellow-color: #f2c94c;
+$elinext-background-color: #e5e5e5;
+$elinext-dark-color: #2c333f;
+$elinext-white-color: #f2f2f2;
+$elinext-light-grey: #e1e1e1;
+$elinext-border-color: #DFDFDF;
+$elinext-sub-title-color: #a4a3a3;
+// Notifications
+$elinext-notification-green: #51a351;
+$elinext-notification-orange: #f89406;
+$elinext-notification-red: #bd362f;
+
+//Default colors
+$white-color: #ffffff;
+$black-color: #000000;
+$active-color: #F2C94C;
+
+//Base font sizes
+$small-font-size: 10px;
+$standart-font-size: 14px;
+$big-font-size: 21px;
+
+//Base corporate fonts
+$sifonn-font: 'Sifonn Pro';
+$roboto-font: 'Roboto',
+sans-serif;
+$inter-font: 'Inter';
+
+//Base indents
+$zero-indent: 0;
+$standart-indent: 0.5rem;
+$big-indent: 1rem;
+
+//Base transition
+$fast-transition: 0.1s;
+$standart-transition: 0.6s;
+
+//Base box-shadow
+$default-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2),
+0 2px 2px rgba(0, 0, 0, 0.12),
+0 0 2px rgba(0, 0, 0, 0.14);
+//Table row box-shadow
+$table-body-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15),
+-4px 0 0 0 rgba(242, 200, 76, 1);
+
+// cv editor
+$cv-editor-table-shadow: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.25));
+
+$mobile: 'only screen and (min-width: 320px) and (max-width: 767px)';
+$tablet: 'only screen and (min-width: 768px) and (max-width: 1024px)';
+$desktop: 'only screen and (min-width: 1025px)';
+
+@font-face {
+  font-family: 'Sifonn Pro';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Sifonn Pro'), url(/assets/Fonts/SIFONN_PRO.ttf);
+}
+
+@font-face {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  src: local('Roboto black'), url(/assets/Fonts/Roboto-Light.ttf);
+}
+
+
+@font-face {
+  font-family: 'Inter';
+  src: url(/assets/Fonts/Inter-font.ttf) format("truetype");
+}

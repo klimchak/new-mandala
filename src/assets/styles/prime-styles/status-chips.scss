@@ -1,0 +1,36 @@
+@import '../variables.scss';
+@import '../mixins.scss';
+
+.c-prime__chip--pending,
+.c-prime__chip--approved,
+.c-prime__chip--declined,
+.c-prime__chip--redirected,
+.c-prime__chip--new{
+  .p-chip{
+    &-text{
+      @include text-base(14px);
+      color: $white-color;
+    }
+  }
+}
+
+.c-prime__chip--pending{
+  background-color: $pending-color !important;
+}
+
+.c-prime__chip--approved{
+  background-color: $success-color !important;
+}
+
+.c-prime__chip--declined{
+  background-color: $error-color !important;
+}
+
+.c-prime__chip--redirected{
+  background-color: $secondary-grey-color !important;
+}
+
+
+.c-prime__chip--new{
+  background-color: $focus-color !important;
+}

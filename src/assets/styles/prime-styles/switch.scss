@@ -1,0 +1,39 @@
+@import '../variables.scss';
+@import '../mixins.scss';
+
+.c-prime__switch {
+  .p-inputswitch {
+    width: 36px !important;
+    height: 16px !important;
+    border-radius: 8px !important;
+
+    &-checked {
+      .p-inputswitch-slider {
+        background: $primary-color !important;
+        &::before {
+          transform: translate(1em) !important;
+        }
+      }
+    }
+
+    &-slider {
+      background: $table-border-color !important;
+      &::before {
+        width: 12px !important;
+        height: 12px !important;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25) !important;
+        margin-top: -0.35em !important;
+      }
+    }
+  }
+
+  .p-focus {
+    .p-inputswitch-slider {
+      box-shadow: 0px 0px 1px 2px rgba(41, 116, 255, 0.15) !important;
+    }
+  }
+
+  .p-disabled {
+    opacity: 0.5 !important;
+  }
+}

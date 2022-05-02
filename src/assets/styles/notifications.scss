@@ -1,0 +1,37 @@
+@import './variables.scss';
+
+.c-notification {
+  font-family: $roboto-font;
+
+  &.mat-snack-bar-container {
+    font-size: 16px;
+    padding: 20px 40px;
+  }
+
+  box-shadow: 0 0 12px $elinext-light-grey;
+  color: $white-color;
+  opacity: 0.8;
+
+  &:hover {
+    box-shadow: 0 0 12px $black-color;
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  &--error {
+    background-color: $elinext-notification-red;
+  }
+
+  &--warning {
+    background-color: $elinext-notification-orange;
+  }
+
+  &--success {
+    background-color: $elinext-notification-green;
+  }
+
+  .mat-simple-snackbar-action {
+    color: $white-color;
+    font-weight: bold;
+  }
+}

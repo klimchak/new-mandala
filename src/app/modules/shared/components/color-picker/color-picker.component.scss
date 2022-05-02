@@ -1,0 +1,68 @@
+@import "src/styles";
+
+.main {
+  display: flex;
+
+  canvas {
+    margin: 10px;
+    background-color: $border-color;
+    width: 500px;
+    height: 400px;
+    cursor: crosshair;
+    box-shadow: 0 0 5px 5px $border-color;
+  }
+
+  .color-box {
+    margin: 25px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: -229px;
+    top: -37px;
+
+    & * {
+      margin: 10px;
+    }
+
+    &--title{
+      color: $white-color;
+      font-size: 21px;
+    }
+
+    &_view {
+      &--value {
+        width: 100px;
+        height: 100px;
+        margin-left: 30px;
+        border: 1px solid black;
+        border-radius: 5px;
+        box-shadow: 0 0 5px 5px $border-color;
+      }
+    }
+
+    &_rgb, &_hex {
+      &--value {
+        box-shadow: 0 0 5px 5px $border-color;
+      }
+    }
+  }
+}
+
+.hideData {
+  display: none;
+}
+
+.displayData {
+  display: block;
+}
+
+.displayCol {
+  display: block;
+  background-color: var(--bgcolorval);
+}
+
+@media only screen and (max-width: 400px) {
+  .main {
+    flex-direction: column;
+  }
+}

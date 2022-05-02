@@ -1,0 +1,14 @@
+@import '../variables.scss';
+@import '../mixins.scss';
+
+.c-prime__paginator {
+  width: 100%;
+
+  .p-paginator {
+    width: fit-content;
+    display: inline-flex;
+    justify-content: flex-start;
+
+    @include paginator-styles();
+  }
+}

@@ -1,0 +1,130 @@
+@import "./src/assets/styles/variables";
+@import "./src/assets/styles/mixins";
+
+.c-prime__overlay-panel {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 8px !important;
+  padding: 4px 0;
+
+  &.p-overlaypanel {
+    .p-overlaypanel-content {
+      padding: 0;
+    }
+  }
+
+  &_table {
+    width: fit-content;
+
+    &__buttons {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      align-items: center;
+      border-top: 1px solid $grey-color-3;
+      margin-top: .2rem;
+      padding: 0 1rem;
+      height: 48px;
+
+      .c-prime__button {
+        height: 24px !important;
+        width: 57px !important;
+      }
+
+      .p-button-label {
+        @include text-base(12px);
+        flex: unset;
+      }
+
+      .c-prime__button.p-button {
+        justify-content: center;
+      }
+    }
+
+    &__field {
+      padding: 8px 8px 0 8px;
+      width: fit-content;
+
+      &--info {
+        width: 320px;
+        margin: auto;
+
+        .p-inputtext[disabled] {
+          background-color: $white-color;
+          color: $dark-color;
+          opacity: 1 !important;
+        }
+      }
+
+      &--data {
+        &-date {
+          width: 330px;
+
+          .c-prime__calendar > .p-calendar::before,
+          .c-prime-inline-calendar__calendar > .p-calendar::before {
+            content: none;
+          }
+
+          .p-datepicker {
+            position: unset;
+            border: none !important;
+          }
+
+          .c-prime__datepicker.p-datepicker table tbody td span, .c-prime-inline-calendar__datepicker.p-datepicker table tbody td span {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin: 0 !important;
+          }
+
+          .c-prime__datepicker.p-datepicker table tbody td.p-datepicker-today > span, .c-prime-inline-calendar__datepicker.p-datepicker table tbody td.p-datepicker-today > span {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin: 0;
+          }
+
+          .c-prime__datepicker.p-datepicker table tbody td, .c-prime-inline-calendar__datepicker.p-datepicker table tbody td {
+            padding: .3rem .5rem !important;
+          }
+
+          .p-datepicker .p-monthpicker,
+          .p-datepicker .p-yearpicker {
+            display: flex;
+            flex-wrap: wrap;
+          }
+
+          .c-prime-inline-calendar__datepicker {
+            padding: .5rem !important;
+          }
+
+          .p-datepicker .p-datepicker-header {
+            padding: 0;
+          }
+
+          .p-datepicker .p-monthpicker .p-monthpicker-month,
+          .p-datepicker .p-yearpicker .p-yearpicker-year {
+            padding: 0;
+            margin: 8px;
+          }
+
+          .c-prime-inline-calendar__datepicker .p-monthpicker-month,
+          .c-prime-inline-calendar__datepicker .p-yearpicker-year {
+            width: 62px;
+            height: 59px;
+          }
+        }
+
+        &-list {
+          .p-listbox {
+            border: none !important;
+          }
+        }
+      }
+
+      &__filter-area {
+        height: 400px;
+        width: 400px;
+        @include scroll-styles();
+      }
+    }
+  }
+}

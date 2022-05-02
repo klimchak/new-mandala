@@ -1,0 +1,40 @@
+@import '../mixins.scss';
+@import '../variables.scss';
+
+.c-prime {
+  &__rating {
+    .p-rating{
+      &-icon:focus {
+        box-shadow: none !important;
+      }
+
+      &:first-child{
+        margin-left: 0;
+      }
+
+      &-icon {
+        margin-left: 0.4rem;
+      }
+
+      .pi-star-fill:before, .pi-star:before {
+        content: unset !important;
+      }
+
+      .pi-star-fill, .pi-star {
+        @include rect-size(10px, 10px);
+        border-radius: 10px;
+      }
+
+      .pi-star {
+        background: $grey-color-4;
+      }
+
+      .pi-star-fill {
+        .pi-star-fill:before {
+          content: none;
+        }
+        background: $primary-color;
+      }
+    }
+  }
+}

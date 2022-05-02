@@ -1,0 +1,110 @@
+@import '../variables.scss';
+@import '../mixins.scss';
+
+.c-prime__drag-and-drop-file-upload {
+  .p-fileupload {
+    position: relative;
+    border: 1px dashed #c5d0de !important;
+    border-radius: 8px;
+  }
+
+  .p-fileupload-buttonbar {
+    position: absolute;
+    bottom: 15px;
+    left: calc(50% - 139px / 2);
+    z-index: 2;
+    background: #fff !important;
+    border: none !important;
+    padding: 0 !important;
+
+    .p-fileupload-choose {
+      width: 150px !important;
+      height: 34px !important;
+      margin-right: 0 !important;
+      background: #fff !important;
+      @include text-base;
+      font-weight: 600 !important;
+      border: 1px solid #EF0D33 !important;
+      color: #EF0D33 !important;
+      border-radius: 4px !important;
+
+      .p-button-icon {
+        &::before {
+          content: url('../../icons/drag-and-drop-file-upload.svg') !important;
+        }
+      }
+
+      &:not(.p-disabled):hover {
+        color: #C70728 !important;
+        border-color: #C70728 !important;
+        box-shadow: 0 0 1px 2px rgba(41, 116, 255, 0.15) !important;
+      }
+    }
+  }
+
+  .p-fileupload-content {
+    position: relative;
+    z-index: 1;
+    border: none !important;
+    width: 100%;
+    min-height: 134px;
+    max-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem !important;
+    padding-bottom: 57px !important;
+    padding-top: 0 !important;
+
+    .p-fileupload-files {
+      overflow-y: auto;
+      //@include scroll-disable();
+      @include scroll-styles();
+      .p-fileupload-row {
+        display: flex;
+        flex-direction: row;
+        height: 20px;
+
+        div:first-child {
+          display: none !important;
+        }
+
+        div:nth-child(2) {
+          flex: 4 !important;
+        }
+
+        div:nth-child(3) {
+          flex: 2 !important;
+        }
+
+        div {
+          height: 20px;
+          padding: 0;
+          padding-left: 10px;
+          width: auto !important;
+          flex: 1;
+          @include font-regular;
+        }
+
+        .p-button-icon-only {
+          width: 16px;
+          height: 16px;
+          margin: 0;
+          background: #fff !important;
+          border: none !important;
+          color: #495057 !important;
+        }
+      }
+    }
+
+    label {
+      @include text-base;
+      font-weight: 400;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      order: -1;
+      margin-bottom: 8px;
+    }
+  }
+}

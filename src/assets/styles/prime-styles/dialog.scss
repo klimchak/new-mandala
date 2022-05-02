@@ -1,0 +1,21 @@
+@import '../variables.scss';
+@import '../mixins.scss';
+
+.p-dialog {
+  border-radius: 8px !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25) !important;
+
+  &-header {
+    padding: 0 !important;
+  }
+
+  &-mask-scrollblocker {
+    background-color: rgba(44, 51, 63, 0.4) !important;
+  }
+
+  &-content {
+    padding: 0 !important;
+    @include scroll-disable();
+    //@include scroll-styles();
+  }
+}

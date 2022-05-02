@@ -1,0 +1,13 @@
+.employee-data {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 2px;
+
+  &__info {}
+
+  &__tabs {
+    overflow: hidden;
+  }
+}

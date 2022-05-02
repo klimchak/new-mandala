@@ -1,0 +1,196 @@
+@import '../mixins.scss';
+@import '../variables.scss';
+
+.c-prime, .c-prime-inline-calendar {
+  &__calendar {
+    & > .p-calendar {
+      width: 100%;
+
+      .p-inputtext {
+        padding-left: 35px;
+      }
+    }
+
+    & > .p-calendar::before {
+      content: url("~src/assets/icons/calendar.svg");
+      position: absolute;
+      left: 4px;
+      top: 4px;
+    }
+  }
+
+  &__calendar.ng-touched.ng-valid {
+    .p-inputtext {
+      border-color: $success-color !important;
+    }
+  }
+
+  &__calendar.ng-touched.ng-invalid {
+    .p-inputtext {
+      border-color: $error-color !important;
+    }
+  }
+
+  &__datepicker {
+    background: $white-color !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25) !important;
+    border-radius: 8px !important;
+    padding: 16px 20px 20px 20px !important;
+    font-family: $inter-font !important;
+
+    .p-datepicker {
+      &-header {
+        height: 40px;
+      }
+
+      &-header,
+      &-calendar-container {
+        width: 360px;
+      }
+
+      &-title,
+      &-next,
+      &-prev {
+        position: absolute;
+      }
+
+      &-next {
+        right: 15px;
+      }
+
+      &-prev {
+        right: 56px;
+      }
+
+      &-month,
+      &-year {
+        @include text-base();
+        font-weight: 600;
+        border: none;
+        appearance: none;
+        @include scroll-styles();
+      }
+    }
+
+    .p-monthpicker {
+      display: flex;
+      flex-wrap: wrap;
+
+      &-month {
+        width: 74px;
+        height: 67px;
+        border-radius: 4px !important;
+        padding: 0;
+        margin: 8px;
+
+        &:hover {
+          color: $primary-color;
+          background: $prime-grey-color
+        }
+
+        &.p-highlight {
+          color: $white-color !important;
+          background: $primary-color !important;
+        }
+      }
+    }
+
+    .p-yearpicker {
+      display: flex;
+      flex-wrap: wrap;
+
+      &-year {
+        width: 74px;
+        height: 67px;
+        border-radius: 4px !important;
+        padding: 0;
+        margin: 8px;
+
+        &:hover {
+          color: $primary-color;
+          background: $prime-grey-color
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
+
+        &.p-highlight {
+          color: $white-color !important;
+          background: $primary-color !important;
+        }
+      }
+    }
+
+    &.p-datepicker {
+
+      :not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):hover {
+        background-color: $prime-grey-color !important;
+        color: $primary-color !important;
+      }
+
+      table {
+        thead {
+          th {
+            color: $grey-color-2 !important;
+            text-transform: uppercase;
+            @include text-base(12px);
+            font-weight: 400;
+          }
+        }
+
+        tbody {
+          td {
+            font-size: 16px;
+            padding: 0 !important;
+            color: $dark-color;
+
+            span {
+              border-radius: 4px !important;
+              width: 32px;
+              height: 32px;
+              margin: 4px;
+
+              &.p-highlight {
+                color: $white-color !important;
+                background-color: $primary-color !important;
+              }
+            }
+
+            &.p-datepicker-today {
+              & > span {
+                background-color: $white-color !important;
+                border: 1px solid $primary-color !important;
+                width: 32px;
+                height: 32px;
+                margin: 4px;
+                color: $dark-color !important;
+              }
+            }
+          }
+        }
+      }
+
+      &-other-month {
+        color: $grey-color-3 !important;
+      }
+    }
+  }
+}
+
+.c-prime-inline-calendar {
+  .p-datepicker {
+    &-header,
+    &-calendar-container {
+      width: 320px;
+    }
+  }
+
+  &__datepicker {
+    background: $white-color !important;
+    box-shadow: none !important;
+    border: none;
+    border-radius: 0 !important;
+    padding: 20px 20px 0 20px !important;
+  }
+}

@@ -1,0 +1,12 @@
+.p-tooltip {
+  &-bottom {
+    margin-top: .6rem;
+  }
+
+  &-top &-arrow,
+  &-right &-arrow,
+  &-bottom &-arrow,
+  &-left &-arrow, {
+    display: none;
+  }
+}

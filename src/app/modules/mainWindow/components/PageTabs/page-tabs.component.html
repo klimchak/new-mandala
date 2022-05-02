@@ -1,0 +1,25 @@
+<div>
+  <p-tabView [activeIndex]="openTab" (activeIndexChange)="changeSelectedTab($event)">
+    <p-tabPanel header="Просмотр">
+      <ng-template pTemplate="content">
+        <app-editor></app-editor>
+      </ng-template>
+    </p-tabPanel>
+    <p-tabPanel header="База">
+      <ng-template pTemplate="content">
+        <app-savior></app-savior>
+      </ng-template>
+    </p-tabPanel>
+
+    <p-tabPanel [disabled]="true" headerStyleClass="page-tabs__button-panel">
+      <ng-template pTemplate="header">
+        <button pButton type="button" label="Параметры"
+                class="page-tabs__button_type_reminder c-prime__button--danger-outline" (click)="openParams()">
+        </button>
+        <button pButton type="button" label="Сохранить"
+                class="page-tabs__button_type_reminder c-prime__button--danger-outline" (click)="confirmDeleteNoteDialog()">
+        </button>
+      </ng-template>
+    </p-tabPanel>
+  </p-tabView>
+</div>

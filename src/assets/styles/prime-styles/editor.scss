@@ -1,0 +1,97 @@
+@import '../variables.scss';
+@import '../mixins.scss';
+
+.c-prime{
+  &__editor {
+    min-height: 109px;
+    margin-bottom: 1.5rem;
+
+    .p-editor-container {
+      height: 100px;
+
+      .ql-toolbar {
+        padding: 0;
+        height: 40px;
+        display: flex;
+        align-items: center;
+
+        .ql-formats {
+          margin: 4px 20px;
+
+          > * {
+            width: 32px;
+            height: 32px;
+
+            > * {
+              height: 14px;
+            }
+
+            .ql-stroke {
+              stroke: $secondary-grey-color;
+            }
+
+            .ql-fill {
+              fill: $secondary-grey-color;
+            }
+          }
+
+          .ql-active {
+            .ql-stroke {
+              stroke: $primary-hover-color;
+            }
+
+            .ql-fill {
+              fill: $primary-hover-color;
+            }
+          }
+
+          .ql-separator {
+            width: 10px;
+            height: 20px;
+            padding: 0;
+            margin-top: 6px;
+            border-left: 1px solid #C5D0DE;
+          }
+
+          .ql-separator, .ql-separator:active, .ql-separator:focus {
+            cursor: default !important;
+          }
+        }
+      }
+
+      .ql-toolbar.ql-snow, .p-editor-content.ql-snow {
+        border: 1px solid $grey-color-3;
+      }
+
+      .p-editor-content.ql-snow {
+        border-top: none;
+      }
+
+      .ql-toolbar.ql-snow {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+
+      .p-editor-content.ql-snow, .p-editor-content .ql-editor {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+
+      .p-editor-toolbar {
+        display: none;
+      }
+    }
+  }
+
+  &__editor.ng-dirty.ng-invalid{
+    .ql-toolbar.ql-snow, .p-editor-content.ql-snow {
+      border: 1px solid $error-color !important;
+    }
+  }
+
+  &__editor.ng-dirty.ng-valid{
+    .ql-toolbar.ql-snow, .p-editor-content.ql-snow {
+      border: 1px solid $success-color !important;
+    }
+  }
+}

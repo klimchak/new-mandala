@@ -1,0 +1,41 @@
+@import '../variables.scss';
+
+.c-prime__tab-view {
+  .p-tabview {
+    @include font-regular;
+    font-size: 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .p-tabview-panels {
+      padding: 0 !important;
+      overflow: hidden;
+    }
+
+    .p-tabview {
+      &-panel {
+        height: 100%;
+      }
+    }
+
+    .p-tabview-nav {
+      margin-bottom: 12px;
+    }
+
+    .p-tabview-nav-link {
+      background: none !important;
+      color: #2c333f !important;
+      font-weight: normal !important;
+      box-shadow: none !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      margin: 0 2.5rem -2px 0 !important;
+    }
+
+    .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+      border-color: #ef0d33;
+      font-weight: 600 !important;
+    }
+  }
+}
