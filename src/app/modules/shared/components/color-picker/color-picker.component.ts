@@ -27,6 +27,15 @@ export class ColorPickerComponent implements AfterViewInit {
   constructor(private rendererService: CoreService) {
   }
 
+  public static rgbToHex(r: number, g: number, b: number): string {
+    return `#${ColorPickerComponent.componentToHex(r)}${ColorPickerComponent.componentToHex(g)}${ColorPickerComponent.componentToHex(b)}`;
+  }
+
+  private static componentToHex(c: number) {
+    const hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
+
   public ngAfterViewInit(): void {
     this._canvas = this.canvas.nativeElement;
     this._imgElement = document.createElement("img");
@@ -46,7 +55,7 @@ export class ColorPickerComponent implements AfterViewInit {
     });
   }
 
-  public getPixel(event: any) {
+  public setPixelColor(event: any, withReturn = false): void {
     let boundingRect = this._canvas.getBoundingClientRect();
     let x = event.clientX - boundingRect.left;
     let y = event.clientY - boundingRect.top;
@@ -55,9 +64,10 @@ export class ColorPickerComponent implements AfterViewInit {
     let data_array = px.data;
     let pixelColor = `rgba(${data_array[0]}, ${data_array[1]}, ${data_array[2]}, ${data_array[3]})`;
     this._rgbaValue = pixelColor;
-    let dColor = data_array[2] + 256 * data_array[1] + 65536 * data_array[0];
-    this._hexValue = `#${dColor.toString()}`;
+    this._hexValue = ColorPickerComponent.rgbToHex(data_array[0], data_array[1], data_array[2]);
     this._colbox.style = `background: ${pixelColor}`;
-    this.outputColor.emit({rgb: this._rgbaValue, hex: this._hexValue} as CheckedColor);
+    if (withReturn){
+      this.outputColor.emit({rgb: this._rgbaValue, hex: this._hexValue} as CheckedColor);
+    }
   }
 }

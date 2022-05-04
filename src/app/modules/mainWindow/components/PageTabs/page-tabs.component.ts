@@ -42,7 +42,6 @@ export class PageTabsComponent {
       .open(ParamsComponent, {data: {mandalaParams: this.mandalaParams}})
       .onClose.subscribe((popupCallback: PopupCallbackModel) => {
       if (popupCallback?.changed) {
-        console.log(popupCallback.body)
         this.mandalaParams = popupCallback.body;
         this.rendererService.mandalaParams.next(popupCallback.body);
       }

@@ -22,13 +22,8 @@ import {CallbackAnyReturn} from "../../../../shared/models/callback-any-return.m
 export class EditorComponent implements OnInit {
   @ViewChild('testSvg') testSvg: ElementRef | undefined;
   public startedParams!: MandalaParams;
-  // public modelMandala: ModelMandala = cloneDeep(DefaultModel);
   public showWord!: string;
   public showWordInNumbers!: string;
-  public dataPolygonMap: Map<string, number> = new Map<string, number>();
-  public dataTextMap: Map<string, number> = new Map<string, number>();
-  public sectorMap: Map<number, string> = new Map<number, string>();
-  public polygonObj: any;
   public timeStart!: number;
   public timeEnd!: number;
 
@@ -36,8 +31,32 @@ export class EditorComponent implements OnInit {
     return JSON.stringify(this.startedParams);
   }
 
+  public get dataPolygonMap(): Map<string, number> {
+    return this.rendererService.dataPolygonMap;
+  }
+
+  public get dataTextMap(): Map<string, number> {
+    return this.rendererService.dataTextMap;
+  }
+
+  public get sectorMap(): Map<number, string> {
+    return this.rendererService.sectorMap;
+  }
+
   public get modelMandala(): ModelMandala {
     return this.rendererService.modelMandala;
+  }
+
+  public set modelMandala(data: any) {
+    this.rendererService.modelMandala = data;
+  }
+
+  public get polygonObj(): any {
+    return this.rendererService.polygonObj;
+  }
+
+  public set polygonObj(data: any) {
+    this.rendererService.polygonObj = data;
   }
 
   constructor(
@@ -47,17 +66,18 @@ export class EditorComponent implements OnInit {
   }
 
   private setToDefault(): void{
-    this.rendererService.modelMandala = cloneDeep(DefaultModel);
+    this.modelMandala = cloneDeep(DefaultModel);
     this.showWord = '';
     this.showWordInNumbers = '';
-    this.dataPolygonMap = new Map<string, number>();
-    this.dataTextMap = new Map<string, number>();
-    this.sectorMap = new Map<number, string>();
+    this.dataPolygonMap.clear();
+    this.dataTextMap.clear();
+    this.sectorMap.clear();
     this.polygonObj = {};
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.rendererService.mandalaParams.subscribe((item) => {
+      console.log(item)
       if (this.testSvg) {
         this.testSvg.nativeElement.innerHTML = '';
         this.setToDefault();
@@ -81,6 +101,7 @@ export class EditorComponent implements OnInit {
     this.modelMandala.source.pageSize.height = choicePaper.height;
     this.modelMandala.source.rangeMm = this.startedParams.marginSize;
     this.modelMandala.source.rangeFontSize = this.startedParams.fontSize;
+    this.modelMandala.source.colorWord = this.startedParams.numberColor;
 
     this.timeStart = Date.now();
 
@@ -158,34 +179,34 @@ export class EditorComponent implements OnInit {
     this.modelMandala.source.drawThisFigure = SVG().addTo('#renderContainer').size(dWith, dHeight).id("svgImg2");
     // document.getElementById("svgImg2").setAttribute('style', 'shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd');
     let fontSize = this.modelMandala.source.rangeFontSize;
-    for (let i = 0; i < gridForPaint.grid.hexes.length; i++) {
-      // @ts-ignore
-      this.modelMandala.source.drawThisFigure.polygon(gridForPaint.grid.hexes[i].points.map(({x, y}) => `${x},${y}`))
+    gridForPaint.grid.hexes.forEach((item, index) => {
+      this.modelMandala.source.drawThisFigure
+        .polygon(item.points.map((data: {x: string, y: string}) => `${data.x},${data.y}`))
+        .addClass('polygon')
+        .addClass('999')
+        .addClass(`${item.x},${item.y}`)
         .fill('none')
         .stroke({width: 1, color: '#000000'})
         .css({cursor: 'pointer'})
-        .addClass('polygon')
-        .addClass('999')
-        .addClass(`${gridForPaint.grid.hexes[i].x},${gridForPaint.grid.hexes[i].y}`)
-        .element('title').words(`${gridForPaint.grid.hexes[i].x},${gridForPaint.grid.hexes[i].y}`)
+        .element('title').words(`${item.x},${item.y}`)
       this.modelMandala.source.drawThisFigure
-        .text(`${gridForPaint.grid.hexes[i].x},${gridForPaint.grid.hexes[i].y}`)
+        .text(`${item.x},${item.y}`)
+        .addClass(`${item.x},${item.y}`)
         .font({
           size: fontSize,
           anchor: 'middle',
           leading: 1.4,
           fill: this.modelMandala.source.colorWord
         })
-        .addClass(`${gridForPaint.grid.hexes[i].x},${gridForPaint.grid.hexes[i].y}`)
-        .translate(gridForPaint.grid.hexes[i].center.x, gridForPaint.grid.hexes[i].center.y + 3);
-    }
+        .translate(item.center.x, item.center.y + 3);
+    });
 
     for (let i = 0; i < this.modelMandala.source.drawThisFigure.node.children.length; i++) {
       if (this.modelMandala.source.drawThisFigure.node.children[i].tagName === "polygon") {
         let str = this.modelMandala.source.drawThisFigure.node.children[i].classList[2];
         this.dataPolygonMap.set(str, i);
         this.modelMandala.source.drawThisFigure.node.children[i].onclick = function (e: any) {
-          openColorDialog(e)
+          openColorDialog(e);
         }
       }
       if (this.modelMandala.source.drawThisFigure.node.children[i].tagName === "text") {
@@ -206,11 +227,11 @@ export class EditorComponent implements OnInit {
   }
 
   private openColorDialog(event: any): void{
-    this.dialogService.open(ColoredModalComponent, {data: {blockData: event}})
-      .onClose
-      .subscribe((dataAfterClose: any) => {
-        console.log('closed ColoredModalComponent data: ', dataAfterClose)
-    });
+    this.dialogService.open(ColoredModalComponent, {data: {blockData: event.target}})
+    //   .onClose
+    //   .subscribe((dataAfterClose: any) => {
+    //     console.log('closed ColoredModalComponent data: ', dataAfterClose)
+    // });
   }
 
   // Axis мандала
@@ -288,15 +309,16 @@ export class EditorComponent implements OnInit {
 
     this.timeEnd = Date.now();
     console.log("Затрачено времени ", this.timeConversion(this.timeEnd - this.timeStart));
+
+    // TODO: needed create checkbox in header for activate/deactivate zoom controls
     this.addZoomInLayout();
-    console.log(this.modelMandala)
   }
 
   private addZoomInLayout(): void{
     let svgElement = document.querySelector('svg');
     // @ts-ignore
     let panZoomTiger = svgPanZoom(svgElement, {
-      viewportSelector: '.svg-pan-zoom_viewport',
+      // viewportSelector: '.svg-pan-zoom_viewport',
       panEnabled: true,
       controlIconsEnabled: true,
       zoomEnabled: true,
@@ -307,7 +329,7 @@ export class EditorComponent implements OnInit {
       minZoom: 0.5,
       maxZoom: 10,
       fit: true,
-      contain: false,
+      contain: true,
       center: true,
       refreshRate: 'auto',
       beforeZoom: function(){},
@@ -731,17 +753,12 @@ export class EditorComponent implements OnInit {
     if (text) {
       let o = this.dataTextMap.get(strForSearch);
       // @ts-ignore
-      return stage.node.children[o];
+      return (stage.node.children as HTMLCollection)[o];
     } else {
       let o = this.dataPolygonMap.get(strForSearch);
       // @ts-ignore
       return stage.node.children[o];
     }
-  }
-
-  public setColorPolygonFunc(event: any): void {
-    this.polygonObj = event.target;
-    console.log('dada', this.polygonObj)
   }
 
   private getPaperSize(): { width: number, height: number } {

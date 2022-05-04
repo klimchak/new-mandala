@@ -9,6 +9,7 @@ import {SharedModule} from "./modules/shared/shared.module";
 import {AppRouting} from "./app.routing";
 import {DialogService} from "primeng/dynamicdialog";
 import {MessageService} from "primeng/api";
+import {CoreService} from "./modules/shared/services/core/core.service";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import {MessageService} from "primeng/api";
     ToastModule,
     HttpClientModule
   ],
-  providers: [DialogService, MessageService],
+  providers: [DialogService, MessageService, CoreService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

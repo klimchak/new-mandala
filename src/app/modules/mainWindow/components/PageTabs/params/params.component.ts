@@ -17,17 +17,17 @@ export class ParamsComponent implements OnInit {
   public paramsForm: FormGroup = new FormGroup({});
 
   public get marginSize(): string {
-    if (this.paramsForm.get('marginSize')?.value){
+    if (this.paramsForm.get('marginSize')?.value) {
       return `${this.paramsForm.get('marginSize')?.value} мм`;
-    }else {
+    } else {
       return '';
     }
   }
 
   public get fontSize(): string {
-    if (this.paramsForm.get('fontSize')?.value){
+    if (this.paramsForm.get('fontSize')?.value) {
       return `${this.paramsForm.get('fontSize')?.value} пт`;
-    }else {
+    } else {
       return '';
     }
   }
@@ -67,12 +67,12 @@ export class ParamsComponent implements OnInit {
   }
 
   public setDouble(): void {
-    if (this.paramsForm.get('double')?.value){
+    if (this.paramsForm.get('double')?.value) {
       this.paramsForm.get('split')?.enable();
       this.generationVariant.forEach((item) => {
         item.inactive = item.value === MandalaVariant.LIGHT_FROM_CENTER_MAND || item.value === MandalaVariant.LIGHT_IN_CENTER_MAND;
       });
-    }else{
+    } else {
       this.paramsForm.get('split')?.disable();
       this.generationVariant.forEach((item) => {
         item.inactive = !(item.value === MandalaVariant.LIGHT_FROM_CENTER_MAND || item.value === MandalaVariant.LIGHT_IN_CENTER_MAND);
@@ -88,7 +88,6 @@ export class ParamsComponent implements OnInit {
       const actionType = payload.id ? PopupActionsEnum.UPDATE : PopupActionsEnum.CREATE;
       this.closeModalWindow({body: payload, action: actionType, changed: true});
     } else {
-      console.log(this.paramsForm)
       this.toastNotificationService.showNotification('warning', {message: 'Data in the fields is`t valid'});
     }
   }

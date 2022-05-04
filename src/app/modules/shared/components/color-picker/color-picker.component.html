@@ -1,5 +1,5 @@
 <div class="main">
-  <canvas width="500" height="400" #canvas (mousemove)="getPixel($event)"></canvas>
+  <canvas width="500" height="400" #canvas (mousemove)="setPixelColor($event)" (click)="setPixelColor($event, true)"></canvas>
   <div class="color-box">
     <p class="color-box--title">Выбранный цвет</p>
     <div #colorBox class="color-box_view--value"></div>
