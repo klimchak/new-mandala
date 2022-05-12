@@ -1,6 +1,6 @@
 import {MandalaVariant, PaperSize} from "../../../constants";
 
-export interface MandalaParams {
+export interface MandalaParamsModel {
   id: number;
   baseWord: string;
   generationVariant: MandalaVariant;

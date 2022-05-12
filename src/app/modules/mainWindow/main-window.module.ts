@@ -4,7 +4,7 @@ import {MainWindowComponent} from "./components/main-window.component";
 import {PageTabsComponent} from "./components/PageTabs/page-tabs.component";
 import {TabViewModule} from "primeng/tabview";
 import {ButtonModule} from "primeng/button";
-import {ParamsComponent} from "./components/PageTabs/modals/params/params.component";
+import {ParamsModalComponent} from "./components/PageTabs/modals/params-modal/params-modal.component";
 import {EditorComponent} from './components/PageTabs/editor/editor.component';
 import {SaviorComponent} from './components/PageTabs/savior/savior.component';
 import {InputTextModule} from "primeng/inputtext";
@@ -22,12 +22,12 @@ import {ColorPickerModule} from "primeng/colorpicker";
 import {TooltipModule} from "primeng/tooltip";
 import {RippleModule} from "primeng/ripple";
 import {InputSwitchModule} from "primeng/inputswitch";
-import { SaveImageModalComponent } from './components/PageTabs/modals/save-image-modal/save-image-modal.component';
+import {SaveImageModalComponent} from './components/PageTabs/modals/save-image-modal/save-image-modal.component';
 import {SlideMenuModule} from "primeng/slidemenu";
-import { SaveDbModalComponent } from './components/PageTabs/modals/save-db-modal/save-db-modal.component';
+import {SaveDbModalComponent} from './components/PageTabs/modals/save-db-modal/save-db-modal.component';
 
 const tabsComponents = [
-  ParamsComponent,
+  ParamsModalComponent,
   MainWindowComponent,
   PageTabsComponent,
   EditorComponent,

@@ -3,7 +3,7 @@ import {DynamicDialogConfig} from "primeng/dynamicdialog";
 import {CoreService} from "../../../../../shared/services/core/core.service";
 import {CallbackAnyReturn} from "../../../../../shared/models/callback-any-return.model";
 import {FormControl, FormGroup} from "@angular/forms";
-import {ModelMandala} from "../../../../../shared/models/modelMandala";
+import {MandalaModel} from "../../../../../shared/models/mandala.model";
 import {CheckedColor} from "../../../../../shared/models/checked-color.model";
 import {$animations} from "../../../../../shared/animations/animations";
 
@@ -33,7 +33,7 @@ export class ColoredModalComponent implements OnInit {
     return this.rendererService.activeZoom;
   }
 
-  public get modelMandala(): ModelMandala {
+  public get modelMandala(): MandalaModel {
     return this.rendererService.modelMandala;
   }
 

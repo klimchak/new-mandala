@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject} from "rxjs";
-import {MandalaParams} from "../../models/MandalaParams";
-import {ModelMandala} from "../../models/modelMandala";
+import {MandalaParamsModel} from "../../models/mandala-params.model";
+import {MandalaModel} from "../../models/mandala.model";
 import {cloneDeep} from "lodash";
 import {DefaultModel} from "../../../../constants";
 import * as svgPanZoom from 'svg-pan-zoom';
 
 @Injectable({providedIn: 'root'})
 export class CoreService {
-  public mandalaParams: Subject<MandalaParams> = new Subject<MandalaParams>();
+  public mandalaParams: Subject<MandalaParamsModel> = new Subject<MandalaParamsModel>();
   public mandalaCreated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public dataPolygonMap: Map<string, number> = new Map<string, number>();
   public dataTextMap: Map<string, number> = new Map<string, number>();
@@ -16,11 +16,11 @@ export class CoreService {
   public activeZoom: boolean = true;
   public panZoom: any;
 
-  public set modelMandala(data: ModelMandala) {
+  public set modelMandala(data: MandalaModel) {
     this.mandala = data;
   }
 
-  public get modelMandala(): ModelMandala {
+  public get modelMandala(): MandalaModel {
     return this.mandala;
   }
 
@@ -40,7 +40,7 @@ export class CoreService {
     this.imageData = data;
   }
 
-  private mandala: ModelMandala;
+  private mandala: MandalaModel;
   private polygon: any;
   private imageData: string = '';
 

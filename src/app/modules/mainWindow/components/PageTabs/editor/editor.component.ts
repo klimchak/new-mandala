@@ -1,8 +1,8 @@
 import {Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {SVG} from '@svgdotjs/svg.js'
 import * as Honeycomb from 'honeycomb-grid'
-import {MandalaParams} from "../../../../shared/models/MandalaParams";
-import {ModelMandala} from "../../../../shared/models/modelMandala";
+import {MandalaParamsModel} from "../../../../shared/models/mandala-params.model";
+import {MandalaModel} from "../../../../shared/models/mandala.model";
 import {arr_ru, DefaultModel} from "../../../../../constants";
 import {cloneDeep, get} from 'lodash';
 import {Grid} from "../../../../shared/utils/static/BHexTs/BHex.Core";
@@ -21,7 +21,7 @@ import {CallbackAnyReturn} from "../../../../shared/models/callback-any-return.m
 })
 export class EditorComponent implements OnInit {
   @ViewChild('testSvg') testSvg: ElementRef | undefined;
-  public startedParams!: MandalaParams;
+  public startedParams!: MandalaParamsModel;
   public showWord!: string;
   public showWordInNumbers!: string;
   public timeStart!: number;
@@ -43,7 +43,7 @@ export class EditorComponent implements OnInit {
     return this.rendererService.sectorMap;
   }
 
-  public get modelMandala(): ModelMandala {
+  public get modelMandala(): MandalaModel {
     return this.rendererService.modelMandala;
   }
 

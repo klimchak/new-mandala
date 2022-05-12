@@ -1,4 +1,4 @@
-import {ModelMandala} from "./modules/shared/models/modelMandala";
+import {MandalaModel} from "./modules/shared/models/mandala.model";
 
 export enum Tab {
   // PersonalInfo = 0,
@@ -54,7 +54,7 @@ export const arr_ru = {
   'ъ': 30, 'э': 31, 'ю': 32, 'я': 33
 };
 
-export const DefaultModel: ModelMandala = {
+export const DefaultModel: MandalaModel = {
   rayA: {
     rayCoord: [],
     sector: []

@@ -1,4 +1,4 @@
-export interface ModelMandala {
+export interface MandalaModel {
   rayA: RayModel;
   rayB: RayModel;
   rayC: RayModel;

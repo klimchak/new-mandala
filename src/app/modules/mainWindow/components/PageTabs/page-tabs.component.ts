@@ -1,9 +1,9 @@
 import {Component, Input, OnDestroy, OnInit, ViewChildren, ViewEncapsulation} from '@angular/core';
 import {Tab} from 'src/app/constants';
 import {DialogService} from "primeng/dynamicdialog";
-import {PopupCallbackModel} from "../../../shared/models/popupCallbackModel";
-import {ParamsComponent} from "./modals/params/params.component";
-import {MandalaParams} from "../../../shared/models/MandalaParams";
+import {PopupCallbackModel} from "../../../shared/models/popup-callback.model";
+import {ParamsModalComponent} from "./modals/params-modal/params-modal.component";
+import {MandalaParamsModel} from "../../../shared/models/mandala-params.model";
 import {CoreService} from "../../../shared/services/core/core.service";
 import {SaveImageModalComponent} from "./modals/save-image-modal/save-image-modal.component";
 import {Subject, takeUntil} from "rxjs";
@@ -21,7 +21,7 @@ import {SlideMenu} from "primeng/slidemenu/slidemenu";
 export class PageTabsComponent implements OnInit, OnDestroy {
   @Input() public openTab = Tab.Notes;
   @ViewChildren('menu') public menu: SlideMenu;
-  public mandalaParams!: MandalaParams;
+  public mandalaParams!: MandalaParamsModel;
   public mandalaCreated: boolean = false;
   public ALL_WORDS = ALL_WORDS;
 
@@ -113,7 +113,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
 
   private openParams(): void {
     this.dialogService
-      .open(ParamsComponent, {data: {mandalaParams: this.mandalaParams}})
+      .open(ParamsModalComponent, {data: {mandalaParams: this.mandalaParams}})
       .onClose.subscribe((popupCallback: PopupCallbackModel) => {
       if (popupCallback?.changed) {
         this.mandalaParams = popupCallback.body;

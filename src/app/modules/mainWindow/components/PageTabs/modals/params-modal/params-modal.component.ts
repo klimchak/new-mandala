@@ -5,16 +5,16 @@ import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {
   ToastNotificationsService
 } from "../../../../../shared/services/toast-notifications/toast-notifications.service";
-import {MandalaParams} from "../../../../../shared/models/MandalaParams";
-import {PopupActionsEnum, PopupCallbackModel} from "../../../../../shared/models/popupCallbackModel";
+import {MandalaParamsModel} from "../../../../../shared/models/mandala-params.model";
+import {PopupActionsEnum, PopupCallbackModel} from "../../../../../shared/models/popup-callback.model";
 import {ALL_WORDS} from "../../../../../shared/constants";
 
 @Component({
-  selector: 'app-params',
-  templateUrl: './params.component.html',
-  styleUrls: ['params.component.scss']
+  selector: 'app-params-modal',
+  templateUrl: './params-modal.component.html',
+  styleUrls: ['params-modal.component.scss']
 })
-export class ParamsComponent implements OnInit {
+export class ParamsModalComponent implements OnInit {
   public generationVariant = MANDALA_VARIANTS;
   public paperVariant = PAPER_VARIANTS;
   public paramsForm: FormGroup = new FormGroup({});
@@ -63,7 +63,7 @@ export class ParamsComponent implements OnInit {
       this.ALL_WORDS.TOOLTIP.TOOLTIP_LANDSCAPE.disable;
   }
 
-  private get mandalaParams(): MandalaParams {
+  private get mandalaParams(): MandalaParamsModel {
     return this.dynamicDialogConfig.data.mandalaParams;
   }
 

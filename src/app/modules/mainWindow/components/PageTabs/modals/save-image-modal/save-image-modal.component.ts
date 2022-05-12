@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {jsPDF} from "jspdf";
 import {CoreService} from "../../../../../shared/services/core/core.service";
-import {ModelMandala} from "../../../../../shared/models/modelMandala";
+import {MandalaModel} from "../../../../../shared/models/mandala.model";
 import html2canvas from "html2canvas";
 
 @Component({
@@ -11,7 +11,7 @@ import html2canvas from "html2canvas";
 })
 export class SaveImageModalComponent implements OnInit {
 
-  public get modelMandala(): ModelMandala {
+  public get modelMandala(): MandalaModel {
     return this.rendererService.modelMandala;
   }
 
