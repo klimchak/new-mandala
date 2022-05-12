@@ -77,7 +77,7 @@ export class ColoredModalComponent implements OnInit {
   }
 
   public onSelectColor(): void {
-    if (this.modalForm.get('simpleColorInput')?.value){
+    if (this.modalForm.get('simpleColorInput')?.value) {
       this.recolorHexagons({hex: this.modalForm.get('simpleColorInput')?.value, rgb: ''});
     }
   }
@@ -93,10 +93,8 @@ export class ColoredModalComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  private recolorHexagons(data: CheckedColor): void{
-    const dataForRecolor: any = this.activeZoom ?
-      this.modelMandala.source.drawThisFigure.node.children[0].children :
-      this.modelMandala.source.drawThisFigure.node.children ;
+  private recolorHexagons(data: CheckedColor): void {
+    const dataForRecolor: any = this.modelMandala.source.drawThisFigure.node.children[0].children;
     if (!this.individualRecolor) {
       for (let i = 0; i < dataForRecolor.length; i++) {
         if (dataForRecolor[i].classList[1] === this.polygonObj.classList[1]) {
