@@ -1,18 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {DynamicDialogConfig} from "primeng/dynamicdialog";
 import {CoreService} from "../../../../../shared/services/core/core.service";
 import {CallbackAnyReturn} from "../../../../../shared/models/callback-any-return.model";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ModelMandala} from "../../../../../shared/models/modelMandala";
 import {CheckedColor} from "../../../../../shared/models/checked-color.model";
+import {$animations} from "../../../../../shared/animations/animations";
 
 @Component({
   selector: 'app-colored-modal',
   templateUrl: './colored-modal.component.html',
-  styleUrls: ['./colored-modal.component.scss']
+  styleUrls: ['./colored-modal.component.scss'],
+  animations: $animations,
 })
 export class ColoredModalComponent implements OnInit {
+  @ViewChild('fileInput') public fileInput: any;
   public modalForm: FormGroup;
+
   public get targetData(): any {
     return this.dynamicDialogConfig.data.blockData;
   }
@@ -46,7 +50,6 @@ export class ColoredModalComponent implements OnInit {
   }
 
   constructor(
-    private dialogRef: DynamicDialogRef,
     private dynamicDialogConfig: DynamicDialogConfig,
     private rendererService: CoreService
   ) {
@@ -54,10 +57,14 @@ export class ColoredModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.polygonObj = this.targetData;
-    console.log(this.targetData)
     this.modalForm = new FormGroup({
-      onlyOneRecolor: new FormControl('')
+      onlyOneRecolor: new FormControl(false),
+      simpleColorInput: new FormControl('')
     });
+  }
+
+  public uploadImage(): void {
+    this.fileInput.nativeElement.click();
   }
 
   public setColor(event: CheckedColor): void {
@@ -67,6 +74,12 @@ export class ColoredModalComponent implements OnInit {
   public onSelectFile(event: any): void {
     let file = event.target.files[0]
     this.fileReader(file, (e) => this.rendererService.image = e)
+  }
+
+  public onSelectColor(): void {
+    if (this.modalForm.get('simpleColorInput')?.value){
+      this.recolorHexagons({hex: this.modalForm.get('simpleColorInput')?.value, rgb: ''});
+    }
   }
 
   private fileReader(file: Blob, callback: CallbackAnyReturn): void {

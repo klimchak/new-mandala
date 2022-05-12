@@ -3,13 +3,42 @@
 .main {
   display: flex;
 
-  canvas {
-    margin: 10px;
-    background-color: $border-color;
-    width: 500px;
-    height: 400px;
-    cursor: crosshair;
-    box-shadow: 0 0 5px 5px $border-color;
+  &-image-box {
+    &_row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+
+      canvas {
+        margin: 0 0 20px 0;
+        background-color: #dee2e6;
+        cursor: crosshair;
+        box-shadow: 0 0 5px 5px #dee2e6;
+      }
+
+      &--resize-vertical {
+        width: 50px;
+        display: flex;
+        justify-content: center;
+
+        &-slider{
+          .c-slider-vertical {
+            .p-slider-vertical {
+              height: 100% !important;
+            }
+
+            .p-slider.p-slider-vertical {
+              height: 100% !important;
+            }
+          }
+        }
+      }
+
+      &--resize-horizontal {
+        height: 50px;
+        width: calc(100% - 50px);
+      }
+    }
   }
 
   .color-box {
@@ -24,7 +53,7 @@
       margin: 10px;
     }
 
-    &--title{
+    &--title {
       color: $white-color;
       font-size: 21px;
     }

@@ -94,7 +94,7 @@ export class EditorComponent implements OnInit {
     this.modelMandala.source.word = this.startedParams.baseWord.toLowerCase();
     this.modelMandala.source.mandalaVersion = this.startedParams.generationVariant;
     const setAddWord = this.startedParams.double;
-    const abbrMand = this.startedParams.split;
+    const abbrMand = this.startedParams.abbreviation;
     const setAlbum = this.startedParams.landscape;
     const choicePaper = this.getPaperSize();
     this.modelMandala.source.pageSize.width = choicePaper.width;
@@ -227,11 +227,7 @@ export class EditorComponent implements OnInit {
   }
 
   private openColorDialog(event: any): void{
-    this.dialogService.open(ColoredModalComponent, {data: {blockData: event.target}})
-    //   .onClose
-    //   .subscribe((dataAfterClose: any) => {
-    //     console.log('closed ColoredModalComponent data: ', dataAfterClose)
-    // });
+    this.dialogService.open(ColoredModalComponent, {data: {blockData: event.target}});
   }
 
   // Axis мандала
@@ -310,36 +306,14 @@ export class EditorComponent implements OnInit {
     this.timeEnd = Date.now();
     console.log("Затрачено времени ", this.timeConversion(this.timeEnd - this.timeStart));
 
-    // TODO: needed create checkbox in header for activate/deactivate zoom controls
+    this.rendererService.mandalaCreated.next(true);
+    console.warn('!!! mandalaCreated !!!')
+
     this.addZoomInLayout();
   }
 
   private addZoomInLayout(): void{
-    let svgElement = document.querySelector('svg');
-    // @ts-ignore
-    let panZoomTiger = svgPanZoom(svgElement, {
-      // viewportSelector: '.svg-pan-zoom_viewport',
-      panEnabled: true,
-      controlIconsEnabled: true,
-      zoomEnabled: true,
-      dblClickZoomEnabled: true,
-      mouseWheelZoomEnabled: true,
-      preventMouseEventsDefault: true,
-      zoomScaleSensitivity: 0.2,
-      minZoom: 0.5,
-      maxZoom: 10,
-      fit: true,
-      contain: true,
-      center: true,
-      refreshRate: 'auto',
-      beforeZoom: function(){},
-      onZoom: function(){},
-      beforePan: function(){},
-      onPan: function(){},
-      onUpdatedCTM: function(){},
-      customEventsHandler: {},
-      eventsListenerElement: null
-    });
+    this.rendererService.createZoomSVG(document.getElementById('svgImg2') as HTMLElement);
   }
 
   // border мандала
@@ -424,6 +398,10 @@ export class EditorComponent implements OnInit {
     objText.setAttribute("font-weight", "900");
     this.timeEnd = Date.now();
     console.log("Затрачено времени ", this.timeConversion(this.timeEnd - this.timeStart));
+
+
+    this.rendererService.mandalaCreated.next(true);
+    this.addZoomInLayout();
   }
 
 

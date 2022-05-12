@@ -1,5 +1,5 @@
 <div>
-  <p-tabView [activeIndex]="openTab" (activeIndexChange)="changeSelectedTab($event)">
+  <p-tabView [activeIndex]="openTab">
     <p-tabPanel header="Просмотр">
       <ng-template pTemplate="content">
         <app-editor></app-editor>
@@ -13,11 +13,15 @@
 
     <p-tabPanel [disabled]="true" headerStyleClass="page-tabs__button-panel">
       <ng-template pTemplate="header">
-        <button pButton type="button" label="Параметры"
-                class="page-tabs__button_type_reminder c-prime__button--danger-outline" (click)="openParams()">
+        <p-toggleButton *ngIf="mandalaCreated | async as create" (onChange)="switchZoom()" pRipple
+                        onLabel="Зумм добавлен" offLabel="Зумм отключен" class="c-prime__button"
+                        onIcon="pi pi-check" offIcon="pi pi-times" iconPos="right"
+                        [(ngModel)]="activeZoom"></p-toggleButton>
+        <button pButton pRipple type="button" label="Параметры"
+                class="c-prime__button" (click)="openParams()">
         </button>
-        <button pButton type="button" label="Сохранить"
-                class="page-tabs__button_type_reminder c-prime__button--danger-outline" (click)="confirmDeleteNoteDialog()">
+        <button pButton pRipple type="button" label="Сохранить"
+                class="c-prime__button" (click)="openSaveImageModal()">
         </button>
       </ng-template>
     </p-tabPanel>

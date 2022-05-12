@@ -5,7 +5,7 @@ export interface MandalaParams {
   baseWord: string;
   generationVariant: MandalaVariant;
   double: boolean;
-  split: boolean
+  abbreviation: boolean
   landscape: boolean;
   paperVariant: PaperSize;
   marginSize: number;

@@ -1,6 +1,27 @@
 <div class="main">
-  <canvas width="500" height="400" #canvas (mousemove)="setPixelColor($event)" (click)="setPixelColor($event, true)"></canvas>
-  <div class="color-box">
+  <div class="main-image-box">
+
+    <div class="main-image-box_row">
+      <canvas #canvas width="{{imageWidth}}" height="{{imageHeight}}"
+              (mousemove)="setPixelColor($event)" (click)="setPixelColor($event, true)"></canvas>
+
+      <div class="main-image-box_row--resize-vertical" [formGroup]="imagePickerForm" [style]="heightResizeContainer">
+        <p-slider formControlName="verticalSize" styleClass="main-image-box_row--resize-vertical-slider"
+                  [animate]="true" [min]="10" [max]="1000" [step]="10"
+                  orientation="vertical" (onChange)="resizeImageVertical()"></p-slider>
+      </div>
+    </div>
+
+    <div class="main-image-box_row">
+      <div class="main-image-box_row--resize-horizontal" [formGroup]="imagePickerForm" [style]="widthResizeContainer">
+        <p-slider formControlName="horizontalSize" [animate]="true" [min]="10" [max]="1000" [step]="10"
+                  orientation="horizontal" (onChange)="resizeImageHorizontal()"></p-slider>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="color-box" @openClose>
     <p class="color-box--title">Выбранный цвет</p>
     <div #colorBox class="color-box_view--value"></div>
     <ng-container *ngIf="showInputs">

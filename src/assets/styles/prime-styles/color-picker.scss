@@ -1,0 +1,8 @@
+@import '../variables.scss';
+@import '../mixins.scss';
+
+.c-colorpicker {
+  .p-colorpicker-preview, .p-fluid .p-colorpicker-preview.p-inputtext {
+    width: 100%;
+  }
+}

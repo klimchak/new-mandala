@@ -8,7 +8,9 @@
   padding: 6px 16px !important;
   height: 34px !important;
   font-weight: bold !important;
-
+  .p-button {
+    padding: 0.34rem 1.25rem !important;
+  }
   &.p-button {
     outline: none;
     border: none;

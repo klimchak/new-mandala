@@ -1,6 +1,31 @@
-<div>
-  <h5 class="mt-2">Загрузить изображение для палитры</h5>
-  <input type="file" name="img[]" class="file" accept="image/*" (change)="onSelectFile($event)">
-</div>
+<div [formGroup]="modalForm" class="c-colored-modal-header">
 
-<app-color-picker *ngIf="imageIsUploaded" (outputColor)="setColor($event)" [showInputs]="false"></app-color-picker>
+  <div class="c-colored-modal-header__actions">
+    <div class="c-colored-modal-header__actions--item">
+      <label class="p-float-label">Палитра с картинки</label>
+
+      <app-color-picker *ngIf="imageIsUploaded" (outputColor)="setColor($event)" [showInputs]="false" [imageBase64]="image"
+                        @openClose></app-color-picker>
+
+      <button pButton pRipple (click)="uploadImage()" class="c-prime__button"
+              pTooltip="{{!imageIsUploaded ? 'Загрузить' : 'Сменить'}} картинку для палитры"
+              tooltipPosition="bottom">{{!imageIsUploaded ? 'Загрузить' : 'Сменить'}}</button>
+
+      <div class="single-switch-container">
+        <p-inputSwitch formControlName="onlyOneRecolor"></p-inputSwitch>
+        <label class="p-float-label">Только выбранный полигон</label>
+      </div>
+
+    </div>
+    <input type="file" accept=".jpg,.jpeg,.png,.gif" class="c-colored-modal-header__actions--hiddenInput" #fileInput
+           (change)="onSelectFile($event)"/>
+
+  </div>
+
+  <div class="c-colored-modal-header--color-picker">
+    <label for="color" class="p-float-label">Дополнительная палитра</label>
+    <p-colorPicker id="color" formControlName="simpleColorInput" inline="true" (onChange)="onSelectColor()"
+                   appendTo="body"></p-colorPicker>
+  </div>
+
+</div>
