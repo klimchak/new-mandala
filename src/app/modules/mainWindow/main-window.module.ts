@@ -23,6 +23,8 @@ import {TooltipModule} from "primeng/tooltip";
 import {RippleModule} from "primeng/ripple";
 import {InputSwitchModule} from "primeng/inputswitch";
 import { SaveImageModalComponent } from './components/PageTabs/modals/save-image-modal/save-image-modal.component';
+import {SlideMenuModule} from "primeng/slidemenu";
+import { SaveDbModalComponent } from './components/PageTabs/modals/save-db-modal/save-db-modal.component';
 
 const tabsComponents = [
   ParamsComponent,
@@ -34,27 +36,28 @@ const tabsComponents = [
 ];
 
 @NgModule({
-  declarations: [...tabsComponents, SaveImageModalComponent],
-    imports: [
-        MainWindowRouting,
-        TabViewModule,
-        ButtonModule,
-        InputTextModule,
-        DropdownModule,
-        ToggleButtonModule,
-        SliderModule,
-        ScrollingModule,
-        ReactiveFormsModule,
-        CommonModule,
-        FileUploadModule,
-        HttpClientModule,
-        SharedModule,
-        ColorPickerModule,
-        TooltipModule,
-        RippleModule,
-        InputSwitchModule,
-        FormsModule
-    ],
+  declarations: [...tabsComponents, SaveImageModalComponent, SaveDbModalComponent],
+  imports: [
+    MainWindowRouting,
+    TabViewModule,
+    ButtonModule,
+    InputTextModule,
+    DropdownModule,
+    ToggleButtonModule,
+    SliderModule,
+    ScrollingModule,
+    ReactiveFormsModule,
+    CommonModule,
+    FileUploadModule,
+    HttpClientModule,
+    SharedModule,
+    ColorPickerModule,
+    TooltipModule,
+    RippleModule,
+    InputSwitchModule,
+    FormsModule,
+    SlideMenuModule
+  ],
   exports: [...tabsComponents]
 })
 export class MainWindowModule {

@@ -40,21 +40,27 @@ export class ParamsComponent implements OnInit {
   }
 
   public get abbreviationTooltipText(): string {
-    if (!this.paramsForm.get('double')?.value){
-      return this.ALL_WORDS.TOOLTIP_ABBREVIATION.DISABLED_FORM;
+    if (!this.paramsForm.get('double')?.value) {
+      return this.ALL_WORDS.TOOLTIP.TOOLTIP_ABBREVIATION.DISABLED_FORM;
     }
-    return this.paramsForm.get('abbreviation')?.value ? this.ALL_WORDS.TOOLTIP_ABBREVIATION.ENABLED_FORM.enable : this.ALL_WORDS.TOOLTIP_ABBREVIATION.ENABLED_FORM.disable;
+    return this.paramsForm.get('abbreviation')?.value ?
+      this.ALL_WORDS.TOOLTIP.TOOLTIP_ABBREVIATION.ENABLED_FORM.enable :
+      this.ALL_WORDS.TOOLTIP.TOOLTIP_ABBREVIATION.ENABLED_FORM.disable;
   }
 
   public get doubleTooltipText(): string {
     if (this.paramsForm.get('double')?.value) {
-      return this.paramsForm.get('abbreviation')?.value ? this.ALL_WORDS.TOOLTIP_DOUBLE.enable.enable_abbreviation : this.ALL_WORDS.TOOLTIP_DOUBLE.enable.disable_abbreviation;
+      return this.paramsForm.get('abbreviation')?.value ?
+        this.ALL_WORDS.TOOLTIP.TOOLTIP_DOUBLE.enable.enable_abbreviation :
+        this.ALL_WORDS.TOOLTIP.TOOLTIP_DOUBLE.enable.disable_abbreviation;
     }
-    return this.ALL_WORDS.TOOLTIP_DOUBLE.disable;
+    return this.ALL_WORDS.TOOLTIP.TOOLTIP_DOUBLE.disable;
   }
 
   public get landscapeTooltipText(): string {
-    return this.paramsForm.get('landscape')?.value ? this.ALL_WORDS.TOOLTIP_LANDSCAPE.enable : this.ALL_WORDS.TOOLTIP_LANDSCAPE.disable;
+    return this.paramsForm.get('landscape')?.value ?
+      this.ALL_WORDS.TOOLTIP.TOOLTIP_LANDSCAPE.enable :
+      this.ALL_WORDS.TOOLTIP.TOOLTIP_LANDSCAPE.disable;
   }
 
   private get mandalaParams(): MandalaParams {
