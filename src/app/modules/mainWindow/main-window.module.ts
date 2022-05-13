@@ -25,8 +25,6 @@ import {InputSwitchModule} from "primeng/inputswitch";
 import {SaveImageModalComponent} from './components/PageTabs/modals/save-image-modal/save-image-modal.component';
 import {SlideMenuModule} from "primeng/slidemenu";
 import {SaveDbModalComponent} from './components/PageTabs/modals/save-db-modal/save-db-modal.component';
-import {FieldsetModule} from "primeng/fieldset";
-import {CheckboxModule} from "primeng/checkbox";
 
 const tabsComponents = [
   ParamsModalComponent,
@@ -58,9 +56,7 @@ const tabsComponents = [
     RippleModule,
     InputSwitchModule,
     FormsModule,
-    SlideMenuModule,
-    FieldsetModule,
-    CheckboxModule
+    SlideMenuModule
   ],
   exports: [...tabsComponents]
 })

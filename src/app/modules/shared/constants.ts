@@ -28,11 +28,7 @@ export const ALL_WORDS = {
     TOOLTIP_SWITCHER_ZOOM: {
       enable: 'Включено зуммирование колесом мыши, перемещение изображения и кнопки зуммирования',
       disable: 'Зум отключен, мандала в стандартном размере'
-    },
-    TOOLTIP_SWITCHER_SCHEMA: {
-      enable: 'Цвета существующей мандалы будут сброшены',
-      disable: 'Цвета существующей мандалы будут сохранены'
-    },
+    }
   },
   BUTTON: {
     HEADER: {
@@ -43,10 +39,6 @@ export const ALL_WORDS = {
       switch_zoom: {
         enable: 'Зум добавлен',
         disable: 'Зум отключен'
-      },
-      switch_schema: {
-        enable: 'Не сохранять цвет',
-        disable: 'Сохранить цвет'
       },
       menu: {
         button_text: 'Меню',
