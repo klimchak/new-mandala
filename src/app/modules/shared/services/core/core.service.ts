@@ -9,6 +9,7 @@ import * as svgPanZoom from 'svg-pan-zoom';
 @Injectable({providedIn: 'root'})
 export class CoreService {
   public mandalaParams: Subject<MandalaParamsModel> = new Subject<MandalaParamsModel>();
+  public mandalaParamsObj: MandalaParamsModel | undefined;
   public mandalaCreated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public dataPolygonMap: Map<string, number> = new Map<string, number>();
   public dataTextMap: Map<string, number> = new Map<string, number>();
