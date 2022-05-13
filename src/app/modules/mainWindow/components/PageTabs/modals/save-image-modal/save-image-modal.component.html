@@ -1,1 +1,46 @@
-<button pButton (click)="getPDFSchema()">test</button>
+<div class="main" [formGroup]="modalForm">
+  <div class="c-base__form-field">
+    <label class="c-base__form-field-label">Дополнительное имя для файла</label>
+    <div class="p-inputgroup">
+      <input type="text" pInputText formControlName="additionalName" class="c-prime-input">
+      <p-toggleButton pRipple onLabel="{{ALL_WORDS.BUTTON.HEADER.switch_schema.enable}}"
+                      offLabel="{{ALL_WORDS.BUTTON.HEADER.switch_schema.disable}}" class="c-prime__button"
+                      onIcon="pi pi-check" offIcon="pi pi-times" iconPos="right"
+                      pTooltip="{{switcherSchemaTooltipText}}" tooltipPosition="bottom"
+                      formControlName="activeSchema"></p-toggleButton>
+    </div>
+  </div>
+  <div class="c-base__form-field">
+    <label class="c-base__form-field-label">Предварительное имя файла:</label>
+    <label class="c-base__form-field-label file-name">{{autoName}}</label>
+  </div>
+  <div class="c-base__form-field">
+    <p-fieldset [toggleable]="true" [collapsed]="true" legend="Дополнительные параметры" class="c-fieldset">
+    <div class="c-base__form-field">
+      <label class="c-base__form-field-label">Добавить в имя информацию о:</label>
+    </div>
+    <div class="c-base__form-field">
+      <p-checkbox formControlName="generationVariant" binary="true" label="Вариант генерации"></p-checkbox>
+    </div>
+    <div class="c-base__form-field">
+      <p-checkbox formControlName="double" binary="true" label="Удвоении слова"></p-checkbox>
+    </div>
+    <div class="c-base__form-field">
+      <p-checkbox formControlName="abbreviation" binary="true" label="Сокращении слова"></p-checkbox>
+    </div>
+    <div class="c-base__form-field">
+      <p-checkbox formControlName="landscape" binary="true" label="Ориентации полотна"></p-checkbox>
+    </div>
+    <div class="c-base__form-field">
+      <p-checkbox formControlName="paperVariant" binary="true" label="Размере полотна"></p-checkbox>
+    </div>
+  </p-fieldset>
+  </div>
+  <div class="c-base__form-field">
+    <label class="c-base__form-field-label">Сохранить файл в расширении:</label>
+    <div class="actions">
+      <button pButton class="c-prime__button" (click)="getPDF()">PDF</button>
+      <button pButton class="c-prime__button" (click)="getImage()">PNG</button>
+    </div>
+  </div>
+</div>

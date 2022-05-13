@@ -32,6 +32,9 @@ export class PageTabsComponent implements OnInit, OnDestroy {
       tooltipLabel: this.startParamsTooltipText,
       tooltipPosition: 'bottom'
     };
+    if (this.mandalaCreated){
+      this.menuItemsStandard[1].disabled = false;
+    }
     return this.menuItemsStandard;
   }
 
@@ -65,6 +68,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
     {
       label: ALL_WORDS.BUTTON.HEADER.menu.menu_model.export,
       icon: 'pi pi-fw pi-external-link',
+      disabled: true,
       tooltipOptions: {
         tooltipLabel: ALL_WORDS.TOOLTIP.TOOLTIP_HEADER_MENU.export,
         tooltipPosition: 'bottom'
@@ -117,6 +121,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
       .onClose.subscribe((popupCallback: PopupCallbackModel) => {
       if (popupCallback?.changed) {
         this.mandalaParams = popupCallback.body;
+        this.rendererService.mandalaParamsObj = popupCallback.body;
         this.rendererService.mandalaParams.next(popupCallback.body);
       }
     });
@@ -137,9 +142,10 @@ export class PageTabsComponent implements OnInit, OnDestroy {
   }
 
   private closeProgram(): void {
-    this.dialogService.open(SaveImageModalComponent, {data: {headerText: ``}})
-      .onClose.subscribe((data) => {
-      console.log(data)
-    });
+    alert('function for desktop')
+    // this.dialogService.open(SaveImageModalComponent, {data: {headerText: ``}})
+    //   .onClose.subscribe((data) => {
+    //   console.log(data)
+    // });
   }
 }
