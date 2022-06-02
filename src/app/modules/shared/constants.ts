@@ -29,6 +29,10 @@ export const ALL_WORDS = {
       enable: 'Включено зуммирование колесом мыши, перемещение изображения и кнопки зуммирования',
       disable: 'Зум отключен, мандала в стандартном размере'
     },
+    TOOLTIP_SWITCHER_HELP_TEXT: {
+      enable: 'Включено окошко с дополнительной информацией по мандале',
+      disable: 'Отключено окошко с дополнительной информацией по мандале'
+    },
     TOOLTIP_SWITCHER_SCHEMA: {
       enable: 'Цвета существующей мандалы будут сброшены',
       disable: 'Цвета существующей мандалы будут сохранены'
@@ -41,8 +45,12 @@ export const ALL_WORDS = {
         disable: 'Создать'
       },
       switch_zoom: {
-        enable: 'Зум добавлен',
-        disable: 'Зум отключен'
+        enable: 'Зум',
+        disable: 'Зум'
+      },
+      switch_shadow_help_text: {
+        enable: 'Доп. инфо',
+        disable: 'Доп. инфо'
       },
       switch_schema: {
         enable: 'Не сохранять цвет',

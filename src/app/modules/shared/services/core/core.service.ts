@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Subject} from "rxjs";
-import {MandalaParamsModel} from "../../models/mandala-params.model";
-import {MandalaModel} from "../../models/mandala.model";
-import {cloneDeep} from "lodash";
-import {DefaultModel} from "../../../../constants";
+import {BehaviorSubject, Subject} from 'rxjs';
+import {MandalaParamsModel} from '../../models/mandala-params.model';
+import {MandalaModel} from '../../models/mandala.model';
+import {cloneDeep} from 'lodash';
+import {DefaultModel} from '../../../../constants';
 import * as svgPanZoom from 'svg-pan-zoom';
 
 @Injectable({providedIn: 'root'})
@@ -14,7 +14,8 @@ export class CoreService {
   public dataPolygonMap: Map<string, number> = new Map<string, number>();
   public dataTextMap: Map<string, number> = new Map<string, number>();
   public sectorMap: Map<number, string> = new Map<number, string>();
-  public activeZoom: boolean = true;
+  public activeZoom = true;
+  public activeShadowText = false;
   public panZoom: any;
 
   public set modelMandala(data: MandalaModel) {
@@ -43,7 +44,7 @@ export class CoreService {
 
   private mandala: MandalaModel;
   private polygon: any;
-  private imageData: string = '';
+  private imageData = '';
 
   constructor() {
     this.modelMandala = cloneDeep(DefaultModel);
@@ -64,11 +65,11 @@ export class CoreService {
       contain: true,
       center: true,
       refreshRate: 'auto',
-      beforeZoom: function(){},
-      onZoom: function(){},
-      beforePan: function(){},
-      onPan: function(){},
-      onUpdatedCTM: function(){},
+      beforeZoom(){},
+      onZoom(){},
+      beforePan(){},
+      onPan(){},
+      onUpdatedCTM(){},
     });
     this.activeZoom ? this.enableZoomSVG() : this.disableZoomSVG();
   }

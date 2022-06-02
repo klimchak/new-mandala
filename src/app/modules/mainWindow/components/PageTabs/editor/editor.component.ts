@@ -1,17 +1,15 @@
-import {Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {SVG} from '@svgdotjs/svg.js'
-import * as Honeycomb from 'honeycomb-grid'
-import {MandalaParamsModel} from "../../../../shared/models/mandala-params.model";
-import {MandalaModel} from "../../../../shared/models/mandala.model";
-import {arr_ru, DefaultModel} from "../../../../../constants";
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {SVG} from '@svgdotjs/svg.js';
+import {MandalaParamsModel} from '../../../../shared/models/mandala-params.model';
+import {MandalaModel} from '../../../../shared/models/mandala.model';
+import {arr_ru, DefaultModel} from '../../../../../constants';
 import {cloneDeep, get} from 'lodash';
-import {Grid} from "../../../../shared/utils/static/BHexTs/BHex.Core";
-import {CoreService} from "../../../../shared/services/core/core.service";
-import {Drawing, Options, Orientation, Point} from "../../../../shared/utils/static/BHexTs/BHex.Drawing";
-import * as svgPanZoom from 'svg-pan-zoom';
-import {DialogService} from "primeng/dynamicdialog";
-import {ColoredModalComponent} from "../modals/colored-modal/colored-modal.component";
-import {CallbackAnyReturn} from "../../../../shared/models/callback-any-return.model";
+import {Grid} from '../../../../shared/utils/static/BHexTs/BHex.Core';
+import {CoreService} from '../../../../shared/services/core/core.service';
+import {Drawing, Options, Orientation, Point} from '../../../../shared/utils/static/BHexTs/BHex.Drawing';
+import {DialogService} from 'primeng/dynamicdialog';
+import {ColoredModalComponent} from '../modals/colored-modal/colored-modal.component';
+import {CallbackAnyReturn} from '../../../../shared/models/callback-any-return.model';
 
 
 @Component({
@@ -27,9 +25,9 @@ export class EditorComponent implements OnInit {
   public timeStart!: number;
   public timeEnd!: number;
 
-  public get debug(): string {
-    return JSON.stringify(this.startedParams);
-  }
+  // public get debug(): string {
+  //   return JSON.stringify(this.startedParams);
+  // }
 
   public get dataPolygonMap(): Map<string, number> {
     return this.rendererService.dataPolygonMap;
@@ -77,7 +75,7 @@ export class EditorComponent implements OnInit {
 
   public ngOnInit(): void {
     this.rendererService.mandalaParams.subscribe((item) => {
-      console.log(item)
+      console.log(item);
       if (this.testSvg) {
         this.testSvg.nativeElement.innerHTML = '';
         this.setToDefault();
@@ -105,7 +103,7 @@ export class EditorComponent implements OnInit {
 
     this.timeStart = Date.now();
 
-    let strToHex = "";
+    let strToHex = '';
     for (let i = 0; i < this.modelMandala.source.word.length; i++) {
       // @ts-ignore
       let r = arr_ru[this.modelMandala.source.word[i]];
@@ -127,12 +125,12 @@ export class EditorComponent implements OnInit {
     // доп параметры
     // обратный вариант
     if (this.modelMandala.source.mandalaVersion === 2 || this.modelMandala.source.mandalaVersion === 6) {
-      strToHex = strToHex.split("").reverse().join("");
+      strToHex = strToHex.split('').reverse().join('');
     }
     // от центра с удвоением
     if (this.modelMandala.source.mandalaVersion === 3 || this.modelMandala.source.mandalaVersion === 7) {
-      let strB = strToHex;
-      let strA = strToHex.split("").reverse().join("");
+      const strB = strToHex;
+      const strA = strToHex.split('').reverse().join('');
       if (abbrMand) {
         strToHex = String(strA) + String(strB).substr(1, strB.length);
       } else {
@@ -142,8 +140,8 @@ export class EditorComponent implements OnInit {
     }
     // к центру с удвоением
     if (this.modelMandala.source.mandalaVersion === 4 || this.modelMandala.source.mandalaVersion === 8) {
-      let strB = strToHex;
-      let strA = strToHex.split("").reverse().join("");
+      const strB = strToHex;
+      const strA = strToHex.split('').reverse().join('');
       if (abbrMand) {
         strToHex = String(strB) + String(strA).substr(1, strA.length);
       } else {
@@ -153,8 +151,8 @@ export class EditorComponent implements OnInit {
     }
     this.modelMandala.source.wordInInt = strToHex;
     this.modelMandala.source.countWord = countHex;
-    this.showWord = "Использовано слово: " + this.modelMandala.source.word;
-    this.showWordInNumbers = "В переведенном виде: " + strToHex;
+    this.showWord = 'Использовано слово: ' + this.modelMandala.source.word;
+    this.showWordInNumbers = 'В переведенном виде: ' + strToHex;
     this.createMandala((e) => this.openColorDialog(e));
   }
 
@@ -169,26 +167,26 @@ export class EditorComponent implements OnInit {
     //   dataTextMap.clear();
     //   dataPolygonMap.clear();
     // }
-    let dWith = this.modelMandala.source.pageSize.width * 3.543307;
-    let dHeight = this.modelMandala.source.pageSize.height * 3.543307;
-    let dRangeMm = this.modelMandala.source.rangeMm * 3.543307;
-    let options = new Options(dRangeMm, Orientation.PointyTop, new Point(dWith, dHeight));
-    let gridBHex = new Grid(this.modelMandala.source.countWord);
-    let gridForPaint = new Drawing(gridBHex, options);
+    const dWith = this.modelMandala.source.pageSize.width * 3.543307;
+    const dHeight = this.modelMandala.source.pageSize.height * 3.543307;
+    const dRangeMm = this.modelMandala.source.rangeMm * 3.543307;
+    const options = new Options(dRangeMm, Orientation.PointyTop, new Point(dWith, dHeight));
+    const gridBHex = new Grid(this.modelMandala.source.countWord);
+    const gridForPaint = new Drawing(gridBHex, options);
     this.modelMandala.source.gridThisFigure = gridForPaint;
-    this.modelMandala.source.drawThisFigure = SVG().addTo('#renderContainer').size(dWith, dHeight).id("svgImg2");
+    this.modelMandala.source.drawThisFigure = SVG().addTo('#renderContainer').size(dWith, dHeight).id('svgImg2');
     // document.getElementById("svgImg2").setAttribute('style', 'shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd');
-    let fontSize = this.modelMandala.source.rangeFontSize;
+    const fontSize = this.modelMandala.source.rangeFontSize;
     gridForPaint.grid.hexes.forEach((item, index) => {
       this.modelMandala.source.drawThisFigure
-        .polygon(item.points.map((data: {x: string, y: string}) => `${data.x},${data.y}`))
+        .polygon(item.points.map((data: {x: string; y: string}) => `${data.x},${data.y}`))
         .addClass('polygon')
         .addClass('999')
         .addClass(`${item.x},${item.y}`)
         .fill('none')
         .stroke({width: 1, color: '#000000'})
         .css({cursor: 'pointer'})
-        .element('title').words(`${item.x},${item.y}`)
+        .element('title').words(`${item.x},${item.y}`);
       this.modelMandala.source.drawThisFigure
         .text(`${item.x},${item.y}`)
         .addClass(`${item.x},${item.y}`)
@@ -202,15 +200,15 @@ export class EditorComponent implements OnInit {
     });
 
     for (let i = 0; i < this.modelMandala.source.drawThisFigure.node.children.length; i++) {
-      if (this.modelMandala.source.drawThisFigure.node.children[i].tagName === "polygon") {
-        let str = this.modelMandala.source.drawThisFigure.node.children[i].classList[2];
+      if (this.modelMandala.source.drawThisFigure.node.children[i].tagName === 'polygon') {
+        const str = this.modelMandala.source.drawThisFigure.node.children[i].classList[2];
         this.dataPolygonMap.set(str, i);
-        this.modelMandala.source.drawThisFigure.node.children[i].onclick = function (e: any) {
+        this.modelMandala.source.drawThisFigure.node.children[i].onclick = function(e: any) {
           openColorDialog(e);
-        }
+        };
       }
-      if (this.modelMandala.source.drawThisFigure.node.children[i].tagName === "text") {
-        let str = this.modelMandala.source.drawThisFigure.node.children[i].classList[0];
+      if (this.modelMandala.source.drawThisFigure.node.children[i].tagName === 'text') {
+        const str = this.modelMandala.source.drawThisFigure.node.children[i].classList[0];
         this.dataTextMap.set(str, i);
       }
     }
@@ -233,52 +231,52 @@ export class EditorComponent implements OnInit {
   // Axis мандала
   // установка значений в класс для автовыбора при расскращивании.
   private axialDataSet(): void {
-    console.log("Затрачено времени ", this.timeConversion(Date.now() - this.timeStart));
+    console.log('Затрачено времени ', this.timeConversion(Date.now() - this.timeStart));
     this.getArrOnRayAndSector();
     // установка значений по осям
     let numb = 1;
-    for (let key in this.modelMandala) {
+    for (const key in this.modelMandala) {
       numb = 1;
-      if (key === "source") break;
+      if (key === 'source') {break;}
       for (let i = 0; i < get(this.modelMandala, key).rayCoord.length; i++) {
-        let obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], false);
+        const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], false);
         obj.classList.replace('999', String(this.modelMandala.source.wordInInt[numb]));
         obj.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
         obj.attributes.fill.value = '#ececec';
-        let objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], true);
+        const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], true);
         objText.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
         numb++;
       }
     }
     // установка значений по полям
-    for (let key in this.modelMandala) {
-      let countStep = 1;
-      if (key === "source") break;
+    for (const key in this.modelMandala) {
+      const countStep = 1;
+      if (key === 'source') {break;}
       for (let i = 0; i < get(this.modelMandala, key).sector[0].length; i++) {
         for (let u = 0; u < get(this.modelMandala, key).sector[0][i].length; u++) {
-          let objForChange = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1], false);
-          let objParent1, objParent2;
-          if (key === "rayA") {
+          const objForChange = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1], false);
+          let objParent1; let objParent2;
+          if (key === 'rayA') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] - 1, get(this.modelMandala, key).sector[0][i][u][1], false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] - 1, get(this.modelMandala, key).sector[0][i][u][1] + 1, false);
           }
-          if (key === "rayB") {
+          if (key === 'rayB') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] - 1, get(this.modelMandala, key).sector[0][i][u][1] + 1, false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1] + 1, false);
           }
-          if (key === "rayC") {
+          if (key === 'rayC') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1] + 1, false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] + 1, get(this.modelMandala, key).sector[0][i][u][1], false);
           }
-          if (key === "rayA2") {
+          if (key === 'rayA2') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] + 1, get(this.modelMandala, key).sector[0][i][u][1], false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] + 1, get(this.modelMandala, key).sector[0][i][u][1] - 1, false);
           }
-          if (key === "rayB2") {
+          if (key === 'rayB2') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] + 1, get(this.modelMandala, key).sector[0][i][u][1] - 1, false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1] - 1, false);
           }
-          if (key === "rayC2") {
+          if (key === 'rayC2') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1] - 1, false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] - 1, get(this.modelMandala, key).sector[0][i][u][1], false);
           }
@@ -289,25 +287,25 @@ export class EditorComponent implements OnInit {
           objForChange.classList.replace('999', String(res));
           objForChange.firstChild.innerHTML = String(res);
           objForChange.attributes.fill.value = '#ffffff';
-          let objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1], true);
+          const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1], true);
           objText.firstChild.innerHTML = String(res);
         }
       }
     }
     // установка центрального значения
-    let obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, false);
+    const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, false);
     obj.classList.replace('999', String(this.modelMandala.source.wordInInt[0]));
     obj.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[0]);
     obj.attributes.fill.value = '#ececec';
-    let objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, true);
+    const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, true);
     objText.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[0]);
-    objText.setAttribute("font-weight", "900");
+    objText.setAttribute('font-weight', '900');
 
     this.timeEnd = Date.now();
-    console.log("Затрачено времени ", this.timeConversion(this.timeEnd - this.timeStart));
+    console.log('Затрачено времени ', this.timeConversion(this.timeEnd - this.timeStart));
 
     this.rendererService.mandalaCreated.next(true);
-    console.warn('!!! mandalaCreated !!!')
+    console.warn('!!! mandalaCreated !!!');
 
     this.addZoomInLayout();
   }
@@ -320,53 +318,53 @@ export class EditorComponent implements OnInit {
   // установка значений в класс для автовыбора при расскращивании.
   private borderDataSet(): void {
     this.timeEnd = Date.now();
-    console.log("Затрачено времени ", this.timeConversion(this.timeEnd - this.timeStart));
+    console.log('Затрачено времени ', this.timeConversion(this.timeEnd - this.timeStart));
     this.getArrOnBorderAndSector();
     // установка значений по осям
     let numb = 0;
-    for (let key in this.modelMandala) {
+    for (const key in this.modelMandala) {
       numb = 0;
-      if (key === "source") break;
+      if (key === 'source') {break;}
       for (let i = 0; i < get(this.modelMandala, key).rayCoord.length; i++) {
-        let obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], false);
+        const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], false);
         obj.classList.replace('999', String(this.modelMandala.source.wordInInt[numb]));
         obj.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
         obj.attributes.fill.value = '#ececec';
-        let objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], true);
+        const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], true);
         objText.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
         this.sectorMap.set(i, String(this.modelMandala.source.wordInInt[numb]));
         numb++;
       }
     }
     // установка значений по полям
-    for (let key in this.modelMandala) {
-      let countStep = 1;
-      if (key === "source") break;
+    for (const key in this.modelMandala) {
+      const countStep = 1;
+      if (key === 'source') {break;}
       for (let i = 0; i < get(this.modelMandala, key).sector[0].length; i++) {
         for (let u = 0; u < get(this.modelMandala, key).sector[0][i].length; u++) {
-          let objForChange = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1], false);
-          let objParent1, objParent2;
-          if (key === "rayA") {
+          const objForChange = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1], false);
+          let objParent1; let objParent2;
+          if (key === 'rayA') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] + 1, get(this.modelMandala, key).sector[0][i][u][1] - 1, false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] + 1, get(this.modelMandala, key).sector[0][i][u][1], false);
           }
-          if (key === "rayB") {
+          if (key === 'rayB') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1] - 1, false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] + 1, get(this.modelMandala, key).sector[0][i][u][1] - 1, false);
           }
-          if (key === "rayC") {
+          if (key === 'rayC') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] - 1, get(this.modelMandala, key).sector[0][i][u][1], false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1] - 1, false);
           }
-          if (key === "rayA2") {
+          if (key === 'rayA2') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] - 1, get(this.modelMandala, key).sector[0][i][u][1] + 1, false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] - 1, get(this.modelMandala, key).sector[0][i][u][1], false);
           }
-          if (key === "rayB2") {
+          if (key === 'rayB2') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] - 1, get(this.modelMandala, key).sector[0][i][u][1] + 1, false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1] + 1, false);
           }
-          if (key === "rayC2") {
+          if (key === 'rayC2') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1] + 1, false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] + 1, get(this.modelMandala, key).sector[0][i][u][1], false);
           }
@@ -377,15 +375,15 @@ export class EditorComponent implements OnInit {
           objForChange.classList.replace('999', String(res));
           objForChange.firstChild.innerHTML = String(res);
           objForChange.attributes.fill.value = '#ffffff';
-          let objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1], true);
+          const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1], true);
           objText.firstChild.innerHTML = String(res);
         }
       }
     }
     // установка центрального значения
-    let obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, false);
-    let objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 1, -1, false);
-    let objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 1, 0, false);
+    const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, false);
+    const objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 1, -1, false);
+    const objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 1, 0, false);
     let res = Number(objParent1.classList[1]) + Number(objParent2.classList[1]);
     if (res >= 10) {
       res = Number(String(res)[0]) + Number(String(res)[1]);
@@ -393,11 +391,11 @@ export class EditorComponent implements OnInit {
     obj.classList.replace('999', String(res));
     obj.firstChild.innerHTML = String(res);
     obj.attributes.fill.value = '#ececec';
-    let objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, true);
+    const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, true);
     objText.firstChild.innerHTML = String(res);
-    objText.setAttribute("font-weight", "900");
+    objText.setAttribute('font-weight', '900');
     this.timeEnd = Date.now();
-    console.log("Затрачено времени ", this.timeConversion(this.timeEnd - this.timeStart));
+    console.log('Затрачено времени ', this.timeConversion(this.timeEnd - this.timeStart));
 
 
     this.rendererService.mandalaCreated.next(true);
@@ -414,16 +412,16 @@ export class EditorComponent implements OnInit {
   private getArrOnRayAndSector(): void {
     let resArr = [];
     let interimArr = [];
-    let step = this.modelMandala.source.countWord - 1;
+    const step = this.modelMandala.source.countWord - 1;
     // ray A
     for (let i = 1; i <= this.modelMandala.source.countWord; i++) {
       this.modelMandala.rayA.rayCoord.push([i, 0]);
     }
-    let a = 2, b = -1;
-    let a2 = a, b2 = b, interimStep = step;
+    let a = 2; let b = -1;
+    let a2 = a; let b2 = b; let interimStep = step;
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
-        y === 1 ? interimArr.push([a2, b2]) : interimArr.push([++a2, b2])
+        y === 1 ? interimArr.push([a2, b2]) : interimArr.push([++a2, b2]);
       }
       a += 1;
       b -= 1;
@@ -447,7 +445,7 @@ export class EditorComponent implements OnInit {
     interimStep = step;
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
-        y === 1 ? interimArr.push([a2, b2]) : interimArr.push([++a2, --b2])
+        y === 1 ? interimArr.push([a2, b2]) : interimArr.push([++a2, --b2]);
       }
       a = 1;
       b -= 1;
@@ -471,7 +469,7 @@ export class EditorComponent implements OnInit {
     interimStep = step;
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
-        y === 1 ? interimArr.push([a2, b2]) : interimArr.push([a2, --b2])
+        y === 1 ? interimArr.push([a2, b2]) : interimArr.push([a2, --b2]);
       }
       a -= 1;
       b = -1;
@@ -495,7 +493,7 @@ export class EditorComponent implements OnInit {
     interimStep = step;
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
-        y === 1 ? interimArr.push([a2, b2]) : interimArr.push([--a2, b2])
+        y === 1 ? interimArr.push([a2, b2]) : interimArr.push([--a2, b2]);
       }
       a -= 1;
       b += 1;
@@ -519,7 +517,7 @@ export class EditorComponent implements OnInit {
     interimStep = step;
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
-        y === 1 ? interimArr.push([a2, b2]) : interimArr.push([--a2, ++b2])
+        y === 1 ? interimArr.push([a2, b2]) : interimArr.push([--a2, ++b2]);
       }
       a = -1;
       b += 1;
@@ -543,7 +541,7 @@ export class EditorComponent implements OnInit {
     interimStep = step;
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
-        y === 1 ? interimArr.push([a2, b2]) : interimArr.push([a2, ++b2])
+        y === 1 ? interimArr.push([a2, b2]) : interimArr.push([a2, ++b2]);
       }
       a += 1;
       b = 1;
@@ -562,16 +560,16 @@ export class EditorComponent implements OnInit {
   private getArrOnBorderAndSector() {
     let resArr = [];
     let interimArr = [];
-    let step = this.modelMandala.source.countWord;
+    const step = this.modelMandala.source.countWord;
     // ray A
-    let a = this.modelMandala.source.countWord, b = 0;
-    let a2 = a, b2 = b, interimStep = step;
+    let a = this.modelMandala.source.countWord; let b = 0;
+    let a2 = a; let b2 = b; let interimStep = step;
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
         if (i === 1) {
-          y === 1 ? this.modelMandala.rayA.rayCoord.push([a2, b2]) : this.modelMandala.rayA.rayCoord.push([a2, --b2])
+          y === 1 ? this.modelMandala.rayA.rayCoord.push([a2, b2]) : this.modelMandala.rayA.rayCoord.push([a2, --b2]);
         } else {
-          y === 1 ? interimArr.push([a2, b2]) : interimArr.push([a2, --b2])
+          y === 1 ? interimArr.push([a2, b2]) : interimArr.push([a2, --b2]);
         }
       }
       a -= 1;
@@ -597,9 +595,9 @@ export class EditorComponent implements OnInit {
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
         if (i === 1) {
-          y === 1 ? this.modelMandala.rayB.rayCoord.push([a2, b2]) : this.modelMandala.rayB.rayCoord.push([--a2, b2])
+          y === 1 ? this.modelMandala.rayB.rayCoord.push([a2, b2]) : this.modelMandala.rayB.rayCoord.push([--a2, b2]);
         } else {
-          y === 1 ? interimArr.push([a2, b2]) : interimArr.push([--a2, b2])
+          y === 1 ? interimArr.push([a2, b2]) : interimArr.push([--a2, b2]);
         }
       }
       a -= 1;
@@ -624,9 +622,9 @@ export class EditorComponent implements OnInit {
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
         if (i === 1) {
-          y === 1 ? this.modelMandala.rayC.rayCoord.push([a2, b2]) : this.modelMandala.rayC.rayCoord.push([--a2, ++b2])
+          y === 1 ? this.modelMandala.rayC.rayCoord.push([a2, b2]) : this.modelMandala.rayC.rayCoord.push([--a2, ++b2]);
         } else {
-          y === 1 ? interimArr.push([a2, b2]) : interimArr.push([--a2, ++b2])
+          y === 1 ? interimArr.push([a2, b2]) : interimArr.push([--a2, ++b2]);
         }
       }
       a = 0;
@@ -651,9 +649,9 @@ export class EditorComponent implements OnInit {
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
         if (i === 1) {
-          y === 1 ? this.modelMandala.rayA2.rayCoord.push([a2, b2]) : this.modelMandala.rayA2.rayCoord.push([a2, ++b2])
+          y === 1 ? this.modelMandala.rayA2.rayCoord.push([a2, b2]) : this.modelMandala.rayA2.rayCoord.push([a2, ++b2]);
         } else {
-          y === 1 ? interimArr.push([a2, b2]) : interimArr.push([a2, ++b2])
+          y === 1 ? interimArr.push([a2, b2]) : interimArr.push([a2, ++b2]);
         }
       }
       a += 1;
@@ -678,9 +676,9 @@ export class EditorComponent implements OnInit {
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
         if (i === 1) {
-          y === 1 ? this.modelMandala.rayB2.rayCoord.push([a2, b2]) : this.modelMandala.rayB2.rayCoord.push([++a2, b2])
+          y === 1 ? this.modelMandala.rayB2.rayCoord.push([a2, b2]) : this.modelMandala.rayB2.rayCoord.push([++a2, b2]);
         } else {
-          y === 1 ? interimArr.push([a2, b2]) : interimArr.push([++a2, b2])
+          y === 1 ? interimArr.push([a2, b2]) : interimArr.push([++a2, b2]);
         }
       }
       a += 1;
@@ -705,9 +703,9 @@ export class EditorComponent implements OnInit {
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
         if (i === 1) {
-          y === 1 ? this.modelMandala.rayC2.rayCoord.push([a2, b2]) : this.modelMandala.rayC2.rayCoord.push([++a2, --b2])
+          y === 1 ? this.modelMandala.rayC2.rayCoord.push([a2, b2]) : this.modelMandala.rayC2.rayCoord.push([++a2, --b2]);
         } else {
-          y === 1 ? interimArr.push([a2, b2]) : interimArr.push([++a2, --b2])
+          y === 1 ? interimArr.push([a2, b2]) : interimArr.push([++a2, --b2]);
         }
       }
       a = 0;
@@ -727,19 +725,19 @@ export class EditorComponent implements OnInit {
 
   // получение координаты из ListStyle
   private getValOnCoordinate(stage: any, o1: number, o2: number, text: boolean) {
-    let strForSearch = `${o1},${o2}`;
+    const strForSearch = `${o1},${o2}`;
     if (text) {
-      let o = this.dataTextMap.get(strForSearch);
+      const o = this.dataTextMap.get(strForSearch);
       // @ts-ignore
       return (stage.node.children as HTMLCollection)[o];
     } else {
-      let o = this.dataPolygonMap.get(strForSearch);
+      const o = this.dataPolygonMap.get(strForSearch);
       // @ts-ignore
       return stage.node.children[o];
     }
   }
 
-  private getPaperSize(): { width: number, height: number } {
+  private getPaperSize(): { width: number; height: number } {
     if (this.startedParams.landscape) {
       switch (this.startedParams.paperVariant) {
         case 1:
@@ -770,18 +768,18 @@ export class EditorComponent implements OnInit {
   }
 
   private timeConversion(millisec: number) {
-    let seconds = Number((millisec / 1000).toFixed(1));
-    let minutes = Number((millisec / (1000 * 60)).toFixed(1));
-    let hours = Number((millisec / (1000 * 60 * 60)).toFixed(1));
-    let days = Number((millisec / (1000 * 60 * 60 * 24)).toFixed(1));
+    const seconds = Number((millisec / 1000).toFixed(1));
+    const minutes = Number((millisec / (1000 * 60)).toFixed(1));
+    const hours = Number((millisec / (1000 * 60 * 60)).toFixed(1));
+    const days = Number((millisec / (1000 * 60 * 60 * 24)).toFixed(1));
     if (seconds < 60) {
-      return seconds + " Sec";
+      return seconds + ' Sec';
     } else if (minutes < 60) {
-      return minutes + " Min";
+      return minutes + ' Min';
     } else if (hours < 24) {
-      return hours + " Hrs";
+      return hours + ' Hrs';
     } else {
-      return days + " Days"
+      return days + ' Days';
     }
   }
 }

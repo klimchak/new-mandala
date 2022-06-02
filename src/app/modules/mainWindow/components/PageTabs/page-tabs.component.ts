@@ -1,16 +1,15 @@
-import {Component, Input, OnDestroy, OnInit, ViewChildren, ViewEncapsulation} from '@angular/core';
-import {Tab} from 'src/app/constants';
-import {DialogService} from "primeng/dynamicdialog";
-import {PopupCallbackModel} from "../../../shared/models/popup-callback.model";
-import {ParamsModalComponent} from "./modals/params-modal/params-modal.component";
-import {MandalaParamsModel} from "../../../shared/models/mandala-params.model";
-import {CoreService} from "../../../shared/services/core/core.service";
-import {SaveImageModalComponent} from "./modals/save-image-modal/save-image-modal.component";
-import {Subject, takeUntil} from "rxjs";
-import {ALL_WORDS} from "../../../shared/constants";
-import {MenuItem} from "primeng/api";
-import {SaveDbModalComponent} from "./modals/save-db-modal/save-db-modal.component";
-import {SlideMenu} from "primeng/slidemenu/slidemenu";
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {DialogService} from 'primeng/dynamicdialog';
+import {PopupCallbackModel} from '../../../shared/models/popup-callback.model';
+import {ParamsModalComponent} from './modals/params-modal/params-modal.component';
+import {MandalaParamsModel} from '../../../shared/models/mandala-params.model';
+import {CoreService} from '../../../shared/services/core/core.service';
+import {SaveImageModalComponent} from './modals/save-image-modal/save-image-modal.component';
+import {Subject, takeUntil} from 'rxjs';
+import {ALL_WORDS} from '../../../shared/constants';
+import {MenuItem} from 'primeng/api';
+import {SaveDbModalComponent} from './modals/save-db-modal/save-db-modal.component';
+import {Tab} from '../../../../constants';
 
 @Component({
   selector: 'app-page-tabs',
@@ -20,9 +19,8 @@ import {SlideMenu} from "primeng/slidemenu/slidemenu";
 })
 export class PageTabsComponent implements OnInit, OnDestroy {
   @Input() public openTab = Tab.Notes;
-  @ViewChildren('menu') public menu: SlideMenu;
   public mandalaParams!: MandalaParamsModel;
-  public mandalaCreated: boolean = false;
+  public mandalaCreated = false;
   public ALL_WORDS = ALL_WORDS;
 
   public get menuItems(): MenuItem[] {
@@ -46,16 +44,28 @@ export class PageTabsComponent implements OnInit, OnDestroy {
     this.rendererService.activeZoom = value;
   }
 
+  public get activeShadowText(): boolean {
+    return this.rendererService.activeShadowText;
+  }
+
+  public set activeShadowText(value) {
+    this.rendererService.activeShadowText = value;
+  }
+
   public get startParamsTooltipText(): string {
-    return this.mandalaCreated ? ALL_WORDS.TOOLTIP.TOOLTIP_HEADER_MENU.edit : ALL_WORDS.TOOLTIP.TOOLTIP_HEADER_MENU.create
+    return this.mandalaCreated ? ALL_WORDS.TOOLTIP.TOOLTIP_HEADER_MENU.edit : ALL_WORDS.TOOLTIP.TOOLTIP_HEADER_MENU.create;
   }
 
   public get startParamsButtonText(): string {
-    return this.mandalaCreated ? ALL_WORDS.BUTTON.HEADER.start_params.enable : ALL_WORDS.BUTTON.HEADER.start_params.disable
+    return this.mandalaCreated ? ALL_WORDS.BUTTON.HEADER.start_params.enable : ALL_WORDS.BUTTON.HEADER.start_params.disable;
   }
 
   public get switcherZoomTooltipText(): string {
-    return this.activeZoom ? ALL_WORDS.TOOLTIP.TOOLTIP_SWITCHER_ZOOM.enable : ALL_WORDS.TOOLTIP.TOOLTIP_SWITCHER_ZOOM.disable
+    return this.activeZoom ? ALL_WORDS.TOOLTIP.TOOLTIP_SWITCHER_ZOOM.enable : ALL_WORDS.TOOLTIP.TOOLTIP_SWITCHER_ZOOM.disable;
+  }
+
+  public get switcherShadowHelpTextTooltipText(): string {
+    return this.activeZoom ? ALL_WORDS.TOOLTIP.TOOLTIP_SWITCHER_HELP_TEXT.enable : ALL_WORDS.TOOLTIP.TOOLTIP_SWITCHER_HELP_TEXT.disable;
   }
 
   private destroy: Subject<boolean> = new Subject<boolean>();
@@ -103,7 +113,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.rendererService.mandalaCreated.pipe(takeUntil(this.destroy)).subscribe((value) => this.mandalaCreated = value)
+    this.rendererService.mandalaCreated.pipe(takeUntil(this.destroy)).subscribe((value) => this.mandalaCreated = value);
   }
 
   public ngOnDestroy(): void {
@@ -123,6 +133,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
         this.mandalaParams = popupCallback.body;
         this.rendererService.mandalaParamsObj = popupCallback.body;
         this.rendererService.mandalaParams.next(popupCallback.body);
+        this.activeShadowText = true;
       }
     });
   }
@@ -130,19 +141,19 @@ export class PageTabsComponent implements OnInit, OnDestroy {
   private openSaveDBModal(): void {
     this.dialogService.open(SaveDbModalComponent, {data: {headerText: ``}})
       .onClose.subscribe((data) => {
-      console.log(data)
+      console.log(data);
     });
   }
 
   private openSaveImageModal(): void {
     this.dialogService.open(SaveImageModalComponent, {data: {headerText: ``}})
       .onClose.subscribe((data) => {
-      console.log(data)
+      console.log(data);
     });
   }
 
   private closeProgram(): void {
-    alert('function for desktop')
+    alert('function for desktop');
     // this.dialogService.open(SaveImageModalComponent, {database: {headerText: ``}})
     //   .onClose.subscribe((database) => {
     //   console.log(database)

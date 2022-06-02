@@ -1,11 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {DynamicDialogConfig} from "primeng/dynamicdialog";
-import {CoreService} from "../../../../../shared/services/core/core.service";
-import {CallbackAnyReturn} from "../../../../../shared/models/callback-any-return.model";
-import {FormControl, FormGroup} from "@angular/forms";
-import {MandalaModel} from "../../../../../shared/models/mandala.model";
-import {CheckedColor} from "../../../../../shared/models/checked-color.model";
-import {$animations} from "../../../../../shared/animations/animations";
+import {DynamicDialogConfig} from 'primeng/dynamicdialog';
+import {CoreService} from '../../../../../shared/services/core/core.service';
+import {CallbackAnyReturn} from '../../../../../shared/models/callback-any-return.model';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MandalaModel} from '../../../../../shared/models/mandala.model';
+import {CheckedColor} from '../../../../../shared/models/checked-color.model';
+import {$animations} from '../../../../../shared/animations/animations';
+import {MovingDialogComponent} from '../../../../../shared/modals/moving-dialog/moving-dialog.component';
 
 @Component({
   selector: 'app-colored-modal',
@@ -13,7 +14,7 @@ import {$animations} from "../../../../../shared/animations/animations";
   styleUrls: ['./colored-modal.component.scss'],
   animations: $animations,
 })
-export class ColoredModalComponent implements OnInit {
+export class ColoredModalComponent extends MovingDialogComponent implements OnInit {
   @ViewChild('fileInput') public fileInput: any;
   public modalForm: FormGroup;
 
@@ -53,9 +54,11 @@ export class ColoredModalComponent implements OnInit {
     private dynamicDialogConfig: DynamicDialogConfig,
     private rendererService: CoreService
   ) {
+    super();
   }
 
   ngOnInit(): void {
+    this.addMovingForDialog();
     this.polygonObj = this.targetData;
     this.modalForm = new FormGroup({
       onlyOneRecolor: new FormControl(false),
@@ -68,12 +71,12 @@ export class ColoredModalComponent implements OnInit {
   }
 
   public setColor(event: CheckedColor): void {
-    this.recolorHexagons(event)
+    this.recolorHexagons(event);
   }
 
   public onSelectFile(event: any): void {
-    let file = event.target.files[0]
-    this.fileReader(file, (e) => this.rendererService.image = e)
+    const file = event.target.files[0];
+    this.fileReader(file, (e) => this.rendererService.image = e);
   }
 
   public onSelectColor(): void {
@@ -83,12 +86,12 @@ export class ColoredModalComponent implements OnInit {
   }
 
   private fileReader(file: Blob, callback: CallbackAnyReturn): void {
-    let reader = new FileReader();
+    const reader = new FileReader();
     let result;
-    reader.onload = function (e) {
+    reader.onload = function(e) {
       // @ts-ignore
       result = e.target.result;
-      callback(result)
+      callback(result);
     };
     reader.readAsDataURL(file);
   }

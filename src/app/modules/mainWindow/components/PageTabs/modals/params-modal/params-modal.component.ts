@@ -1,20 +1,21 @@
 import {Component, OnInit} from '@angular/core';
-import {MANDALA_VARIANTS, MandalaVariant, PAPER_VARIANTS} from "../../../../../../constants";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {MANDALA_VARIANTS, MandalaVariant, PAPER_VARIANTS} from '../../../../../../constants';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {
   ToastNotificationsService
-} from "../../../../../shared/services/toast-notifications/toast-notifications.service";
-import {MandalaParamsModel} from "../../../../../shared/models/mandala-params.model";
-import {PopupActionsEnum, PopupCallbackModel} from "../../../../../shared/models/popup-callback.model";
-import {ALL_WORDS} from "../../../../../shared/constants";
+} from '../../../../../shared/services/toast-notifications/toast-notifications.service';
+import {MandalaParamsModel} from '../../../../../shared/models/mandala-params.model';
+import {PopupActionsEnum, PopupCallbackModel} from '../../../../../shared/models/popup-callback.model';
+import {ALL_WORDS} from '../../../../../shared/constants';
+import {MovingDialogComponent} from '../../../../../shared/modals/moving-dialog/moving-dialog.component';
 
 @Component({
   selector: 'app-params-modal',
   templateUrl: './params-modal.component.html',
   styleUrls: ['params-modal.component.scss']
 })
-export class ParamsModalComponent implements OnInit {
+export class ParamsModalComponent extends MovingDialogComponent implements OnInit {
   public generationVariant = MANDALA_VARIANTS;
   public paperVariant = PAPER_VARIANTS;
   public paramsForm: FormGroup = new FormGroup({});
@@ -74,9 +75,11 @@ export class ParamsModalComponent implements OnInit {
     private dynamicDialogConfig: DynamicDialogConfig,
     private toastNotificationService: ToastNotificationsService,
   ) {
+    super();
   }
 
   public ngOnInit(): void {
+    this.addMovingForDialog();
     this.paramsForm = new FormGroup({
       baseWord: new FormControl(this.mandalaParams?.baseWord, [Validators.pattern(/^[а-яА-ЯёЁ0-9]+$/), Validators.required]),
       generationVariant: new FormControl(this.mandalaParams?.generationVariant, [Validators.required]),

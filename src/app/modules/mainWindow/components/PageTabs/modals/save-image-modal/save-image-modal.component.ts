@@ -1,10 +1,11 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {jsPDF} from 'jspdf';
 import {CoreService} from '../../../../../shared/services/core/core.service';
 import html2canvas from 'html2canvas';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MandalaVariant, PaperSize} from '../../../../../../constants';
 import {ALL_WORDS} from '../../../../../shared/constants';
+import {MovingDialogComponent} from '../../../../../shared/modals/moving-dialog/moving-dialog.component';
 
 @Component({
   selector: 'app-save-image-modal',
@@ -12,9 +13,9 @@ import {ALL_WORDS} from '../../../../../shared/constants';
   styleUrls: ['./save-image-modal.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SaveImageModalComponent {
+export class SaveImageModalComponent extends MovingDialogComponent implements OnInit{
   public modalForm: FormGroup;
-  public activeSchema: boolean = false;
+  public activeSchema = false;
   public ALL_WORDS = ALL_WORDS;
 
   public get switcherSchemaTooltipText(): string {
@@ -29,22 +30,22 @@ export class SaveImageModalComponent {
     const choicePaper = `_${this.paperVariant}`;
     switch (this.rendererService.mandalaParamsObj?.generationVariant) {
       case MandalaVariant.LIGHT_FROM_CENTER_MAND:
-        version = '_ЛУЧ_от_центра'
+        version = '_ЛУЧ_от_центра';
         break;
       case MandalaVariant.LIGHT_IN_CENTER_MAND:
-        version = '_ЛУЧ_к_центру'
+        version = '_ЛУЧ_к_центру';
         break;
       case MandalaVariant.LIGHT_FROM_CENTER_LIGHT:
-        version = '_ЛУЧ_от_центра'
+        version = '_ЛУЧ_от_центра';
         break;
       case MandalaVariant.LIGHT_IN_CENTER_LIGHT:
-        version = '_ЛУЧ_к_центру'
+        version = '_ЛУЧ_к_центру';
         break;
       case MandalaVariant.MARGIN_CENTER_APEX:
-        version = '_ГРАНЬ_от_центра'
+        version = '_ГРАНЬ_от_центра';
         break;
       case MandalaVariant.MARGIN_APEX_CENTER:
-        version = '_ГРАНЬ_к_центру'
+        version = '_ГРАНЬ_к_центру';
         break;
     }
     const schemaWord = this.modalForm.get('activeSchema')?.value ? '_Схема' : '_Цвет';
@@ -69,7 +70,7 @@ export class SaveImageModalComponent {
       case PaperSize.A1:
         return 'a1';
       default:
-        return 'a4'
+        return 'a4';
     }
   }
 
@@ -78,6 +79,7 @@ export class SaveImageModalComponent {
   }
 
   constructor(private rendererService: CoreService) {
+    super();
     this.modalForm = new FormGroup({
       additionalName: new FormControl(''),
       activeSchema: new FormControl(this.activeSchema),
@@ -87,6 +89,10 @@ export class SaveImageModalComponent {
       landscape: new FormControl(true),
       paperVariant: new FormControl(true),
     });
+  }
+
+  public ngOnInit(): void {
+    this.addMovingForDialog();
   }
 
   private static resetColorInImage(mandala: any): any {
@@ -110,7 +116,7 @@ export class SaveImageModalComponent {
 
   public getPdf(mandala: HTMLElement) {
     html2canvas(mandala).then((canvas) => {
-      let PDF = new jsPDF({
+      const PDF = new jsPDF({
         orientation: this.rendererService.mandalaParamsObj?.landscape ? 'l' : 'p',
         unit: 'px',
         format: this.paperVariant,
@@ -124,10 +130,10 @@ export class SaveImageModalComponent {
   public getPNG(mandala: any) {
     html2canvas(mandala).then((canvas) => {
       const name = this.autoName;
-      canvas.toBlob(function (blob) {
-        const newImg = document.createElement("img"),
-          url = URL.createObjectURL(blob);
-        newImg.onload = function () {
+      canvas.toBlob(function(blob) {
+        const newImg = document.createElement('img');
+          const url = URL.createObjectURL(blob);
+        newImg.onload = function() {
           URL.revokeObjectURL(url);
         };
         newImg.src = url;
@@ -136,7 +142,7 @@ export class SaveImageModalComponent {
         a.setAttribute('href', url);
         a.setAttribute('target', '_blank');
         a.click();
-      }, "image/png", 1)
+      }, 'image/png', 1);
     }).catch((error) => console.warn(error));
   }
 }
