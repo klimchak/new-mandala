@@ -24,7 +24,7 @@
 
   <div class="c-colored-modal-header--color-picker">
     <label for="color" class="p-float-label">Дополнительная палитра</label>
-    <p-colorPicker id="color" formControlName="simpleColorInput" inline="true" (onChange)="onSelectColor()"
+    <p-colorPicker id="color" formControlName="simpleColorInput" [inline]="true" (onChange)="onSelectColor()"
                    appendTo="body"></p-colorPicker>
   </div>
 
