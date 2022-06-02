@@ -32,7 +32,7 @@
     "lint": "ng lint",
     "heroku-postbuild": "npm-run-all -p web:build",
     "server:load": "node app/server.js",
-    "start": "npm-run-all -p server:load"
+    "start": "node app/server.js"
   },
   "dependencies": {
     "@angular/animations": "~13.2.0",
