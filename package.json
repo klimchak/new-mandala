@@ -13,7 +13,7 @@
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "ng": "ng",
-    "start": "npm-run-all -p electron:serve ng:serve",
+    "start2": "npm-run-all -p electron:serve ng:serve",
     "ng:serve": "ng serve -c web -o",
     "build": "npm run electron:serve-tsc && ng build --base-href ./",
     "build:dev": "npm run build -- -c dev",
@@ -32,7 +32,7 @@
     "lint": "ng lint",
     "heroku-postbuild": "npm-run-all -p web:build start_server",
     "server:load": "node app/server.js",
-    "start_server": "npm-run-all -p web:build server:load"
+    "start": "npm-run-all -p web:build server:load"
   },
   "dependencies": {
     "@angular/animations": "~13.2.0",
