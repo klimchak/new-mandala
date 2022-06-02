@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as url from 'url';
@@ -6,6 +6,13 @@ import * as url from 'url';
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
+
+let knex = require("knex")({
+  client: "sqlite3",
+  connection: {
+    filename: path.join(__dirname, '../src/assets/database/db.db')
+  }
+});
 
 function createWindow(): BrowserWindow {
 
@@ -63,8 +70,15 @@ try {
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   // Added 400 ms to fix the black background issue while using transparent window. More detais at https://github.com/electron/electron/issues/15947
-  app.on('ready', () => setTimeout(createWindow, 400));
-
+  app.on('ready', () => {
+    setTimeout(createWindow, 400)
+  });
+  ipcMain.on("mainWindowLoaded", function () {
+    let result = knex.select("userName").from("users")
+    result.then(function(rows){
+      win.webContents.send("resultSent", rows);
+    })
+  });
   // Quit when all windows are closed.
   app.on('window-all-closed', () => {
     // On OS X it is common for applications and their menu bar

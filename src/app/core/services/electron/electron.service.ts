@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 import { ipcRenderer, webFrame } from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
+import * as knex from 'knex';
+import * as path from 'path';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,8 @@ export class ElectronService {
   webFrame: typeof webFrame;
   childProcess: typeof childProcess;
   fs: typeof fs;
+  knex: typeof knex;
+  path: typeof path;
 
   constructor() {
     // Conditional imports
@@ -23,7 +27,18 @@ export class ElectronService {
 
       this.childProcess = window.require('child_process');
       this.fs = window.require('fs');
-
+      this.path = window.require('path');
+      this.knex = window.require('knex')({
+        client: 'sqlite3',
+        connection: {
+          filename: path.join(__dirname, '../src/assets/database/db.db')
+        }
+      });
+      // @ts-ignore
+      const result = this.knex.select('userName', 'password', 'description').from('users');
+      result.then(function(rows){
+        console.log('!!!!!!!!', rows);
+      });
       // Notes :
       // * A NodeJS's dependency imported with 'window.require' MUST BE present in `dependencies` of both `app/package.json`
       // and `package.json (root folder)` in order to make it work here in Electron's Renderer process (src folder)
@@ -35,10 +50,26 @@ export class ElectronService {
       // If you want to use a NodeJS 3rd party deps in Renderer process,
       // ipcRenderer.invoke can serve many common use cases.
       // https://www.electronjs.org/docs/latest/api/ipc-renderer#ipcrendererinvokechannel-args
+
+
+      // this.knex({
+      //   client: 'sqlite3',
+      //   connection: {
+      //     filename: path.join(__dirname, '../src/assets/database/db.db')
+      //   }
+      // });
     }
   }
 
   get isElectron(): boolean {
     return !!(window && window.process && window.process.type);
+  }
+
+  public sentEvent(eventName: string): void {
+    this.ipcRenderer.send(eventName);
+  }
+
+  public getDataFromDatabase(eventName: string): any {
+    this.ipcRenderer.on(eventName, (evt, result) => result);
   }
 }
