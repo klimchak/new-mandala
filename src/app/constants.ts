@@ -1,14 +1,10 @@
 import {MandalaModel} from './modules/shared/models/mandala.model';
 
+export const dataTablePath = '../src/assets/database/db.db';
+
 export enum Tab {
-  // PersonalInfo = 0,
-  Notes,
-  Skills,
-  Goals,
-  Projects,
-  Documents,
-  Notifications,
-  OneToOneMeetings,
+  editor,
+  dbPage,
 }
 
 export enum PaperSize {

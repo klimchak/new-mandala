@@ -13,14 +13,8 @@ export class SaviorComponent implements OnInit {
   ) {
   }
 
-  //
   public ngOnInit(): void {
-    this.electronService.sentEvent('mainWindowLoaded');
-    this.electronService.ipcRenderer.on('resultSent', (evt, result) => {
-      console.log('Полученные данные')
-      console.log(evt)
-      console.log(result)
-    });
+    this.electronService.getDataFromDatabase('users', 'userName', 'password', 'description').then((value) => console.log('########', value)).catch((e) => console.log(e))
   }
 
 }

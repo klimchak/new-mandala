@@ -18,7 +18,7 @@ import {Tab} from '../../../../constants';
   encapsulation: ViewEncapsulation.None,
 })
 export class PageTabsComponent implements OnInit, OnDestroy {
-  @Input() public openTab = Tab.Notes;
+  public openTab = Tab.editor;
   public mandalaParams!: MandalaParamsModel;
   public mandalaCreated = false;
   public ALL_WORDS = ALL_WORDS;
