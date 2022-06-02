@@ -4,9 +4,11 @@
   "main": "main.js",
   "scripts": {
     "ng": "ng",
-    "electron": "ng build --base-href ./ && electron .",
-    "start": "node server.js",
-    "start2": "ng serve",
+    "electron2": "ng build --base-href ./ && electron  --trace-warnings .",
+    "electron": "ng build --base-href ./ && electron  --trace-warnings .",
+    "rebuild": "electron-rebuild -f -w sqlite3 && ng build --base-href ./",
+    "start2": "node server.js",
+    "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -16,7 +18,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~13.2.1",
-    "@angular/cdk": "^13.2.1",
+    "@angular/cdk": "^13.3.8",
     "@angular/common": "~13.2.1",
     "@angular/compiler": "~13.2.1",
     "@angular/core": "~13.2.1",
@@ -25,27 +27,34 @@
     "@angular/platform-browser-dynamic": "~13.2.1",
     "@angular/router": "~13.2.1",
     "@svgdotjs/svg.js": "^3.1.2",
+    "electron-reload": "^2.0.0-alpha.1",
     "express": "^4.18.1",
     "honeycomb-grid": "^3.1.8",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
+    "knex": "^2.1.0",
     "lodash": "^4.17.21",
+    "ngx-electron": "^2.2.0",
     "path": "^0.12.7",
     "primeicons": "^5.0.0",
-    "primeng": "^13.1.0",
+    "primeng": "^13.4.1",
     "rxjs": "~7.4.0",
+    "sqlite3": "^5.0.8",
     "svg-pan-zoom": "^3.6.1",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.11.4"
+    "tslib": "^2.4.0",
+    "typeorm": "^0.3.6",
+    "zone.js": "^0.11.5"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.2.2",
     "@angular/cli": "~13.2.2",
     "@angular/compiler-cli": "~13.2.1",
     "@types/jasmine": "~3.10.0",
-    "@types/lodash": "^4.14.178",
-    "@types/node": "^12.20.43",
-    "electron": "^17.0.0",
+    "@types/lodash": "^4.14.182",
+    "@types/node": "^12.20.52",
+    "@types/webpack-env": "^1.17.0",
+    "electron": "^19.0.1",
+    "electron-rebuild": "^3.2.7",
     "jasmine-core": "~3.10.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
@@ -57,5 +66,10 @@
   "engines": {
     "node": "12.20.2",
     "npm": "8.5.1"
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
   }
 }

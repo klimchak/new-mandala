@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-
+import {Component, OnInit} from '@angular/core';
+import {IpcService} from "../../../../shared/services/core/ipc.service";
 @Component({
   selector: 'app-savior',
   templateUrl: './savior.component.html',
-  styleUrls: ['./savior.component.scss']
+  styleUrls: ['./savior.component.scss'],
+  providers: [IpcService]
 })
 export class SaviorComponent implements OnInit {
+  constructor(
+    private tewst: IpcService
+  ) {
+  }
 
-  constructor() { }
-
-  ngOnInit(): void {
+  //
+  public ngOnInit(): void {
+    this.tewst.test();
   }
 
 }

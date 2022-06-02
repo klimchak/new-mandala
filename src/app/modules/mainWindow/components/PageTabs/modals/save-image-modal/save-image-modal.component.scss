@@ -1,5 +1,7 @@
 .main{
   min-width: 600px;
+  display: flex;
+  flex-direction: column;
   .p-inputgroup{
     .c-prime__button {
       padding: 0 !important;

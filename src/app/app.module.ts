@@ -22,7 +22,7 @@ import {CoreService} from "./modules/shared/services/core/core.service";
     SharedModule,
     AppRouting,
     ToastModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [DialogService, MessageService, CoreService],
   bootstrap: [AppComponent]

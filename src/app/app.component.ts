@@ -11,6 +11,7 @@ export class AppComponent {
   constructor(private primengConfig: PrimeNGConfig) {}
 
   ngOnInit() {
+    console.log('angular is running')
     // this.primengConfig.ripple = true;
   }
 }

@@ -34,11 +34,13 @@ const tabsComponents = [
   PageTabsComponent,
   EditorComponent,
   SaviorComponent,
-  ColoredModalComponent
+  ColoredModalComponent,
+  SaveImageModalComponent,
+  SaveDbModalComponent
 ];
 
 @NgModule({
-  declarations: [...tabsComponents, SaveImageModalComponent, SaveDbModalComponent],
+  declarations: [...tabsComponents],
   imports: [
     MainWindowRouting,
     TabViewModule,

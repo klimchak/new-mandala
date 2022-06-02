@@ -116,7 +116,7 @@ export class SaveImageModalComponent {
         format: this.paperVariant,
         hotfixes: ['px_scaling']
       });
-      PDF.addImage(canvas.toDataURL('image/webp'), 'WEBP', 0, 0, canvas.width, canvas.height);
+      PDF.addImage(canvas.toDataURL('image/png', 1), 'png', 0, 0, canvas.width, canvas.height);
       PDF.save(`${this.autoName}.pdf`);
     }).catch((error) => console.warn(error));
   }
@@ -132,11 +132,11 @@ export class SaveImageModalComponent {
         };
         newImg.src = url;
         const a = document.createElement('a');
-        a.setAttribute('download', `${name}.jpg`);
+        a.setAttribute('download', `${name}.png`);
         a.setAttribute('href', url);
         a.setAttribute('target', '_blank');
         a.click();
-      }, "image/jpeg", 1)
+      }, "image/png", 1)
     }).catch((error) => console.warn(error));
   }
 }

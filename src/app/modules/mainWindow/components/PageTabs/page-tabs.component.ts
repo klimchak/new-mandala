@@ -143,9 +143,9 @@ export class PageTabsComponent implements OnInit, OnDestroy {
 
   private closeProgram(): void {
     alert('function for desktop')
-    // this.dialogService.open(SaveImageModalComponent, {data: {headerText: ``}})
-    //   .onClose.subscribe((data) => {
-    //   console.log(data)
+    // this.dialogService.open(SaveImageModalComponent, {database: {headerText: ``}})
+    //   .onClose.subscribe((database) => {
+    //   console.log(database)
     // });
   }
 }

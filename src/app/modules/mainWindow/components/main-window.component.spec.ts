@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {EmployeeDataComponent} from './employee-data.component';
+import {EmployeeDataComponent} from './employee-database.component';
 
 describe('EmployeeDataComponent', () => {
   let component: EmployeeDataComponent;

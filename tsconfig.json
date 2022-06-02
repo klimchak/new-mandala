@@ -20,7 +20,11 @@
     "module": "es2020",
     "lib": [
       "es2020",
+      "esnext",
       "dom"
+    ],
+    "types": [
+      "webpack-env"
     ]
   },
   "angularCompilerOptions": {
