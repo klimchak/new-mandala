@@ -1,0 +1,12 @@
+.popup{
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  &__checkboxes{
+    display: flex;
+    flex-direction: column;
+    .c-prime__checkbox{
+      margin: 5px 0;
+    }
+  }
+}

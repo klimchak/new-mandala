@@ -1,25 +1,34 @@
-import { Component } from '@angular/core';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import {Component, ViewEncapsulation} from '@angular/core';
+import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {ALL_WORDS} from '../../constants';
+import {ConfirmPopupAnswerModel, ConfirmPopupEntriesModel} from '../../models/confirm-popup.model';
 
 @Component({
   templateUrl: './confirmation-dialog.component.html',
   styleUrls: ['./confirmation-dialog.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ConfirmationDialogComponent {
-  public get headerText(): string {
-    return this.dialogConfig.data?.headerText ?? '';
+  public strings = ALL_WORDS.BUTTON.DIALOGS.confirm_dialog;
+
+  public get entityData(): ConfirmPopupEntriesModel {
+    return this.dialogConfig.data;
   }
 
-  public get acceptText(): boolean {
-    return this.dialogConfig.data?.acceptText;
-  }
+  public noRemand: boolean = false;
+  public removeLatest: boolean = false;
 
   constructor(
     private dialogRef: DynamicDialogRef,
     private dialogConfig: DynamicDialogConfig
-  ) {}
+  ) {
+  }
 
-  public close(confirm?: boolean): void {
-    this.dialogRef.close(confirm);
+  public close(answer?: boolean): void {
+    this.dialogRef.close({
+      answer,
+      noRemandAgain: this.noRemand,
+      removeLatestVersion: this.removeLatest
+    } as ConfirmPopupAnswerModel);
   }
 }

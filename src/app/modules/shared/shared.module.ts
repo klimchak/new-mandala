@@ -7,10 +7,11 @@ import {ButtonModule} from 'primeng/button';
 import {RippleModule} from 'primeng/ripple';
 import {SliderModule} from 'primeng/slider';
 import {ShadowHelpTextComponent} from './components/shadow-help-text/shadow-help-text.component';
+import {SharedModalsModule} from './modals/shared-modals.module';
 
 @NgModule({
   declarations: [SpinnerComponent, ColorPickerComponent, ShadowHelpTextComponent],
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, ButtonModule, RippleModule, SliderModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, ButtonModule, RippleModule, SliderModule, SharedModalsModule],
   exports: [SpinnerComponent, ColorPickerComponent, ShadowHelpTextComponent],
   providers: [DatePipe],
 })

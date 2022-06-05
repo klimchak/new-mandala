@@ -39,6 +39,16 @@ export const ALL_WORDS = {
     },
   },
   BUTTON: {
+    DIALOGS:{
+      confirm_dialog:{
+        confirm: 'Подтверждаю',
+        cancel: 'Отмена',
+        yes: 'Да',
+        no: 'Нет',
+        noRemandLater: 'На напоминать больше',
+        removeLatestVersion: 'Удалить предыдущую версию?',
+      }
+    },
     HEADER: {
       start_params: {
         enable: 'Изменить',
@@ -66,6 +76,11 @@ export const ALL_WORDS = {
           quit: 'Выход',
         }
       }
+    }
+  },
+  COMPONENTS:{
+    appComponent: {
+      confirm_dialog_text: 'Найден файл базы данных предыдущей версии. Импортировать данные из предыдущей базы?',
     }
   }
 }
