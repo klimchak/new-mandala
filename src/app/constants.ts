@@ -1,6 +1,8 @@
 import {MandalaModel} from './modules/shared/models/mandala.model';
 
 export const dataTablePath = '../src/assets/database/db.db';
+// TODO: need change path with environment variable
+export const oldDataTablePath = 'C:\\Users\\klimt\\Documents\\db.db';
 
 export enum Tab {
   editor,

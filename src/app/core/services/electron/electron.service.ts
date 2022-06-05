@@ -2,17 +2,19 @@ import {Injectable} from '@angular/core';
 
 // If you import a module but never use any of the imported values other than as TypeScript types,
 // the resulting javascript file will look as if you never imported the module at all.
-import {ipcRenderer, webFrame} from 'electron';
+import {ipcRenderer, webFrame, dialog} from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
 import {Knex} from 'knex';
 import * as path from 'path';
 import {dataTablePath} from '../../../constants';
+import {DatabaseMandalaMadel, DatabaseServiceMadel} from '../../../modules/shared/models/database.madel';
+import {ElectronMessage} from '../../../modules/shared/models/electron-message';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ElectronService {
+export class ElectronService<TData> {
   ipcRenderer: typeof ipcRenderer;
   webFrame: typeof webFrame;
   childProcess: typeof childProcess;
@@ -32,8 +34,9 @@ export class ElectronService {
       this.knex = window.require('knex')({
         client: 'sqlite3',
         connection: {
-          filename: path.join(__dirname, dataTablePath)
-        }
+          filename: path.join(__dirname, dataTablePath),
+        },
+        useNullAsDefault: true
       });
       // Notes :
       // * A NodeJS's dependency imported with 'window.require' MUST BE present in `dependencies` of both `app/package.json`
@@ -55,9 +58,11 @@ export class ElectronService {
 
   /**
    * @param eventName {string}
+   * @param params {ElectronMessage | Object | null}
    */
-  public sentEvent(eventName: string): void {
-    this.ipcRenderer.send(eventName);
+  public sentEvent(eventName: string, params?: ElectronMessage | any): any {
+    this.ipcRenderer.send(eventName, params);
+    this.ipcRenderer.on(eventName, (...args) => args);
   }
 
   /**
@@ -68,11 +73,19 @@ export class ElectronService {
   }
 
   /**
+   * @param filePath {string}
+   */
+  public removeFile(filePath: string): any {
+    this.fs.rmdirSync(filePath);
+  }
+
+
+  /**
    * @param tableName {string}
    * @param args {string, string, ... .etc}
    */
-  public getDataFromDatabase(tableName: string, ...args): Promise<any> {
-    return this.knex.select(args).from(tableName);
+  public getDataFromDatabase(tableName: string, ...args): Promise<TData> {
+    return this.knex.select(args).from(tableName) as Promise<TData>;
   }
 
   /**
@@ -80,8 +93,8 @@ export class ElectronService {
    * @param data {Array[Object1{anyName: string}, Object2{anyName: string}, ... .etc ]}
    * @param returnPosition { Array[stringA, stringB ... .etc]}
    */
-  public insertRecordsInDatabase(tableName: string, data: Array<any>, returnPosition?: Array<string>): Promise<any> {
-    return this.knex(tableName).insert(data, returnPosition);
+  public insertRecordsInDatabase(tableName: string, data: Array<any>, returnPosition?: Array<string>): Promise<TData> {
+    return this.knex(tableName).insert(data) as Promise<TData>;
   }
 
   /**
@@ -90,8 +103,8 @@ export class ElectronService {
    * @param data {object{anyName: string}}
    * @param returnPosition {Array[stringA, stringB ... .etc]}
    */
-  public updateRecordInDatabase(tableName: string, id, data: object, returnPosition?: Array<string>): Promise<any> {
-    return this.knex(tableName).where({id}).update(data, returnPosition);
+  public updateRecordInDatabase(tableName: string, id, data: object, returnPosition?: Array<string>): Promise<TData> {
+    return this.knex(tableName).where({id}).update(data, returnPosition) as Promise<TData>;
   }
 
   /**
@@ -99,8 +112,8 @@ export class ElectronService {
    * @param columnTitle {string}
    * @param value {string}
    */
-  public deleteRecordInDatabase(tableName: string, columnTitle: string, value: string): Promise<any> {
-    return this.knex(tableName).where(columnTitle, value).del();
+  public deleteRecordInDatabase(tableName: string, columnTitle: string, value: string): Promise<TData> {
+    return this.knex(tableName).where(columnTitle, value).del() as Promise<TData>;
   }
 
   /**
