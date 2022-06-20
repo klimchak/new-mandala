@@ -110,7 +110,7 @@ export class ElectronService<TData> {
    * @param data {object{anyName: string}}
    * @param returnPosition {Array[stringA, stringB ... .etc]}
    */
-  public updateRecordInDatabase(tableName: string, id, data: object, returnPosition?: Array<string>): Promise<TData> {
+  public updateRecordInDatabase<TDBModel>(tableName: string, id: number, data: TDBModel, returnPosition?: Array<string>): Promise<TData> {
     return this.knex(tableName).where({id}).update(data, returnPosition) as Promise<TData>;
   }
 
@@ -119,7 +119,7 @@ export class ElectronService<TData> {
    * @param columnTitle {string}
    * @param value {string}
    */
-  public deleteRecordInDatabase(tableName: string, columnTitle: string, value: string): Promise<TData> {
+  public deleteRecordInDatabase(tableName: string, columnTitle: string, value: string | number | Date): Promise<TData> {
     return this.knex(tableName).where(columnTitle, value).del() as Promise<TData>;
   }
 
