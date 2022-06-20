@@ -1,8 +1,8 @@
 <div class="popup">
   <div class="popup__text">{{ entityData.headerText }}</div>
   <div class="popup__checkboxes">
-    <p-checkbox [binary]="true" class="c-prime__checkbox" [label]="strings.noRemandLater" [(ngModel)]="noRemand" *ngIf="entityData.noRemandAgain"></p-checkbox>
-    <p-checkbox [binary]="true" class="c-prime__checkbox" [label]="strings.removeLatestVersion" [(ngModel)]="removeLatest" *ngIf="entityData.removeLatestVersion"></p-checkbox>
+    <p-checkbox [binary]="true" class="c-prime__checkbox" [label]="strings.noRemandLater" [(ngModel)]="noRemand" [disabled]="disableNoRemand" *ngIf="entityData.noRemandAgain"></p-checkbox>
+    <p-checkbox [binary]="true" class="c-prime__checkbox" [label]="strings.removeLatestVersion" [(ngModel)]="removeLatest" [disabled]="disableRemoveLatest" *ngIf="entityData.removeLatestVersion"></p-checkbox>
   </div>
   <div class="popup__buttons">
     <button pButton class="c-prime__button c-prime__button--grey-text" (click)="close()">{{entityData.acceptText ? strings.no : strings.cancel}}</button>
