@@ -1,16 +1,29 @@
 import {Component, OnInit} from '@angular/core';
 import {ElectronService} from '../../../../../core/services';
-import {DatabaseMandalaMadel} from '../../../../shared/models/database.madel';
-import {DBCallbackAbbreviated, MandalaModel, MandalaTableModelClass} from '../../../../shared/models/mandala.model';
-import {isDate, isEmpty} from 'lodash';
+import {
+  DBCallbackAbbreviated,
+  MandalaModelDB,
+  MandalaTableModelClass,
+  selectTableRows
+} from '../../../../shared/models/mandala.model';
+import {isDate, isEmpty, unionBy} from 'lodash';
 import {TableConfigModel} from '../../../../shared/models/tableTypes';
 import {EDITOR_MODULES} from '../../../../shared/constants';
+import {$animations} from '../../../../shared/animations/animations';
+import {Table} from 'primeng/table';
+import {DialogService} from 'primeng/dynamicdialog';
+import {ConfirmationDialogComponent} from '../../../../shared/modals/confirmation-dialog/confirmation-dialog.component';
+import {ApplicationOptionModel} from '../../../../shared/models/application-option.model';
+import {NoRemandType} from '../../../../shared/models/confirm-popup.model';
+import {CoreService} from '../../../../shared/services/core/core.service';
+import {ToastNotificationsService} from '../../../../shared/services/toast-notifications/toast-notifications.service';
 
 @Component({
   selector: 'app-savior',
   templateUrl: './savior.component.html',
   styleUrls: ['./savior.component.scss'],
-  providers: [ElectronService]
+  providers: [ElectronService],
+  animations: [$animations]
 })
 export class SaviorComponent implements OnInit {
   public mandalas: MandalaTableModelClass[] = [];
@@ -20,14 +33,30 @@ export class SaviorComponent implements OnInit {
       {title: 'Фамилия', columnName: 'lastName', dataField: 'lastName'},
       {title: 'Отчество', columnName: 'patronymic', dataField: 'patronymic'},
       {title: 'Дата создания', columnName: 'createDate', dataField: 'createDate'},
+      {title: 'Используемое слово', columnName: 'word', dataField: 'word'},
       {title: 'Описание', columnName: 'description', dataField: 'description'},
       {title: '', columnName: 'actions', dataField: 'actions'}
-    ]
+    ],
+    globalFilter: ['firstName', 'lastName', 'patronymic', 'createDate', 'description']
   };
   public editorModules = EDITOR_MODULES;
+  public selectedItems: MandalaTableModelClass[] = [];
+  public selectedItemsContextMenu: MandalaTableModelClass;
+  public selectedItemsEventValue = false;
+  public contextMenuOptions = [
+    {label: 'Расширенный просмотр', icon: 'pi pi-fw pi-search', command: () => this.openFullViewMandala()},
+    {
+      label: 'Удалить', icon: 'pi pi-fw pi-times', command: () => {
+        this.onDeleteItems(unionBy([this.selectedItemsContextMenu], this.selectedItems,  'id'), true);
+      }
+    }
+  ];
 
   constructor(
-    private electronService: ElectronService<DatabaseMandalaMadel>
+    private dialogService: DialogService,
+    private coreService: CoreService,
+    private electronService: ElectronService<MandalaModelDB>,
+    private toastNotificationsService: ToastNotificationsService
   ) {
   }
 
@@ -46,34 +75,148 @@ export class SaviorComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.electronService.getDataFromDatabase<DBCallbackAbbreviated>('mandala', 'id', 'personalInfo', 'source')
-      .then((value) => {
-        console.log('########', value)
-        value.forEach((item) => this.mandalas.push(new MandalaTableModelClass(item.id, item.personalInfo, item.source)));
-      })
-      .catch((e) => console.log(e));
+    this.getDataForTable();
   }
+
+  public selectedItemsEvent(): void {
+    this.selectedItemsEventValue = !this.selectedItemsEventValue;
+  }
+
 
   public itemIsDate(item: any): boolean {
     return isDate(item);
   }
 
-  public onRowEditInit(editedMandala: MandalaModel): void {
-    // this.clonedProducts[product.id] = {...product};
+
+  public isDateField(item: string): boolean {
+    return item.toLowerCase().includes('date');
   }
 
-  public onRowEditSave(editedMandala: MandalaModel): void {
-    // if (product.price > 0) {
-    // delete this.clonedProducts[product.id];
-    // this.messageService.add({severity:'success', summary: 'Success', detail:'Product is updated'});
-    // }
-    // else {
-    // this.messageService.add({severity:'error', summary: 'Error', detail:'Invalid Price'});
-    // }
+  public onClearGlobalTableFilter(table: Table): void {
+    table.clear();
   }
 
-  public onRowEditCancel(editedMandala: MandalaModel, index: number): void {
-    // this.products2[index] = this.clonedProducts[product.id];
-    // delete this.clonedProducts[product.id];
+  public onRowEditSave(editedMandala: MandalaTableModelClass, index: number): void {
+    if (this.coreService.applicationOption.noRemandDelete) {
+      this.updateItem(editedMandala, index);
+    } else {
+      this.dialogService.open(ConfirmationDialogComponent, {
+        data: {
+          headerText: 'Данные будут перезаписаны, продолжить?',
+          acceptText: true,
+          noRemandAgain: true,
+          noRemandType: NoRemandType.EDIT_ITEM,
+          removeLatestVersion: false,
+        }
+      }).onClose.subscribe((data) => {
+        if (data?.answer) {
+          this.updateItem(editedMandala, index);
+          if (data?.noRemandAgain) {
+            this.updateNoRemandOptions({noRemandEdit: true});
+          }
+        }
+      });
+    }
+  }
+
+  public getDataForTable(): void {
+    this.electronService.getDataFromDatabase<DBCallbackAbbreviated>('mandala', 'id', 'personalInfo', 'source')
+      .then((value) => this.setDataForTable(value))
+      .catch((e) => console.log(e));
+  }
+
+  public onDeleteItem(deletedMandala: MandalaTableModelClass, index: number): void {
+    if (this.coreService.applicationOption.noRemandDelete) {
+      this.deleteItem(deletedMandala, index);
+    } else {
+      this.dialogService.open(ConfirmationDialogComponent, {
+        data: {
+          headerText: 'Запись будет удалена без возможности восстановления, удалить запись?',
+          acceptText: true,
+          noRemandAgain: true,
+          noRemandType: NoRemandType.DELETE_ITEM,
+          removeLatestVersion: false,
+        }
+      }).onClose.subscribe((data) => {
+        if (data?.answer) {
+          this.deleteItem(deletedMandala, index);
+          if (data?.noRemandAgain) {
+            this.updateNoRemandOptions({noRemandDelete: true});
+          }
+        }
+      });
+    }
+  }
+
+
+  public onDeleteItems(items = this.selectedItems, fromContextMenu = false): void {
+    this.dialogService.open(ConfirmationDialogComponent, {
+      data: {
+        headerText: 'Записи будут удалены без возможности восстановления, удалить выбранные записи?',
+        acceptText: true,
+        noRemandAgain: false,
+        removeLatestVersion: false,
+      }
+    }).onClose.subscribe((data) => {
+      if (data?.answer) {
+        items.forEach((item) => {
+          this.deleteItem(item);
+          if (fromContextMenu){
+            this.selectedItemsContextMenu = null;
+          }
+        });
+      }
+    });
+  }
+
+  private updateItem(editedMandala: MandalaTableModelClass, index: number): void {
+    const editedMandalaDb: MandalaModelDB = editedMandala.getDataForDB();
+    this.electronService.updateRecordInDatabase<MandalaModelDB>('mandala', editedMandala.id, editedMandalaDb, selectTableRows)
+      .then((value) => {
+        console.log('after deleting', value);
+        this.getDataForTable();
+      })
+      .catch((e) => console.log(e));
+  }
+
+  private deleteItem(mandala: MandalaTableModelClass, index?: number): void {
+    this.electronService.deleteRecordInDatabase('mandala', 'id', mandala.id)
+      .then((value) => {
+        console.log('after deleting', value);
+        this.selectedItems = [];
+        if (typeof index !== 'undefined') {
+          this.mandalas.splice(index, 1);
+        } else {
+          this.getDataForTable();
+        }
+      })
+      .catch((e) => console.log(e));
+  }
+
+  private updateNoRemandOptions(options: ApplicationOptionModel): void {
+    this.electronService.updateRecordInDatabase<ApplicationOptionModel>('applicationOptions', 1, options)
+      .then((value) => {
+        console.log('after update noRemandDelete', value)
+        this.electronService.getDataFromDatabase<ApplicationOptionModel>(
+          'applicationOptions',
+          'id', 'noRemandDelete', 'noRemandEdit', 'noRemandUpdate').then((item) => {
+          console.log('get ApplicationOptionModel', item);
+          this.coreService.applicationOption = {
+            noRemandDelete: Boolean(item[item.length - 1].noRemandDelete),
+            noRemandUpdate: Boolean(item[item.length - 1].noRemandUpdate),
+            noRemandEdit: Boolean(item[item.length - 1].noRemandEdit),
+          };
+        });
+      })
+      .catch((e) => console.log(e));
+  }
+
+  private setDataForTable(value: DBCallbackAbbreviated[]): void {
+    this.mandalas = [];
+    value.forEach((item) => this.mandalas.push(new MandalaTableModelClass(item.id, item.personalInfo, item.source)));
+  }
+
+  private openFullViewMandala(): void {
+    this.toastNotificationsService.showNotification('info', {message: 'Данная опция будет добавлена с обновлениями.'});
   }
 }

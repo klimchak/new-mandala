@@ -9,25 +9,50 @@
       @include text-base(20px);
       @include no-data;
     }
+    .header-with-filter{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
     &__table {
-
+      &--caption{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        .search-wrapper{
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: center;
+          align-items: center;
+        }
+      }
       &__item {
         &__firstName,
         &__lastName,
         &__patronymic,
-        &__createDate,{
-          @include table-cell-width(200px);
+        &__createDate{
+          flex-basis: 15% !important;
+        }
+        &__description{
+          flex-basis: 30% !important;
+        }
+        &__word{
+          flex-basis: 25% !important;
+        }
+        &__actions{
+          flex-basis: 25% !important;
         }
 
-        &__description,{
-          @include table-cell-width(400px);
-        }
         &__firstName,
         &__lastName,
         &__patronymic,
         &__createDate,
         &__description,
-        &__firstName,
+        &__word,
         &__actions {
           @include text-base(14px);
           &__text {

@@ -1,14 +1,49 @@
 <div class="savior-main">
   <div class="savior-main__wrapper">
-    <p-table styleClass="c-prime__table {{emptyStyles}}" class="savior-main__wrapper__table" [rowHover]="true"
-             [totalRecords]="totalCounts" [scrollable]="true" scrollHeight="flex"
-             [value]="mandalas" dataKey="id" editMode="row" responsiveLayout="scroll">
+    <p-table  #saviorTable styleClass="c-prime__table {{emptyStyles}}" class="savior-main__wrapper__table"
+               [totalRecords]="totalCounts" [paginator]="true" [rows]="10"  [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
+               currentPageReportTemplate="Показано {last} из {totalRecords} записей"
+               [globalFilterFields]="tableConfig.globalFilter"
+               editMode="row" [selectionPageOnly]="true" [(selection)]="selectedItems"
+              [(contextMenuSelection)]="selectedItemsContextMenu" [contextMenu]="contextMenu"
+               [value]="mandalas" dataKey="id"
+               responsiveLayout="stack" [resizableColumns]="true" [scrollable]="true" scrollHeight="flex" [rowHover]="true"
+              (onRowSelect)="selectedItemsEvent()" (onRowUnselect)="selectedItemsEvent()">
+
+      <ng-template pTemplate="caption">
+        <div class="savior-main__wrapper__table--caption">
+          <div class="search-wrapper">
+            <button pButton *ngIf="selectedItems.length > 0" label="Удалить"  icon="pi pi-trash"
+                    class="p-button-outlined margin-right-1" [@queryShake]="selectedItemsEventValue ? 'shakeOut' : 'shakeIn'" (click)="onDeleteItems()"></button>
+            <button pButton label="Сброс фильтра" class="p-button-outlined margin-right-1" id="delete-button" icon="pi pi-filter-slash" (click)="onClearGlobalTableFilter(saviorTable)"></button>
+            <span class="p-input-icon-left ml-auto" style="width: 350px">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" style="width: 100%"
+                       (input)="saviorTable.filterGlobal($event.target?.value, 'contains')" placeholder="Поиск по всей таблице" />
+            </span>
+            <button pButton class="p-button-outlined margin-left-1" icon="pi pi-refresh"
+                    pTooltip="Обновить данные в таблице" tooltipPosition="bottom"
+                    (click)="getDataForTable()"></button>
+          </div>
+        </div>
+      </ng-template>
 
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="{{headerItem.columnName}}" *ngFor="let headerItem of tableConfig.header; index as i"
-              class="savior-main__wrapper__table__item__{{headerItem.columnName}}">
-            <div class="c-prime__table-head">
+          <th pResizableColumn style="flex-basis:5%">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th pResizableColumn pSortableColumn="{{headerItem.columnName}}" *ngFor="let headerItem of tableConfig.header; index as i"
+              class="savior-main__wrapper__table__item__{{headerItem.columnName}} header-with-filter">
+            <ng-container *ngIf="headerItem.columnName !== 'actions'">
+              <ng-container *ngIf="isDateField(headerItem.columnName); else primaryFilter">
+                <p-columnFilter type="date" field="date" display="menu"></p-columnFilter>
+              </ng-container>
+              <ng-template #primaryFilter>
+                <p-columnFilter type="text" field="{{headerItem.dataField}}" display="menu"></p-columnFilter>
+              </ng-template>
+            </ng-container>
+            <div class="c-prime__table-head margin-left">
               <div class="savior-main__wrapper__table__item__text">{{headerItem.title}}</div>
             </div>
           </th>
@@ -17,10 +52,15 @@
 
       <ng-template pTemplate="body" let-mandala let-editing="editing" let-ri="rowIndex">
 
-        <tr [pEditableRow]="mandala" class="p-selectable-row c-prime__table-body-row" *ngIf="baseNotEmpty">
+        <tr [pEditableRow]="mandala" [pContextMenuRow]="mandala" class="p-selectable-row c-prime__table-body-row" *ngIf="baseNotEmpty">
 
-          <td class="savior-main__wrapper__table__item__{{headerItem.columnName}}" *ngFor="let headerItem of tableConfig.header; index as i">
-            <ng-container *ngIf="headerItem.dataField !== 'actions'; else actionConteiner">
+          <td style="flex-basis:5%">
+            <p-tableCheckbox [value]="mandala"></p-tableCheckbox>
+          </td>
+
+          <td class="savior-main__wrapper__table__item__{{headerItem.columnName}}"
+              *ngFor="let headerItem of tableConfig.header; index as i" @openClose @inflate>
+            <ng-container *ngIf="headerItem.dataField !== 'actions'; else actionContainer">
               <p-cellEditor style="width: 100%;">
 
                 <ng-template pTemplate="input">
@@ -31,32 +71,45 @@
 
                   <ng-container *ngIf="headerItem.dataField === 'description'">
                     <p-editor [style]="{'height':'80px', 'width': '100%'}" class="c-prime__editor"
-                              [(ngModel)]="mandala[headerItem.dataField]" placeholder="Заполнять не обязательно" [modules]="editorModules"></p-editor>
+                              [(ngModel)]="mandala[headerItem.dataField]" placeholder="Заполнять не обязательно"
+                              [modules]="editorModules"></p-editor>
                   </ng-container>
 
-                  <ng-container *ngIf="!itemIsDate(mandala[headerItem.dataField]) && headerItem.dataField !== 'description'">
-                    <input pInputText type="text" [(ngModel)]="mandala[headerItem.dataField]" required>
+                  <ng-container
+                    *ngIf="!itemIsDate(mandala[headerItem.dataField]) && headerItem.dataField !== 'description'">
+                    <input pInputText type="text" [(ngModel)]="mandala[headerItem.dataField]" [disabled]="headerItem.dataField === 'word'" required>
                   </ng-container>
                 </ng-template>
 
                 <ng-template pTemplate="output">
-                  <ng-container *ngIf="itemIsDate(mandala[headerItem.dataField]); else text">{{mandala[headerItem.dataField] | date}}</ng-container>
-                  <ng-template #text><div [innerHTML]="mandala[headerItem.dataField]"></div></ng-template>
+                  <ng-container
+                    *ngIf="itemIsDate(mandala[headerItem.dataField]); else text">{{mandala[headerItem.dataField] | date}}</ng-container>
+                  <ng-template #text>
+                    <div [innerHTML]="mandala[headerItem.dataField]"></div>
+                  </ng-template>
                 </ng-template>
 
               </p-cellEditor>
             </ng-container>
 
-            <ng-template #actionConteiner>
+            <ng-template #actionContainer>
               <div class="actions">
                 <div class="actions-conteiner" *ngIf="!editing">
-                  <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(mandala)" class="p-button-rounded p-button-text"></button>
+                  <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                          class="p-button-rounded p-button-text"></button>
                 </div>
                 <div class="actions-conteiner" *ngIf="editing">
-                  <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(mandala)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                  <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                          (click)="onRowEditSave(mandala, ri)"
+                          class="p-button-rounded p-button-text p-button-success mr-2"></button>
                 </div>
                 <div class="actions-conteiner" *ngIf="editing">
-                  <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(mandala, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                  <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                          class="p-button-rounded p-button-text p-button-danger"></button>
+                </div>
+                <div class="actions-conteiner">
+                  <button pButton pRipple type="button" pInitEditableRow icon="pi pi-trash"
+                          (click)="onDeleteItem(mandala, ri)" class="p-button-rounded p-button-text"></button>
                 </div>
               </div>
             </ng-template>
@@ -71,3 +124,5 @@
 
   </div>
 </div>
+
+<p-contextMenu #contextMenu [model]="contextMenuOptions"></p-contextMenu>
