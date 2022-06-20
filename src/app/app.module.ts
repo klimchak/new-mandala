@@ -21,6 +21,7 @@ import {CoreService} from './modules/shared/services/core/core.service';
 import {ToastModule} from 'primeng/toast';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -38,6 +39,8 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
     HomeModule,
     DetailModule,
     AppRoutingModule,
+    AngularSvgIconModule,
+    AngularSvgIconModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

@@ -39,8 +39,8 @@ export const ALL_WORDS = {
     },
   },
   BUTTON: {
-    DIALOGS:{
-      confirm_dialog:{
+    DIALOGS: {
+      confirm_dialog: {
         confirm: 'Подтверждаю',
         cancel: 'Отмена',
         yes: 'Да',
@@ -78,9 +78,17 @@ export const ALL_WORDS = {
       }
     }
   },
-  COMPONENTS:{
+  COMPONENTS: {
     appComponent: {
       confirm_dialog_text: 'Найден файл базы данных предыдущей версии. Импортировать данные из предыдущей базы?',
     }
   }
 }
+
+export const EDITOR_MODULES = {
+  toolbar: [
+    'bold', 'italic', 'underline', 'strike',
+    {separator: ''}, {align: ''}, {align: 'center'}, {align: 'right'},
+    {align: 'justify'}
+  ],
+};

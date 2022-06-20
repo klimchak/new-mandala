@@ -1,1 +1,73 @@
-<p>savior works!</p>
+<div class="savior-main">
+  <div class="savior-main__wrapper">
+    <p-table styleClass="c-prime__table {{emptyStyles}}" class="savior-main__wrapper__table" [rowHover]="true"
+             [totalRecords]="totalCounts" [scrollable]="true" scrollHeight="flex"
+             [value]="mandalas" dataKey="id" editMode="row" responsiveLayout="scroll">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="{{headerItem.columnName}}" *ngFor="let headerItem of tableConfig.header; index as i"
+              class="savior-main__wrapper__table__item__{{headerItem.columnName}}">
+            <div class="c-prime__table-head">
+              <div class="savior-main__wrapper__table__item__text">{{headerItem.title}}</div>
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-mandala let-editing="editing" let-ri="rowIndex">
+
+        <tr [pEditableRow]="mandala" class="p-selectable-row c-prime__table-body-row" *ngIf="baseNotEmpty">
+
+          <td class="savior-main__wrapper__table__item__{{headerItem.columnName}}" *ngFor="let headerItem of tableConfig.header; index as i">
+            <ng-container *ngIf="headerItem.dataField !== 'actions'; else actionConteiner">
+              <p-cellEditor style="width: 100%;">
+
+                <ng-template pTemplate="input">
+                  <ng-container *ngIf="itemIsDate(mandala[headerItem.dataField])">
+                    <p-calendar [(ngModel)]="mandala[headerItem.dataField]" appendTo="body"
+                                class="c-prime__calendar" panelStyleClass="c-prime__datepicker" required></p-calendar>
+                  </ng-container>
+
+                  <ng-container *ngIf="headerItem.dataField === 'description'">
+                    <p-editor [style]="{'height':'80px', 'width': '100%'}" class="c-prime__editor"
+                              [(ngModel)]="mandala[headerItem.dataField]" placeholder="Заполнять не обязательно" [modules]="editorModules"></p-editor>
+                  </ng-container>
+
+                  <ng-container *ngIf="!itemIsDate(mandala[headerItem.dataField]) && headerItem.dataField !== 'description'">
+                    <input pInputText type="text" [(ngModel)]="mandala[headerItem.dataField]" required>
+                  </ng-container>
+                </ng-template>
+
+                <ng-template pTemplate="output">
+                  <ng-container *ngIf="itemIsDate(mandala[headerItem.dataField]); else text">{{mandala[headerItem.dataField] | date}}</ng-container>
+                  <ng-template #text><div [innerHTML]="mandala[headerItem.dataField]"></div></ng-template>
+                </ng-template>
+
+              </p-cellEditor>
+            </ng-container>
+
+            <ng-template #actionConteiner>
+              <div class="actions">
+                <div class="actions-conteiner" *ngIf="!editing">
+                  <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(mandala)" class="p-button-rounded p-button-text"></button>
+                </div>
+                <div class="actions-conteiner" *ngIf="editing">
+                  <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(mandala)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                </div>
+                <div class="actions-conteiner" *ngIf="editing">
+                  <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(mandala, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                </div>
+              </div>
+            </ng-template>
+
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+
+    <div class="savior-main__wrapper--no-data" *ngIf="!baseNotEmpty">Записей не обнаружено</div>
+
+  </div>
+</div>

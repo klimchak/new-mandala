@@ -29,6 +29,12 @@ export class EditorComponent implements OnInit {
   //   return JSON.stringify(this.startedParams);
   // }
 
+  constructor(
+    private rendererService: CoreService,
+    private dialogService: DialogService,
+  ) {
+  }
+
   public get dataPolygonMap(): Map<string, number> {
     return this.rendererService.dataPolygonMap;
   }
@@ -55,12 +61,6 @@ export class EditorComponent implements OnInit {
 
   public set polygonObj(data: any) {
     this.rendererService.polygonObj = data;
-  }
-
-  constructor(
-    private rendererService: CoreService,
-    private dialogService: DialogService,
-  ) {
   }
 
   private setToDefault(): void{

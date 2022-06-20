@@ -1,1 +1,41 @@
-<p>save-db-modal works!</p>
+<div class="main">
+  <form [formGroup]="popupForm" class="main_general">
+    <div class="main_general__double-columns">
+
+      <div class="main_general__double-columns--left-column">
+        <div class="c-base__form-field">
+          <label class="c-base__form-field-label">Имя</label>
+          <input type="text" formControlName="firstName" pInputText placeholder="Введите имя">
+        </div>
+        <div class="c-base__form-field">
+          <label class="c-base__form-field-label">Фамилия</label>
+          <input type="text" formControlName="lastName" pInputText placeholder="Введите фамилию">
+        </div>
+      </div>
+
+      <div class="main_general__double-columns--right-column">
+        <div class="c-base__form-field">
+          <label class="c-base__form-field-label">Отчество</label>
+          <input type="text" formControlName="patronymic" pInputText placeholder="Введите отчество">
+        </div>
+        <div class="c-base__form-field">
+          <label class="c-base__form-field-label">Дата сохранения</label>
+          <p-calendar formControlName="createDate" appendTo="body"
+                      class="c-prime__calendar" panelStyleClass="c-prime__datepicker"></p-calendar>
+        </div>
+      </div>
+    </div>
+
+    <div class="c-base__form-field">
+      <label class="c-base__form-field-label">Описание</label>
+      <p-editor [style]="{'height':'200px', 'width': '100%'}" class="c-prime__editor"
+                formControlName="description" placeholder="Заполнять не обязательно" [modules]="editorModules"></p-editor>
+    </div>
+
+  </form>
+</div>
+
+<div class="popup__buttons">
+  <button pButton class="c-prime__button c-prime__button--grey-text" (click)="closeModalWindow()">Отмена</button>
+  <button pButton class="c-prime__button" (click)="processForm()">Сохранить</button>
+</div>

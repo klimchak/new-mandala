@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core';
 
 // If you import a module but never use any of the imported values other than as TypeScript types,
 // the resulting javascript file will look as if you never imported the module at all.
-import {ipcRenderer, webFrame, dialog} from 'electron';
+import {ipcRenderer, webFrame} from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
 import {Knex} from 'knex';
 import * as path from 'path';
 import {dataTablePath} from '../../../constants';
-import {DatabaseMandalaMadel, DatabaseServiceMadel} from '../../../modules/shared/models/database.madel';
 import {ElectronMessage} from '../../../modules/shared/models/electron-message';
+import {fullUpdateAnswer, SessionModel} from '../../../modules/shared/models/session.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,12 @@ export class ElectronService<TData> {
   fs: typeof fs;
   knex: Knex;
   path: typeof path;
+
+  public session: SessionModel = {
+    id: null,
+    sessionStart: null,
+    sessionStop: null
+  };
 
   constructor() {
     // Conditional imports
@@ -62,7 +68,8 @@ export class ElectronService<TData> {
    */
   public sentEvent(eventName: string, params?: ElectronMessage | any): any {
     this.ipcRenderer.send(eventName, params);
-    this.ipcRenderer.on(eventName, (...args) => args);
+    // this.ipcRenderer.invoke(eventName, params);
+    // this.ipcRenderer.on(eventName, (...args) => args);
   }
 
   /**
@@ -84,8 +91,8 @@ export class ElectronService<TData> {
    * @param tableName {string}
    * @param args {string, string, ... .etc}
    */
-  public getDataFromDatabase(tableName: string, ...args): Promise<TData> {
-    return this.knex.select(args).from(tableName) as Promise<TData>;
+  public getDataFromDatabase<TCallBackData>(tableName: string, ...args): Promise<Array<TCallBackData>> {
+    return this.knex.select(args).from(tableName) as Promise<Array<TCallBackData>>;
   }
 
   /**
@@ -93,8 +100,8 @@ export class ElectronService<TData> {
    * @param data {Array[Object1{anyName: string}, Object2{anyName: string}, ... .etc ]}
    * @param returnPosition { Array[stringA, stringB ... .etc]}
    */
-  public insertRecordsInDatabase(tableName: string, data: Array<any>, returnPosition?: Array<string>): Promise<TData> {
-    return this.knex(tableName).insert(data) as Promise<TData>;
+  public insertRecordsInDatabase<TDBModel>(tableName: string, data: Array<TDBModel>, returnPosition?: Array<string>): Promise<TData> {
+    return this.knex(tableName).insert(data, returnPosition) as Promise<TData>;
   }
 
   /**

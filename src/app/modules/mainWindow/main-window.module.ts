@@ -27,6 +27,10 @@ import {SlideMenuModule} from 'primeng/slidemenu';
 import {SaveDbModalComponent} from './components/PageTabs/modals/save-db-modal/save-db-modal.component';
 import {FieldsetModule} from 'primeng/fieldset';
 import {CheckboxModule} from 'primeng/checkbox';
+import {CalendarModule} from 'primeng/calendar';
+import {EditorModule} from 'primeng/editor';
+import {TableModule} from 'primeng/table';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 const tabsComponents = [
   ParamsModalComponent,
@@ -41,29 +45,33 @@ const tabsComponents = [
 
 @NgModule({
   declarations: [...tabsComponents],
-  imports: [
-    MainWindowRouting,
-    TabViewModule,
-    ButtonModule,
-    InputTextModule,
-    DropdownModule,
-    ToggleButtonModule,
-    SliderModule,
-    ScrollingModule,
-    ReactiveFormsModule,
-    CommonModule,
-    FileUploadModule,
-    HttpClientModule,
-    SharedModule,
-    ColorPickerModule,
-    TooltipModule,
-    RippleModule,
-    InputSwitchModule,
-    FormsModule,
-    SlideMenuModule,
-    FieldsetModule,
-    CheckboxModule
-  ],
+    imports: [
+        MainWindowRouting,
+        TabViewModule,
+        ButtonModule,
+        InputTextModule,
+        DropdownModule,
+        ToggleButtonModule,
+        SliderModule,
+        ScrollingModule,
+        ReactiveFormsModule,
+        CommonModule,
+        FileUploadModule,
+        HttpClientModule,
+        SharedModule,
+        ColorPickerModule,
+        TooltipModule,
+        RippleModule,
+        InputSwitchModule,
+        FormsModule,
+        SlideMenuModule,
+        FieldsetModule,
+        CheckboxModule,
+        CalendarModule,
+        EditorModule,
+        TableModule,
+        AngularSvgIconModule
+    ],
   exports: [...tabsComponents]
 })
 export class MainWindowModule {

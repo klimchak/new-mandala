@@ -8,11 +8,22 @@ import {RippleModule} from 'primeng/ripple';
 import {SliderModule} from 'primeng/slider';
 import {ShadowHelpTextComponent} from './components/shadow-help-text/shadow-help-text.component';
 import {SharedModalsModule} from './modals/shared-modals.module';
+import {ProgressComponent} from './components/progress/progress.component';
+import {ProgressBarModule} from 'primeng/progressbar';
 
 @NgModule({
-  declarations: [SpinnerComponent, ColorPickerComponent, ShadowHelpTextComponent],
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, ButtonModule, RippleModule, SliderModule, SharedModalsModule],
-  exports: [SpinnerComponent, ColorPickerComponent, ShadowHelpTextComponent],
+  declarations: [SpinnerComponent, ColorPickerComponent, ShadowHelpTextComponent, ProgressComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ButtonModule,
+    RippleModule,
+    SliderModule,
+    SharedModalsModule,
+    ProgressBarModule
+  ],
+  exports: [SpinnerComponent, ColorPickerComponent, ShadowHelpTextComponent, ProgressComponent],
   providers: [DatePipe],
 })
 export class SharedModule {

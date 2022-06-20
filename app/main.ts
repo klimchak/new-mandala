@@ -1,12 +1,34 @@
-import {app, BrowserWindow, screen} from 'electron';
+import {app, BrowserWindow, screen, ipcRenderer, ipcMain} from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as url from 'url';
+import {fullUpdateAnswer, SessionModel} from "../src/app/modules/shared/models/session.model";
+import {dataTablePath} from "../src/app/constants";
+import {knex} from "knex";
 
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
+let session: SessionModel = {
+  id: Date.now(),
+  sessionStart: new Date().toISOString(),
+  sessionStop: null
+};
+
+let webContext: any;
+const knexAdapter = knex({
+  client: 'sqlite3',
+  connection: {
+    filename: path.join(__dirname, dataTablePath),
+  },
+  useNullAsDefault: true
+});
+
+knexAdapter('serviceInfo').insert([{id: session.id, sessionStart: session.sessionStart}], fullUpdateAnswer).then(() => {
+  console.warn('session start', session);
+});
 
 function createWindow(): BrowserWindow {
 
@@ -26,12 +48,17 @@ function createWindow(): BrowserWindow {
     },
   });
 
+  webContext = win.webContents;
+
   if (serve) {
     const debug = require('electron-debug');
     debug();
 
     require('electron-reloader')(module);
     win.loadURL('http://localhost:4200');
+    webContext.on('did-fail-load', () => {
+      win.loadURL('http://localhost:4200');
+    });
   } else {
     // Path when running electron executable
     let pathIndex = './index.html';
@@ -46,6 +73,19 @@ function createWindow(): BrowserWindow {
       protocol: 'file:',
       slashes: true
     }));
+
+    webContext.on('did-fail-load', () => {
+      if (fs.existsSync(path.join(__dirname, '../dist/index.html'))) {
+        // Path when running electron in local folder
+        pathIndex = '../dist/index.html';
+      }
+
+      win.loadURL(url.format({
+        pathname: path.join(__dirname, pathIndex),
+        protocol: 'file:',
+        slashes: true
+      }));
+    });
   }
 
   // Emitted when the window is closed.
@@ -65,7 +105,7 @@ try {
   // Some APIs can only be used after this event occurs.
   // Added 400 ms to fix the black background issue while using transparent window. More detais at https://github.com/electron/electron/issues/15947
   app.on('ready', () => {
-    setTimeout(createWindow, 400)
+    setTimeout(createWindow, 400);
   });
 
   // Quit when all windows are closed.
@@ -73,7 +113,12 @@ try {
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
-      app.quit();
+      console.warn('outSession');
+      knexAdapter('serviceInfo').where('id', session.id).update({ sessionStop: new Date().toISOString()})
+        .then((value) => {
+        console.warn('inserted value when app quiting', value);
+        app.quit();
+      })
     }
   });
 
@@ -82,6 +127,12 @@ try {
     // dock icon is clicked and there are no other windows open.
     if (win === null) {
       createWindow();
+    }
+  });
+
+  ipcMain.on('quitApp', (e, value) => {
+    if (value){
+      win.close();
     }
   });
 

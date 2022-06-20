@@ -19,6 +19,15 @@ export class ParamsModalComponent extends MovingDialogComponent implements OnIni
   public generationVariant = MANDALA_VARIANTS;
   public paperVariant = PAPER_VARIANTS;
   public paramsForm: FormGroup = new FormGroup({});
+  private ALL_WORDS = ALL_WORDS;
+
+  constructor(
+    private dialogRef: DynamicDialogRef,
+    private dynamicDialogConfig: DynamicDialogConfig,
+    private toastNotificationService: ToastNotificationsService,
+  ) {
+    super();
+  }
 
   public get marginSize(): string {
     if (this.paramsForm.get('marginSize')?.value) {
@@ -68,15 +77,6 @@ export class ParamsModalComponent extends MovingDialogComponent implements OnIni
     return this.dynamicDialogConfig.data.mandalaParams;
   }
 
-  private ALL_WORDS = ALL_WORDS;
-
-  constructor(
-    private dialogRef: DynamicDialogRef,
-    private dynamicDialogConfig: DynamicDialogConfig,
-    private toastNotificationService: ToastNotificationsService,
-  ) {
-    super();
-  }
 
   public ngOnInit(): void {
     this.addMovingForDialog();
