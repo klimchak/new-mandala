@@ -5,9 +5,11 @@ import {MandalaModel} from '../../models/mandala.model';
 import {cloneDeep} from 'lodash';
 import {DefaultModel} from '../../../../constants';
 import * as svgPanZoom from 'svg-pan-zoom';
+import {ApplicationOptionModel} from '../../models/application-option.model';
 
 @Injectable({providedIn: 'root'})
 export class CoreService {
+  public applicationOption: ApplicationOptionModel = {};
   public mandalaParams: Subject<MandalaParamsModel> = new Subject<MandalaParamsModel>();
   public mandalaParamsObj: MandalaParamsModel | undefined;
   public mandalaCreated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
