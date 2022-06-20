@@ -47,7 +47,7 @@ export class SaviorComponent implements OnInit {
     {label: 'Расширенный просмотр', icon: 'pi pi-fw pi-search', command: () => this.openFullViewMandala()},
     {
       label: 'Удалить', icon: 'pi pi-fw pi-times', command: () => {
-        this.onDeleteItems(unionBy([this.selectedItemsContextMenu], this.selectedItems,  'id'), true);
+        this.onDeleteItems(unionBy([this.selectedItemsContextMenu], this.selectedItems, 'id'), true);
       }
     }
   ];
@@ -159,9 +159,9 @@ export class SaviorComponent implements OnInit {
       }
     }).onClose.subscribe((data) => {
       if (data?.answer) {
-        items.forEach((item) => {
+        items.forEach((item, index) => {
           this.deleteItem(item);
-          if (fromContextMenu){
+          if (fromContextMenu) {
             this.selectedItemsContextMenu = null;
           }
         });
@@ -169,21 +169,36 @@ export class SaviorComponent implements OnInit {
     });
   }
 
+  private setCurrentDataInModelMandala(editedMandala: MandalaTableModelClass): void {
+    this.coreService.modelMandala.personalInfo = {
+      firstName: editedMandala.firstName,
+      lastName: editedMandala.lastName,
+      patronymic: editedMandala.patronymic,
+      description: editedMandala.description,
+      createDate: editedMandala.createDate,
+    };
+  }
+
   private updateItem(editedMandala: MandalaTableModelClass, index: number): void {
     const editedMandalaDb: MandalaModelDB = editedMandala.getDataForDB();
     this.electronService.updateRecordInDatabase<MandalaModelDB>('mandala', editedMandala.id, editedMandalaDb, selectTableRows)
       .then((value) => {
-        console.log('after deleting', value);
-        this.getDataForTable();
+        if (editedMandala.id.toString() === this.coreService.modelMandala.id.toString()) {
+          this.setCurrentDataInModelMandala(editedMandala);
+        } else {
+          this.getDataForTable();
+        }
       })
       .catch((e) => console.log(e));
   }
 
-  private deleteItem(mandala: MandalaTableModelClass, index?: number): void {
-    this.electronService.deleteRecordInDatabase('mandala', 'id', mandala.id)
+  private deleteItem(deletedMandala: MandalaTableModelClass, index?: number): void {
+    this.electronService.deleteRecordInDatabase('mandala', 'id', deletedMandala.id)
       .then((value) => {
-        console.log('after deleting', value);
         this.selectedItems = [];
+        if (this.coreService.modelMandala?.id && deletedMandala.id.toString() === this.coreService.modelMandala.id.toString()) {
+          this.coreService.modelMandala.id = null;
+        }
         if (typeof index !== 'undefined') {
           this.mandalas.splice(index, 1);
         } else {
@@ -196,11 +211,9 @@ export class SaviorComponent implements OnInit {
   private updateNoRemandOptions(options: ApplicationOptionModel): void {
     this.electronService.updateRecordInDatabase<ApplicationOptionModel>('applicationOptions', 1, options)
       .then((value) => {
-        console.log('after update noRemandDelete', value)
         this.electronService.getDataFromDatabase<ApplicationOptionModel>(
           'applicationOptions',
           'id', 'noRemandDelete', 'noRemandEdit', 'noRemandUpdate').then((item) => {
-          console.log('get ApplicationOptionModel', item);
           this.coreService.applicationOption = {
             noRemandDelete: Boolean(item[item.length - 1].noRemandDelete),
             noRemandUpdate: Boolean(item[item.length - 1].noRemandUpdate),

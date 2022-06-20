@@ -168,7 +168,7 @@ export class MandalaModelUtility {
   public image: string;
 
   // for base
-  private databaseInterimData = {
+  public databaseInterimData = {
     id: null,
     createDate: null,
     personalInfo: null,
@@ -186,18 +186,17 @@ export class MandalaModelUtility {
     mandalaParamsObj: null,
   };
 
-  private coreService;
+  private coreService: CoreService;
 
   constructor(
     coreService: CoreService,
-    forBaseOptions?: { mandala: MandalaModel; mandalaParamsObj: MandalaParamsModel },
     databaseInfo?: any
   ) {
     this.coreService = coreService;
-    if (typeof forBaseOptions !== 'undefined') {
-      this.setAllData(forBaseOptions.mandala, forBaseOptions.mandalaParamsObj);
-    } else if (databaseInfo) {
+    if (typeof databaseInfo !== 'undefined') {
       this.setAllBaseDataInMandalaModel(databaseInfo);
+    } else {
+      this.setAllData(this.coreService.modelMandala, this.coreService.mandalaParamsObj);
     }
   }
 
@@ -217,8 +216,8 @@ export class MandalaModelUtility {
         source: JSON.stringify(this.databaseInterimData.source),
         drawForBase: this.databaseInterimData.drawForBase,
         gridThisFigure: JSON.stringify(this.databaseInterimData.gridThisFigure),
-        drawThisFigure: JSON.stringify(this.databaseInterimData.drawThisFigure),
-        mandalaParamsObj: JSON.stringify(this.databaseInterimData.mandalaParamsObj),
+        drawThisFigure: this.databaseInterimData.drawThisFigure,
+        mandalaParamsObj: this.databaseInterimData.mandalaParamsObj,
       }
     ];
   }

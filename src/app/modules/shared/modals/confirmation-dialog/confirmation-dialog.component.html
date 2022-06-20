@@ -5,7 +5,7 @@
     <p-checkbox [binary]="true" class="c-prime__checkbox" [label]="strings.removeLatestVersion" [(ngModel)]="removeLatest" [disabled]="disableRemoveLatest" *ngIf="entityData.removeLatestVersion"></p-checkbox>
   </div>
   <div class="popup__buttons">
-    <button pButton class="c-prime__button c-prime__button--grey-text" (click)="close()">{{entityData.acceptText ? strings.no : strings.cancel}}</button>
-    <button pButton class="c-prime__button c-prime__button--danger" (click)="close(true)">{{entityData.acceptText ? strings.yes : strings.confirm}}</button>
+    <button pButton class="c-prime__button c-prime__button--grey-text" (click)="close()">{{cancelButtonLabel}}</button>
+    <button pButton class="c-prime__button c-prime__button--danger" (click)="close(true)">{{confirmButtonLabel}}</button>
   </div>
 </div>

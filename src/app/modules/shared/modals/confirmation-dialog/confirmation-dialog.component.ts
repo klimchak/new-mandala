@@ -29,6 +29,20 @@ export class ConfirmationDialogComponent extends MovingDialogComponent implement
     return this.dialogConfig.data;
   }
 
+  public get cancelButtonLabel(): string {
+    if (this.entityData.footerButtonLabel?.cancel){
+      return this.entityData.footerButtonLabel.cancel;
+    }
+    return this.entityData.acceptText ? this.strings.no : this.strings.cancel;
+  }
+
+  public get confirmButtonLabel(): string {
+    if (this.entityData.footerButtonLabel?.confirm){
+      return this.entityData.footerButtonLabel.confirm;
+    }
+    return this.entityData.acceptText ? this.strings.yes : this.strings.confirm;
+  }
+
   public ngOnInit(): void {
     if (this.entityData.noRemandAgain && this.entityData?.noRemandType) {
       switch (this.entityData.noRemandType) {

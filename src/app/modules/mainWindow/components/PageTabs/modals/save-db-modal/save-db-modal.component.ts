@@ -8,6 +8,8 @@ import {
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {PopupActionsEnum, PopupCallbackModel} from '../../../../../shared/models/popup-callback.model';
 import {EDITOR_MODULES} from '../../../../../shared/constants';
+import {CoreService} from '../../../../../shared/services/core/core.service';
+import {isDate} from 'lodash';
 
 @Component({
   selector: 'app-save-db-modal',
@@ -19,6 +21,7 @@ export class SaveDbModalComponent extends MovingDialogComponent implements OnIni
   public popupForm: FormGroup;
   public editorModules = EDITOR_MODULES;
   constructor(
+    private coreService: CoreService,
     private dialogRef: DynamicDialogRef,
     private dynamicDialogConfig: DynamicDialogConfig,
     private toastNotificationService: ToastNotificationsService
@@ -39,6 +42,12 @@ export class SaveDbModalComponent extends MovingDialogComponent implements OnIni
       description: new FormControl(''),
       createDate: new FormControl(new Date(), [Validators.required]),
     });
+    if (this.coreService.modelMandala?.personalInfo){
+      if (this.coreService.modelMandala.personalInfo?.createDate && !isDate(this.coreService.modelMandala.personalInfo?.createDate)){
+        this.coreService.modelMandala.personalInfo.createDate = new Date(this.coreService.modelMandala.personalInfo.createDate);
+      }
+      this.popupForm.patchValue(this.coreService.modelMandala.personalInfo);
+    }
   }
 
   public closeModalWindow(callback?: PopupCallbackModel): void {

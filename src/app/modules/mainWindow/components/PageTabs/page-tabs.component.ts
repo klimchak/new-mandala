@@ -39,7 +39,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
   }
 
   public get menuItems(): MenuItem[] {
-    if (this.openTab === Tab.editor){
+    if (this.openTab === Tab.editor) {
       this.menuItemsStandard[0].label = this.startParamsButtonText;
       this.menuItemsStandard[0].icon = !this.mandalaCreated ? 'pi pi-fw pi-plus' : 'pi pi-fw pi-pencil';
       this.menuItemsStandard[0].tooltipOptions = {
@@ -176,20 +176,60 @@ export class PageTabsComponent implements OnInit, OnDestroy {
 
   private openSaveDBModal(): void {
     this.dialogService.open(SaveDbModalComponent, {data: {headerText: ``}})
-      .onClose.subscribe((data) => {
-      if (data?.body) {
-        this.rendererService.modelMandala.personalInfo = {...data.body};
-        const modelForBaseClass = new MandalaModelUtility(
-          this.rendererService, {
-            mandala: this.rendererService.modelMandala,
-            mandalaParamsObj: this.rendererService.mandalaParamsObj
-          }
-        );
-        const paramsForCreateRecord: MandalaModelDB[] = modelForBaseClass.paramsForCreateRecord;
-        this.electronService.insertRecordsInDatabase<MandalaModelDB>('mandala', paramsForCreateRecord).then((value) => {
-          this.loadingService.setProgressMockData();
-          console.log('record is inserted', value);
-        });
+      .onClose.subscribe((savedParamsData) => {
+      if (savedParamsData?.body) {
+
+        if (this.rendererService.modelMandala?.id) {
+
+          this.rendererService.modelMandala.personalInfo = {...savedParamsData.body};
+          this.dialogService.open(ConfirmationDialogComponent, {
+            data: {
+              headerText: 'Перезаписать мандалу или создать новую на основе этой?',
+              acceptText: true,
+              noRemandAgain: false,
+              removeLatestVersion: false,
+              footerButtonLabel: {
+                confirm: 'Перезаписать',
+                cancel: 'Создать новую'
+              }
+            }
+          }).onClose.subscribe((dataConfirm) => {
+
+            if (typeof dataConfirm !== 'undefined') {
+              if (dataConfirm.answer) {
+
+                const modelForBaseClass = new MandalaModelUtility(this.rendererService);
+                this.electronService.updateRecordInDatabase<MandalaModelDB>('mandala', modelForBaseClass.databaseInterimData.id,  modelForBaseClass.paramsForCreateRecord[0])
+                  .then((updatedMandala) => this.loadingService.setProgressMockData());
+
+              } else {
+                const arr = new Date(this.rendererService.modelMandala.personalInfo.createDate).toISOString().split('T');
+                const arr2 = arr[1].split('.');
+
+                this.rendererService.modelMandala.personalInfo.description = `${this.rendererService.modelMandala.personalInfo.description || ''} <b>Создана на основе мандалы ${this.rendererService.modelMandala.source.word} для ${this.rendererService.modelMandala.personalInfo.firstName} ${this.rendererService.modelMandala.personalInfo.lastName} ${arr[0]} в ${arr2[0]} </b>`;
+                this.rendererService.modelMandala.id = Date.now();
+                this.rendererService.modelMandala.personalInfo.createDate = new Date();
+                const modelForBaseClass = new MandalaModelUtility(this.rendererService);
+                this.electronService.insertRecordsInDatabase<MandalaModelDB>('mandala', modelForBaseClass.paramsForCreateRecord)
+                  .then((savedMandala) => {
+                    this.loadingService.setProgressMockData();
+                  });
+              }
+            }
+
+          });
+        } else {
+
+          this.rendererService.modelMandala.personalInfo = {...savedParamsData.body};
+          this.rendererService.modelMandala.id = Date.now();
+          const modelForBaseClass = new MandalaModelUtility(this.rendererService);
+          const paramsForCreateRecord: MandalaModelDB[] = modelForBaseClass.paramsForCreateRecord;
+
+          this.electronService.insertRecordsInDatabase<MandalaModelDB>('mandala', paramsForCreateRecord)
+            .then((value) => {
+              this.loadingService.setProgressMockData();
+            });
+        }
       }
     });
   }

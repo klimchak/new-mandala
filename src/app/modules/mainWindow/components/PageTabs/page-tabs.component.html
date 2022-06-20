@@ -10,6 +10,10 @@
         <app-savior></app-savior>
       </ng-template>
     </p-tabPanel>
+    <p-tabPanel header="Настройки" [disabled]="true" [cache]="true">
+      <ng-template pTemplate="content">
+      </ng-template>
+    </p-tabPanel>
 
     <p-tabPanel [disabled]="true" headerStyleClass="page-tabs__button-panel">
       <ng-template pTemplate="header">

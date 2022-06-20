@@ -4,6 +4,10 @@ export interface ConfirmPopupEntriesModel {
   noRemandAgain?: boolean;
   noRemandType?: NoRemandType;
   removeLatestVersion?: boolean;
+  footerButtonLabel?: {
+    confirm: string;
+    cancel: string;
+  };
 }
 
 export enum NoRemandType {
