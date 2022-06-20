@@ -31,6 +31,7 @@ import {CalendarModule} from 'primeng/calendar';
 import {EditorModule} from 'primeng/editor';
 import {TableModule} from 'primeng/table';
 import {AngularSvgIconModule} from 'angular-svg-icon';
+import {ContextMenuModule} from 'primeng/contextmenu';
 
 const tabsComponents = [
   ParamsModalComponent,
@@ -70,7 +71,8 @@ const tabsComponents = [
         CalendarModule,
         EditorModule,
         TableModule,
-        AngularSvgIconModule
+        AngularSvgIconModule,
+        ContextMenuModule
     ],
   exports: [...tabsComponents]
 })
