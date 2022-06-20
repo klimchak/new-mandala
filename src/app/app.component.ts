@@ -6,9 +6,12 @@ import {ConfirmationDialogComponent} from './modules/shared/modals/confirmation-
 import {ConfirmPopupAnswerModel, ConfirmPopupEntriesModel} from './modules/shared/models/confirm-popup.model';
 import {ALL_WORDS} from './modules/shared/constants';
 import {oldDataTablePath} from './constants';
-import {DatabaseServiceMadel} from './modules/shared/models/database.madel';
 import {fullUpdateAnswer, SessionModel} from './modules/shared/models/session.model';
 import {isEmpty} from 'lodash';
+import {PrimeNGConfig} from 'primeng/api';
+import {ApplicationOptionModel} from './modules/shared/models/application-option.model';
+import {MandalaModel} from './modules/shared/models/mandala.model';
+import {CoreService} from './modules/shared/services/core/core.service';
 
 
 @Component({
@@ -21,11 +24,13 @@ export class AppComponent implements OnInit {
   public strings = ALL_WORDS;
 
   constructor(
-    private electronService: CustomElectronService<DatabaseServiceMadel>,
-    private translate: TranslateService,
+    private electronService: CustomElectronService<MandalaModel>,
+    private coreService: CoreService,
+    private translateService: TranslateService,
+    private config: PrimeNGConfig,
     private dialogService: DialogService
   ) {
-    this.translate.setDefaultLang('en');
+    this.translateService.setDefaultLang('ru');
     // console.log('APP_CONFIG', APP_CONFIG);
 
     if (electronService.isElectron) {
@@ -38,7 +43,24 @@ export class AppComponent implements OnInit {
     }
   }
 
+  public translate(lang: string) {
+    this.translateService.use(lang);
+    this.translateService.get('primeng').subscribe(res => this.config.setTranslation(res));
+  }
+
   public ngOnInit(): void {
+    this.translateService.setDefaultLang('ru');
+    this.translate('ru');
+    this.electronService.getDataFromDatabase<ApplicationOptionModel>(
+      'applicationOptions',
+      'id', 'noRemandDelete', 'noRemandEdit', 'noRemandUpdate')
+      .then((item) => {
+        this.coreService.applicationOption = {
+          noRemandDelete: Boolean(item[item.length - 1].noRemandDelete),
+          noRemandUpdate: Boolean(item[item.length - 1].noRemandUpdate),
+          noRemandEdit: Boolean(item[item.length - 1].noRemandEdit),
+        };
+      });
     // try {
     //   this.electronService.getDataFromDatabase('serviceInfo', 'noRemandAgain').then((dbAnswer) => {
     //     console.log(dbAnswer);
