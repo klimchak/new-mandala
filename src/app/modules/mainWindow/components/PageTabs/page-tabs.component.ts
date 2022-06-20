@@ -28,42 +28,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
   public ALL_WORDS = ALL_WORDS;
 
   private destroy: Subject<boolean> = new Subject<boolean>();
-  private menuItemsStandard: MenuItem[] = [
-    {
-      label: ALL_WORDS.BUTTON.HEADER.menu.menu_model.create,
-      icon: 'pi pi-fw pi-plus',
-      command: () => this.openParams()
-    },
-    {
-      label: ALL_WORDS.BUTTON.HEADER.menu.menu_model.export,
-      icon: 'pi pi-fw pi-external-link',
-      disabled: true,
-      tooltipOptions: {
-        tooltipLabel: ALL_WORDS.TOOLTIP.TOOLTIP_HEADER_MENU.export,
-        tooltipPosition: 'bottom'
-      },
-      command: () => this.openSaveImageModal()
-    },
-    {
-      label: ALL_WORDS.BUTTON.HEADER.menu.menu_model.saveDB,
-      icon: 'pi pi-fw pi-calendar-times',
-      tooltipOptions: {
-        tooltipLabel: ALL_WORDS.TOOLTIP.TOOLTIP_HEADER_MENU.saveDB,
-        tooltipPosition: 'bottom'
-      },
-      command: () => this.openSaveDBModal()
-    },
-    {separator: true},
-    {
-      label: ALL_WORDS.BUTTON.HEADER.menu.menu_model.quit,
-      icon: 'pi pi-fw pi-power-off',
-      tooltipOptions: {
-        tooltipLabel: ALL_WORDS.TOOLTIP.TOOLTIP_HEADER_MENU.quit,
-        tooltipPosition: 'bottom'
-      },
-      command: () => this.closeProgram()
-    }
-  ];
+  private menuItemsStandard: MenuItem[];
 
   constructor(
     private dialogService: DialogService,
@@ -74,14 +39,17 @@ export class PageTabsComponent implements OnInit, OnDestroy {
   }
 
   public get menuItems(): MenuItem[] {
-    this.menuItemsStandard[0].label = this.startParamsButtonText;
-    this.menuItemsStandard[0].icon = !this.mandalaCreated ? 'pi pi-fw pi-plus' : 'pi pi-fw pi-pencil';
-    this.menuItemsStandard[0].tooltipOptions = {
-      tooltipLabel: this.startParamsTooltipText,
-      tooltipPosition: 'bottom'
-    };
-    if (this.mandalaCreated) {
-      this.menuItemsStandard[1].disabled = false;
+    if (this.openTab === Tab.editor){
+      this.menuItemsStandard[0].label = this.startParamsButtonText;
+      this.menuItemsStandard[0].icon = !this.mandalaCreated ? 'pi pi-fw pi-plus' : 'pi pi-fw pi-pencil';
+      this.menuItemsStandard[0].tooltipOptions = {
+        tooltipLabel: this.startParamsTooltipText,
+        tooltipPosition: 'bottom'
+      };
+      if (this.mandalaCreated) {
+        this.menuItemsStandard[1].disabled = false;
+        this.menuItemsStandard[2].disabled = false;
+      }
     }
     return this.menuItemsStandard;
   }
@@ -119,6 +87,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.onChangeTab(this.openTab);
     this.rendererService.mandalaCreated.pipe(takeUntil(this.destroy)).subscribe((value) => this.mandalaCreated = value);
   }
 
@@ -129,6 +98,67 @@ export class PageTabsComponent implements OnInit, OnDestroy {
 
   public switchZoom(): void {
     this.activeZoom ? this.rendererService.enableZoomSVG() : this.rendererService.disableZoomSVG();
+  }
+
+
+  public onChangeTab(event: number): void {
+    this.openTab = event;
+    switch (event) {
+      case 0: {
+        this.menuItemsStandard = [
+          {
+            label: ALL_WORDS.BUTTON.HEADER.menu.menu_model.create,
+            icon: 'pi pi-fw pi-plus',
+            command: () => this.openParams()
+          },
+          {
+            label: ALL_WORDS.BUTTON.HEADER.menu.menu_model.export,
+            icon: 'pi pi-fw pi-external-link',
+            disabled: true,
+            tooltipOptions: {
+              tooltipLabel: ALL_WORDS.TOOLTIP.TOOLTIP_HEADER_MENU.export,
+              tooltipPosition: 'bottom'
+            },
+            command: () => this.openSaveImageModal()
+          },
+          {
+            label: ALL_WORDS.BUTTON.HEADER.menu.menu_model.saveDB,
+            icon: 'pi pi-fw pi-calendar-times',
+            disabled: true,
+            tooltipOptions: {
+              tooltipLabel: ALL_WORDS.TOOLTIP.TOOLTIP_HEADER_MENU.saveDB,
+              tooltipPosition: 'bottom'
+            },
+            command: () => this.openSaveDBModal()
+          },
+          {separator: true},
+          {
+            label: ALL_WORDS.BUTTON.HEADER.menu.menu_model.quit,
+            icon: 'pi pi-fw pi-power-off',
+            tooltipOptions: {
+              tooltipLabel: ALL_WORDS.TOOLTIP.TOOLTIP_HEADER_MENU.quit,
+              tooltipPosition: 'bottom'
+            },
+            command: () => this.closeProgram()
+          }
+        ];
+        break;
+      }
+      case 1: {
+        this.menuItemsStandard = [
+          {
+            label: ALL_WORDS.BUTTON.HEADER.menu.menu_model.quit,
+            icon: 'pi pi-fw pi-power-off',
+            tooltipOptions: {
+              tooltipLabel: ALL_WORDS.TOOLTIP.TOOLTIP_HEADER_MENU.quit,
+              tooltipPosition: 'bottom'
+            },
+            command: () => this.closeProgram()
+          }
+        ];
+        break;
+      }
+    }
   }
 
   private openParams(): void {
@@ -147,18 +177,20 @@ export class PageTabsComponent implements OnInit, OnDestroy {
   private openSaveDBModal(): void {
     this.dialogService.open(SaveDbModalComponent, {data: {headerText: ``}})
       .onClose.subscribe((data) => {
-      this.rendererService.modelMandala.personalInfo = {...data.body};
-      const modelForBaseClass = new MandalaModelUtility(
-        this.rendererService, {
-          mandala: this.rendererService.modelMandala,
-          mandalaParamsObj: this.rendererService.mandalaParamsObj
-        }
-      );
-      const paramsForCreateRecord: MandalaModelDB[] = modelForBaseClass.paramsForCreateRecord;
-      this.electronService.insertRecordsInDatabase<MandalaModelDB>('mandala', paramsForCreateRecord).then((value) => {
-        this.loadingService.setProgressMockData();
-        console.log('record is inserted', value);
-      });
+      if (data?.body) {
+        this.rendererService.modelMandala.personalInfo = {...data.body};
+        const modelForBaseClass = new MandalaModelUtility(
+          this.rendererService, {
+            mandala: this.rendererService.modelMandala,
+            mandalaParamsObj: this.rendererService.mandalaParamsObj
+          }
+        );
+        const paramsForCreateRecord: MandalaModelDB[] = modelForBaseClass.paramsForCreateRecord;
+        this.electronService.insertRecordsInDatabase<MandalaModelDB>('mandala', paramsForCreateRecord).then((value) => {
+          this.loadingService.setProgressMockData();
+          console.log('record is inserted', value);
+        });
+      }
     });
   }
 

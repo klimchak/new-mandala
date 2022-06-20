@@ -1,11 +1,11 @@
 <div class="page-tabs">
-  <p-tabView [activeIndex]="openTab">
-    <p-tabPanel header="Редактор">
+  <p-tabView [activeIndex]="openTab" (activeIndexChange)="onChangeTab($event)"  >
+    <p-tabPanel header="Редактор" [cache]="true">
       <ng-template pTemplate="content">
         <app-editor></app-editor>
       </ng-template>
     </p-tabPanel>
-    <p-tabPanel header="Записи БД">
+    <p-tabPanel header="Прошлые мандалы" [cache]="true">
       <ng-template pTemplate="content">
         <app-savior></app-savior>
       </ng-template>
@@ -13,21 +13,21 @@
 
     <p-tabPanel [disabled]="true" headerStyleClass="page-tabs__button-panel">
       <ng-template pTemplate="header">
-        <p-toggleButton *ngIf="mandalaCreated" (onChange)="switchZoom()" pRipple
+        <p-toggleButton *ngIf="mandalaCreated && !openTab" (onChange)="switchZoom()" pRipple
                         onLabel="{{ALL_WORDS.BUTTON.HEADER.switch_zoom.enable}}" offLabel="{{ALL_WORDS.BUTTON.HEADER.switch_zoom.disable}}" class="c-prime__button"
                         onIcon="pi pi-check" offIcon="pi pi-times" iconPos="right"
                         pTooltip="{{switcherZoomTooltipText}}" tooltipPosition="bottom"
                         [(ngModel)]="activeZoom"></p-toggleButton>
-        <p-toggleButton *ngIf="mandalaCreated" pRipple
+        <p-toggleButton *ngIf="mandalaCreated && !openTab" pRipple
                         onLabel="{{ALL_WORDS.BUTTON.HEADER.switch_shadow_help_text.enable}}" offLabel="{{ALL_WORDS.BUTTON.HEADER.switch_shadow_help_text.disable}}" class="c-prime__button"
                         onIcon="pi pi-check" offIcon="pi pi-times" iconPos="right"
                         pTooltip="{{switcherShadowHelpTextTooltipText}}" tooltipPosition="bottom"
                         [(ngModel)]="activeShadowText"></p-toggleButton>
         <button type="button" pButton icon="pi pi-bars" label="{{ALL_WORDS.BUTTON.HEADER.menu.button_text}}" class="c-prime__button" (click)="menu.toggle($event)"></button>
-        <p-slideMenu #menu [model]="menuItems" [popup]="true" [viewportHeight]="270" appendTo="body"></p-slideMenu>
+        <p-slideMenu #menu [model]="menuItems" [popup]="true" [viewportHeight]="openTab === 0 ? 270 : 100" appendTo="body"></p-slideMenu>
       </ng-template>
     </p-tabPanel>
   </p-tabView>
 </div>
 
-<app-shadow-help-text *ngIf="activeShadowText"></app-shadow-help-text>
+<app-shadow-help-text *ngIf="activeShadowText && !openTab"></app-shadow-help-text>
