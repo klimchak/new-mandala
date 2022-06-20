@@ -168,8 +168,11 @@ export class PageTabsComponent implements OnInit, OnDestroy {
       if (popupCallback?.changed) {
         this.mandalaParams = popupCallback.body;
         this.rendererService.mandalaParamsObj = popupCallback.body;
-        this.rendererService.mandalaParams.next(popupCallback.body);
-        this.activeShadowText = true;
+        setTimeout(() => {
+          this.loadingService.setProgress(5);
+          this.rendererService.mandalaParams.next(popupCallback.body);
+          this.activeShadowText = true;
+        }, 1000);
       }
     });
   }

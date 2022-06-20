@@ -10,6 +10,7 @@ import {Drawing, Options, Orientation, Point} from '../../../../shared/utils/sta
 import {DialogService} from 'primeng/dynamicdialog';
 import {ColoredModalComponent} from '../modals/colored-modal/colored-modal.component';
 import {CallbackAnyReturn} from '../../../../shared/models/callback-any-return.model';
+import {LoadingService} from '../../../../shared/services/loader/loader.service';
 
 
 @Component({
@@ -25,13 +26,10 @@ export class EditorComponent implements OnInit {
   public timeStart!: number;
   public timeEnd!: number;
 
-  // public get debug(): string {
-  //   return JSON.stringify(this.startedParams);
-  // }
-
   constructor(
     private rendererService: CoreService,
     private dialogService: DialogService,
+    private loadingService: LoadingService
   ) {
   }
 
@@ -63,7 +61,7 @@ export class EditorComponent implements OnInit {
     this.rendererService.polygonObj = data;
   }
 
-  private setToDefault(): void{
+  private setToDefault(): void {
     this.modelMandala = cloneDeep(DefaultModel);
     this.showWord = '';
     this.showWordInNumbers = '';
@@ -153,7 +151,10 @@ export class EditorComponent implements OnInit {
     this.modelMandala.source.countWord = countHex;
     this.showWord = 'Использовано слово: ' + this.modelMandala.source.word;
     this.showWordInNumbers = 'В переведенном виде: ' + strToHex;
-    this.createMandala((e) => this.openColorDialog(e));
+    setTimeout(() => this.loadingService.setProgress(5), 1);
+    setTimeout(() => {
+      this.createMandala((e) => this.openColorDialog(e));
+    }, 1000);
   }
 
   private createMandala(openColorDialog: CallbackAnyReturn): void {
@@ -176,10 +177,11 @@ export class EditorComponent implements OnInit {
     this.modelMandala.source.gridThisFigure = gridForPaint;
     this.modelMandala.source.drawThisFigure = SVG().addTo('#renderContainer').size(dWith, dHeight).id('svgImg2');
     // document.getElementById("svgImg2").setAttribute('style', 'shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd');
+    setTimeout(() => this.loadingService.setProgress(30), 1);
     const fontSize = this.modelMandala.source.rangeFontSize;
     gridForPaint.grid.hexes.forEach((item, index) => {
       this.modelMandala.source.drawThisFigure
-        .polygon(item.points.map((data: {x: string; y: string}) => `${data.x},${data.y}`))
+        .polygon(item.points.map((data: { x: string; y: string }) => `${data.x},${data.y}`))
         .addClass('polygon')
         .addClass('999')
         .addClass(`${item.x},${item.y}`)
@@ -203,7 +205,7 @@ export class EditorComponent implements OnInit {
       if (this.modelMandala.source.drawThisFigure.node.children[i].tagName === 'polygon') {
         const str = this.modelMandala.source.drawThisFigure.node.children[i].classList[2];
         this.dataPolygonMap.set(str, i);
-        this.modelMandala.source.drawThisFigure.node.children[i].onclick = function(e: any) {
+        this.modelMandala.source.drawThisFigure.node.children[i].onclick = function (e: any) {
           openColorDialog(e);
         };
       }
@@ -215,17 +217,19 @@ export class EditorComponent implements OnInit {
     this.modelMandala.source.drawThisFigure.viewbox(dWith / -2 + ' ' + dHeight / -2 + ' ' + dWith + ' ' + dHeight);
 
     this.modelMandala.source.drawForBase = new XMLSerializer().serializeToString(this.modelMandala.source.drawThisFigure.node);
-
-    if (this.modelMandala.source.mandalaVersion === 1 || this.modelMandala.source.mandalaVersion === 2 || this.modelMandala.source.mandalaVersion === 3 || this.modelMandala.source.mandalaVersion === 4) {
-      this.axialDataSet();
-    }
-    if (this.modelMandala.source.mandalaVersion === 5 || this.modelMandala.source.mandalaVersion === 6 || this.modelMandala.source.mandalaVersion === 7 || this.modelMandala.source.mandalaVersion === 8) {
-      this.borderDataSet();
-    }
+    setTimeout(() => this.loadingService.setProgress(50), 1);
+    setTimeout(() => {
+      if (this.modelMandala.source.mandalaVersion === 1 || this.modelMandala.source.mandalaVersion === 2 || this.modelMandala.source.mandalaVersion === 3 || this.modelMandala.source.mandalaVersion === 4) {
+        this.axialDataSet();
+      }
+      if (this.modelMandala.source.mandalaVersion === 5 || this.modelMandala.source.mandalaVersion === 6 || this.modelMandala.source.mandalaVersion === 7 || this.modelMandala.source.mandalaVersion === 8) {
+        this.borderDataSet();
+      }
+    }, 1000);
   }
 
-  private openColorDialog(event: any): void{
-    this.dialogService.open(ColoredModalComponent, {data: {blockData: event.target}});
+  private openColorDialog(event: any): void {
+    this.dialogService.open(ColoredModalComponent, {data: {blockData: event.target}, dismissableMask: true});
   }
 
   // Axis мандала
@@ -235,9 +239,12 @@ export class EditorComponent implements OnInit {
     this.getArrOnRayAndSector();
     // установка значений по осям
     let numb = 1;
+    setTimeout(() => this.loadingService.setProgress(70), 1);
     for (const key in this.modelMandala) {
       numb = 1;
-      if (key === 'source') {break;}
+      if (key === 'source') {
+        break;
+      }
       for (let i = 0; i < get(this.modelMandala, key).rayCoord.length; i++) {
         const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], false);
         obj.classList.replace('999', String(this.modelMandala.source.wordInInt[numb]));
@@ -248,14 +255,18 @@ export class EditorComponent implements OnInit {
         numb++;
       }
     }
+    setTimeout(() => this.loadingService.setProgress(80), 1);
     // установка значений по полям
     for (const key in this.modelMandala) {
       const countStep = 1;
-      if (key === 'source') {break;}
+      if (key === 'source') {
+        break;
+      }
       for (let i = 0; i < get(this.modelMandala, key).sector[0].length; i++) {
         for (let u = 0; u < get(this.modelMandala, key).sector[0][i].length; u++) {
           const objForChange = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1], false);
-          let objParent1; let objParent2;
+          let objParent1;
+          let objParent2;
           if (key === 'rayA') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] - 1, get(this.modelMandala, key).sector[0][i][u][1], false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] - 1, get(this.modelMandala, key).sector[0][i][u][1] + 1, false);
@@ -304,14 +315,20 @@ export class EditorComponent implements OnInit {
     this.timeEnd = Date.now();
     console.log('Затрачено времени ', this.timeConversion(this.timeEnd - this.timeStart));
 
-    this.rendererService.mandalaCreated.next(true);
-    console.warn('!!! mandalaCreated !!!');
-
-    this.addZoomInLayout();
+    this.loadingService.setProgress(90);
+    setTimeout(() => {
+      this.rendererService.mandalaCreated.next(true);
+      console.warn('!!! mandalaCreated !!!');
+      this.addZoomInLayout();
+    }, 1000);
   }
 
-  private addZoomInLayout(): void{
+  private addZoomInLayout(): void {
     this.rendererService.createZoomSVG(document.getElementById('svgImg2') as HTMLElement);
+    this.loadingService.setProgress(100);
+    setTimeout(() => {
+      this.loadingService.setProgress(0);
+    }, 1000);
   }
 
   // border мандала
@@ -319,12 +336,16 @@ export class EditorComponent implements OnInit {
   private borderDataSet(): void {
     this.timeEnd = Date.now();
     console.log('Затрачено времени ', this.timeConversion(this.timeEnd - this.timeStart));
+    setTimeout(() => this.loadingService.setProgress(55), 1);
     this.getArrOnBorderAndSector();
+    setTimeout(() => this.loadingService.setProgress(60), 1);
     // установка значений по осям
     let numb = 0;
     for (const key in this.modelMandala) {
       numb = 0;
-      if (key === 'source') {break;}
+      if (key === 'source') {
+        break;
+      }
       for (let i = 0; i < get(this.modelMandala, key).rayCoord.length; i++) {
         const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], false);
         obj.classList.replace('999', String(this.modelMandala.source.wordInInt[numb]));
@@ -336,14 +357,18 @@ export class EditorComponent implements OnInit {
         numb++;
       }
     }
+    setTimeout(() => this.loadingService.setProgress(70), 1);
     // установка значений по полям
     for (const key in this.modelMandala) {
       const countStep = 1;
-      if (key === 'source') {break;}
+      if (key === 'source') {
+        break;
+      }
       for (let i = 0; i < get(this.modelMandala, key).sector[0].length; i++) {
         for (let u = 0; u < get(this.modelMandala, key).sector[0][i].length; u++) {
           const objForChange = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0], get(this.modelMandala, key).sector[0][i][u][1], false);
-          let objParent1; let objParent2;
+          let objParent1;
+          let objParent2;
           if (key === 'rayA') {
             objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] + 1, get(this.modelMandala, key).sector[0][i][u][1] - 1, false);
             objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).sector[0][i][u][0] + 1, get(this.modelMandala, key).sector[0][i][u][1], false);
@@ -384,6 +409,7 @@ export class EditorComponent implements OnInit {
     const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, false);
     const objParent1 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 1, -1, false);
     const objParent2 = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 1, 0, false);
+    setTimeout(() => this.loadingService.setProgress(80), 1);
     let res = Number(objParent1.classList[1]) + Number(objParent2.classList[1]);
     if (res >= 10) {
       res = Number(String(res)[0]) + Number(String(res)[1]);
@@ -397,6 +423,8 @@ export class EditorComponent implements OnInit {
     this.timeEnd = Date.now();
     console.log('Затрачено времени ', this.timeConversion(this.timeEnd - this.timeStart));
 
+
+    this.loadingService.setProgress(90);
 
     this.rendererService.mandalaCreated.next(true);
     this.addZoomInLayout();
@@ -417,8 +445,11 @@ export class EditorComponent implements OnInit {
     for (let i = 1; i <= this.modelMandala.source.countWord; i++) {
       this.modelMandala.rayA.rayCoord.push([i, 0]);
     }
-    let a = 2; let b = -1;
-    let a2 = a; let b2 = b; let interimStep = step;
+    let a = 2;
+    let b = -1;
+    let a2 = a;
+    let b2 = b;
+    let interimStep = step;
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
         y === 1 ? interimArr.push([a2, b2]) : interimArr.push([++a2, b2]);
@@ -562,8 +593,11 @@ export class EditorComponent implements OnInit {
     let interimArr = [];
     const step = this.modelMandala.source.countWord;
     // ray A
-    let a = this.modelMandala.source.countWord; let b = 0;
-    let a2 = a; let b2 = b; let interimStep = step;
+    let a = this.modelMandala.source.countWord;
+    let b = 0;
+    let a2 = a;
+    let b2 = b;
+    let interimStep = step;
     for (let i = 1; i <= step; i++) {
       for (let y = 1; y <= interimStep; y++) {
         if (i === 1) {
