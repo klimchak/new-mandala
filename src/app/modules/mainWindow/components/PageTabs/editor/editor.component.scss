@@ -1,9 +1,18 @@
+@import '../../../../../../assets/styles/variables';
+@import '../../../../../../assets/styles/mixins';
+
 .main-editor{
   overflow: auto;
-  height: 87vh;
+  height: calc(100vh - 87px);
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  @include scroll-styles(7px);
 
   #renderContainer{
     width: fit-content;
+    border: 1px solid transparent;
   }
 
   #renderContainer:hover{

@@ -10,12 +10,11 @@
   }
 
   &-mask-scrollblocker {
-    background-color: rgba(44, 51, 63, 0.4) !important;
+    background-color: transparent !important;
   }
 
   &-content {
     padding: 0 !important;
     @include scroll-disable();
-    //@include scroll-styles();
   }
 }
