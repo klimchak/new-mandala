@@ -1,5 +1,6 @@
 export class TableConfigModel {
   header: TableHeaderModel[];
+  globalFilter: string[];
   defaultSort?: {
     columnName: string;
     sortType: SortType;

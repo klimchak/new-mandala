@@ -56,18 +56,18 @@ export interface MandalaModelDB {
   id: number;
   createDate: Date;
   personalInfo: string;
-  rayA: string;
-  rayB: string;
-  rayC: string;
-  rayA2: string;
-  rayB2: string;
-  rayC2: string;
-  imageData: string;
+  rayA?: string;
+  rayB?: string;
+  rayC?: string;
+  rayA2?: string;
+  rayB2?: string;
+  rayC2?: string;
+  imageData?: string;
   source: string;
-  drawForBase: string;
-  gridThisFigure: string;
-  drawThisFigure: string;
-  mandalaParamsObj: string;
+  drawForBase?: string;
+  gridThisFigure?: string;
+  drawThisFigure?: string;
+  mandalaParamsObj?: string;
 }
 
 export interface DBCallbackAbbreviated {
@@ -75,6 +75,14 @@ export interface DBCallbackAbbreviated {
   personalInfo: string;
   source: string;
 }
+
+export const selectALLRows = [
+  'id', 'createDate', 'personalInfo', 'rayA',
+  'rayB', 'rayC', 'rayA2', 'rayB2',
+  'rayC2', 'imageData', 'source', 'drawForBase',
+  'gridThisFigure', 'drawThisFigure', 'mandalaParamsObj'
+];
+export const selectTableRows = ['id', 'createDate', 'personalInfo', 'source'];
 
 // table models
 
@@ -124,6 +132,32 @@ export class MandalaTableModelClass implements MandalaTableModel {
     this.mandalaVersion = sourceObj.mandalaVersion;
   }
 
+  public getDataForDB(): MandalaModelDB {
+    return {
+      id: this.id,
+      createDate: this.createDate,
+      personalInfo: JSON.stringify({
+        firstName: this.firstName,
+        lastName: this.lastName,
+        patronymic: this.patronymic,
+        description: this.description,
+        createDate: this.createDate
+      }),
+      source: JSON.stringify({
+        word: this.word,
+        wordInInt: this.wordInInt,
+        countWord: this.countWord,
+        colorWord: this.colorWord,
+        rangeMm: this.rangeMm,
+        rangeFontSize: this.rangeFontSize,
+        pageSize: {
+          width: this.pageSize.width,
+          height: this.pageSize.height,
+        },
+        mandalaVersion: this.mandalaVersion,
+      })
+    } as MandalaModelDB;
+  }
 }
 
 
