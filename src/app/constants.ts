@@ -83,11 +83,11 @@ export const DefaultModel: MandalaModel = {
     countWord: 0,
     colorWord: '',
     rangeMm: 0,
+    strokeWidth: 0.5,
     rangeFontSize: 0,
     pageSize: {width: 0, height: 0},
     mandalaVersion: 0,
     gridThisFigure: {},
     drawThisFigure: {},
-    drawForBase: {}
   }
 };
