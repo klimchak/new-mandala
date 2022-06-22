@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {MandalaParamsModel} from '../../models/mandala-params.model';
-import {MandalaModel} from '../../models/mandala.model';
+import {MandalaModel, PaperOptions} from '../../models/mandala.model';
 import {cloneDeep} from 'lodash';
 import {DefaultModel} from '../../../../constants';
 import * as svgPanZoom from 'svg-pan-zoom';
@@ -10,6 +10,7 @@ import {ApplicationOptionModel} from '../../models/application-option.model';
 @Injectable({providedIn: 'root'})
 export class CoreService {
   public applicationOption: ApplicationOptionModel = {};
+  public restoreMandala: Subject<boolean> = new Subject<boolean>();
   public mandalaParams: Subject<MandalaParamsModel> = new Subject<MandalaParamsModel>();
   public mandalaParamsObj: MandalaParamsModel | undefined;
   public mandalaCreated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -18,7 +19,14 @@ export class CoreService {
   public sectorMap: Map<number, string> = new Map<number, string>();
   public activeZoom = true;
   public activeShadowText = false;
-  public panZoom: any;
+  public panZoom: SvgPanZoom.Instance;
+
+  private mandala: MandalaModel;
+  private polygon: any;
+  private imageData = '';
+  constructor() {
+    this.modelMandala = cloneDeep(DefaultModel);
+  }
 
   public set modelMandala(data: MandalaModel) {
     this.mandala = data;
@@ -44,12 +52,8 @@ export class CoreService {
     this.imageData = data;
   }
 
-  private mandala: MandalaModel;
-  private polygon: any;
-  private imageData = '';
-
-  constructor() {
-    this.modelMandala = cloneDeep(DefaultModel);
+  public replacePtToMm(valuePT: number): number{
+    return valuePT / 2.834645669313658;
   }
 
   public createZoomSVG(element: HTMLElement): void {
@@ -89,5 +93,42 @@ export class CoreService {
 
   public resetZoomSVG(): void {
     this.panZoom.resetZoom();
+  }
+
+  public removeZoomSVG(): void {
+    this.panZoom.disablePan();
+    this.panZoom.resetZoom();
+    this.panZoom.disableZoom();
+    this.panZoom.destroy();
+  }
+
+  public getPaperSize(): PaperOptions {
+    if (this.mandalaParamsObj.landscape) {
+      switch (this.mandalaParamsObj.paperVariant) {
+        case 1:
+          return {width: 297, height: 210, orientation: 'landscape'};
+        case 2:
+          return {width: 420, height: 297, orientation: 'landscape'};
+        case 3:
+          return {width: 594, height: 420, orientation: 'landscape'};
+        case 4:
+          return {width: 841, height: 594, orientation: 'landscape'};
+        default:
+          return {width: 297, height: 210, orientation: 'landscape'};
+      }
+    } else {
+      switch (this.mandalaParamsObj.paperVariant) {
+        case 1:
+          return {height: 297, width: 210, orientation: 'portrait'};
+        case 2:
+          return {height: 420, width: 297, orientation: 'portrait'};
+        case 3:
+          return {height: 594, width: 420, orientation: 'portrait'};
+        case 4:
+          return {height: 841, width: 594, orientation: 'portrait'};
+        default:
+          return {height: 297, width: 210, orientation: 'portrait'};
+      }
+    }
   }
 }
