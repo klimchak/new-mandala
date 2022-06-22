@@ -15,11 +15,15 @@ export class ShadowHelpTextComponent {
   public left: number;
 
   public get modelMandala(): MandalaModel {
-    return this.rendererService.modelMandala;
+    return this.coreService.modelMandala;
   }
 
   public get mandalaParamsObj(): MandalaParamsModel {
-    return this.rendererService.mandalaParamsObj;
+    return this.coreService.mandalaParamsObj;
+  }
+
+  public get fontSize(): string {
+    return `${Math.floor(this.coreService.replacePtToMm(this.mandalaParamsObj.fontSize))}мм`;
   }
 
   public get moveStyle(): string {
@@ -30,7 +34,7 @@ export class ShadowHelpTextComponent {
   private layerY: number;
   private mouseBtnIsDown: boolean = false;
 
-  constructor(private rendererService: CoreService) {
+  constructor(private coreService: CoreService) {
   }
 
   public getMandalaVariant(variant: MandalaVariant): string {
