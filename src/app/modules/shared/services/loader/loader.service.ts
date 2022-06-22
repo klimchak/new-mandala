@@ -30,25 +30,21 @@ export class LoadingService {
     }
   }
 
-  public changeProgressState(state: number): void {
-    this.progressState.next(state);
-    if (state) {
+  public setProgress(value: number): void {
+    this.progressState.next(value);
+    if (value) {
       this.document.body.style = 'overflow: hidden;';
     } else {
       this.document.body.style = '';
     }
   }
 
-  public setProgress(value: number): void {
-    this.changeProgressState(value);
-  }
-
-  public setProgressMockData(value = 20, timeOut = 1000, increaseBy = 1000): void {
+  public setProgressMockData(value = 20, timeOut = 500, increaseBy = 500): void {
     for (let i = value; i < 101; i += 20) {
-      setTimeout(() => this.changeProgressState(i), timeOut);
+      setTimeout(() => this.setProgress(i), timeOut);
       timeOut += increaseBy;
       if (i === 100){
-        setTimeout(() => this.changeProgressState(0), timeOut);
+        setTimeout(() => this.setProgress(0), timeOut);
       }
     }
   }
