@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ElectronService} from '../../../../../core/services';
 import {
-  DBCallbackAbbreviated,
-  MandalaModelDB,
+  DBCallbackAbbreviated, MandalaModel,
+  MandalaModelDB, MandalaModelUtility,
   MandalaTableModelClass,
   selectTableRows
 } from '../../../../shared/models/mandala.model';
@@ -26,6 +26,7 @@ import {ToastNotificationsService} from '../../../../shared/services/toast-notif
   animations: [$animations]
 })
 export class SaviorComponent implements OnInit {
+  @Output() public setRestoredView: EventEmitter<boolean> = new EventEmitter<boolean>();
   public mandalas: MandalaTableModelClass[] = [];
   public tableConfig: TableConfigModel = {
     header: [
@@ -45,6 +46,7 @@ export class SaviorComponent implements OnInit {
   public selectedItemsEventValue = false;
   public contextMenuOptions = [
     {label: 'Расширенный просмотр', icon: 'pi pi-fw pi-search', command: () => this.openFullViewMandala()},
+    {label: 'Открыть в редакторе', icon: 'pi pi-fw pi-palette', command: () => this.openInEditor()},
     {
       label: 'Удалить', icon: 'pi pi-fw pi-times', command: () => {
         this.onDeleteItems(unionBy([this.selectedItemsContextMenu], this.selectedItems, 'id'), true);
@@ -166,6 +168,20 @@ export class SaviorComponent implements OnInit {
           }
         });
       }
+    });
+  }
+
+  public openInEditor(deletedMandala = this.selectedItemsContextMenu): void {
+    this.electronService.getDataFromDatabaseWithFilter<MandalaModel>(
+      'mandala',
+      deletedMandala.id,
+      'id', 'createDate', 'personalInfo', 'rayA',
+      'rayB', 'rayC', 'rayA2', 'rayB2',
+      'rayC2', 'imageData', 'source', 'drawForBase',
+      'gridThisFigure', 'drawThisFigure', 'mandalaParamsObj').then((item) => {
+      const restoredMandala = new MandalaModelUtility(this.coreService, item[0]);
+      restoredMandala.setMandalaModel();
+      this.setRestoredView.emit(true);
     });
   }
 

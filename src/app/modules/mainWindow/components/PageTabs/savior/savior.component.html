@@ -85,7 +85,7 @@
                   <ng-container
                     *ngIf="itemIsDate(mandala[headerItem.dataField]); else text">{{mandala[headerItem.dataField] | date}}</ng-container>
                   <ng-template #text>
-                    <div [innerHTML]="mandala[headerItem.dataField]"></div>
+                    <div [innerHTML]="mandala[headerItem.dataField] | RemoveHtml"></div>
                   </ng-template>
                 </ng-template>
 
@@ -106,6 +106,10 @@
                 <div class="actions-conteiner" *ngIf="editing">
                   <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
                           class="p-button-rounded p-button-text p-button-danger"></button>
+                </div>
+                <div class="actions-conteiner">
+                  <button pButton pRipple type="button" pInitEditableRow icon="pi pi-palette"
+                          (click)="openInEditor(mandala)" class="p-button-rounded p-button-text"></button>
                 </div>
                 <div class="actions-conteiner">
                   <button pButton pRipple type="button" pInitEditableRow icon="pi pi-trash"
