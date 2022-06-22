@@ -1,6 +1,6 @@
 import {CoreService} from '../services/core/core.service';
-import {toDOM, toJSON} from 'dom-to-json';
 import {MandalaParamsModel} from './mandala-params.model';
+import {SVG} from '@svgdotjs/svg.js';
 
 // primary models
 
@@ -30,6 +30,7 @@ export interface Source {
   countWord: number;
   colorWord: string;
   rangeMm: number;
+  strokeWidth: number;
   rangeFontSize: number;
   pageSize: {
     width: number;
@@ -42,12 +43,17 @@ export interface SourceForModelMandala extends Source {
   mandalaVersion: number;
   gridThisFigure: any;
   drawThisFigure: any;
-  drawForBase: any;
 }
 
 export interface RayModel {
   rayCoord: any[];
   sector: any[];
+}
+
+export interface PaperOptions {
+  width: number;
+  height: number;
+  orientation: 'p' | 'portrait' | 'l' | 'landscape';
 }
 
 // database models
@@ -64,7 +70,6 @@ export interface MandalaModelDB {
   rayC2?: string;
   imageData?: string;
   source: string;
-  drawForBase?: string;
   gridThisFigure?: string;
   drawThisFigure?: string;
   mandalaParamsObj?: string;
@@ -104,6 +109,7 @@ export class MandalaTableModelClass implements MandalaTableModel {
   countWord: number;
   colorWord: string;
   rangeMm: number;
+  strokeWidth: number;
   rangeFontSize: number;
   pageSize: {
     width: number;
@@ -127,6 +133,7 @@ export class MandalaTableModelClass implements MandalaTableModel {
     this.countWord = sourceObj.countWord;
     this.colorWord = sourceObj.colorWord;
     this.rangeMm = sourceObj.rangeMm;
+    this.strokeWidth = sourceObj.strokeWidth;
     this.rangeFontSize = sourceObj.rangeFontSize;
     this.pageSize = sourceObj.pageSize;
     this.mandalaVersion = sourceObj.mandalaVersion;
@@ -149,6 +156,7 @@ export class MandalaTableModelClass implements MandalaTableModel {
         countWord: this.countWord,
         colorWord: this.colorWord,
         rangeMm: this.rangeMm,
+        strokeWidth: this.strokeWidth,
         rangeFontSize: this.rangeFontSize,
         pageSize: {
           width: this.pageSize.width,
@@ -180,7 +188,6 @@ export class MandalaModelUtility {
     rayC2: null,
     imageData: null,
     source: null,
-    drawForBase: null,
     gridThisFigure: null,
     drawThisFigure: null,
     mandalaParamsObj: null,
@@ -214,7 +221,6 @@ export class MandalaModelUtility {
         rayC2: JSON.stringify(this.databaseInterimData.rayC2),
         imageData: this.databaseInterimData.imageData,
         source: JSON.stringify(this.databaseInterimData.source),
-        drawForBase: this.databaseInterimData.drawForBase,
         gridThisFigure: JSON.stringify(this.databaseInterimData.gridThisFigure),
         drawThisFigure: this.databaseInterimData.drawThisFigure,
         mandalaParamsObj: this.databaseInterimData.mandalaParamsObj,
@@ -244,13 +250,13 @@ export class MandalaModelUtility {
       countWord: mandala.source.countWord,
       colorWord: mandala.source.colorWord,
       rangeMm: mandala.source.rangeMm,
+      strokeWidth: mandala.source.strokeWidth,
       rangeFontSize: mandala.source.rangeFontSize,
       pageSize: mandala.source.pageSize,
       mandalaVersion: mandala.source.mandalaVersion,
     };
-    this.databaseInterimData.drawForBase = mandala.source?.drawForBase;
     this.databaseInterimData.gridThisFigure = mandala.source?.gridThisFigure;
-    this.databaseInterimData.drawThisFigure = toJSON(mandala.source?.drawThisFigure.node);
+    this.databaseInterimData.drawThisFigure = mandala.source?.drawThisFigure.svg();
 
     this.databaseInterimData.mandalaParamsObj = JSON.stringify(mandalaParamsObj);
 
@@ -274,15 +280,15 @@ export class MandalaModelUtility {
         countWord: source.countWord,
         colorWord: source.colorWord,
         rangeMm: source.rangeMm,
+        strokeWidth: source.strokeWidth,
         rangeFontSize: source.rangeFontSize,
         pageSize: source.pageSize,
         mandalaVersion: source.mandalaVersion,
         gridThisFigure: JSON.parse(databaseInfo.gridThisFigure),
-        drawThisFigure: toDOM(databaseInfo.drawThisFigure),
-        drawForBase: databaseInfo.drawForBase,
+        drawThisFigure: SVG(databaseInfo.drawThisFigure),
       } as SourceForModelMandala,
     };
     this.mandalaParamsObjModel = JSON.parse(databaseInfo.mandalaParamsObj) as MandalaParamsModel;
-    this.coreService.image = databaseInfo.imageData;
+    this.image = databaseInfo.imageData;
   }
 }

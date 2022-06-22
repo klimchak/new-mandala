@@ -10,5 +10,6 @@ export interface MandalaParamsModel {
   paperVariant: PaperSize;
   marginSize: number;
   fontSize: number;
+  strokeWidth: number;
   numberColor: string;
 }

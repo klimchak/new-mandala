@@ -32,6 +32,8 @@ export class BHex {
 export class Axial {
   public x: number;
   public y: number;
+  public center: Point;
+  public points: Point[] = [];
 
   constructor(x: number, y: number) {
     this.x = x;
