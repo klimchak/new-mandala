@@ -1,11 +1,17 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {jsPDF} from 'jspdf';
 import {CoreService} from '../../../../../shared/services/core/core.service';
-import html2canvas from 'html2canvas';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MandalaVariant, PaperSize} from '../../../../../../constants';
 import {ALL_WORDS} from '../../../../../shared/constants';
 import {MovingDialogComponent} from '../../../../../shared/modals/moving-dialog/moving-dialog.component';
+import {svg2pdf} from 'svg2pdf.js';
+import {PaperOptions} from '../../../../../shared/models/mandala.model';
+import {LoadingService} from '../../../../../shared/services/loader/loader.service';
+import {Canvg} from 'canvg';
+import {
+  ToastNotificationsService
+} from '../../../../../shared/services/toast-notifications/toast-notifications.service';
 
 @Component({
   selector: 'app-save-image-modal',
@@ -13,22 +19,41 @@ import {MovingDialogComponent} from '../../../../../shared/modals/moving-dialog/
   styleUrls: ['./save-image-modal.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SaveImageModalComponent extends MovingDialogComponent implements OnInit{
+export class SaveImageModalComponent extends MovingDialogComponent implements OnInit {
   public modalForm: FormGroup;
-  public activeSchema = false;
   public ALL_WORDS = ALL_WORDS;
+  private sizes: PaperOptions;
+
+  constructor(
+    private coreService: CoreService,
+    private loadingService: LoadingService,
+    private toastService: ToastNotificationsService
+  ) {
+    super();
+
+    this.sizes = this.coreService.getPaperSize();
+    this.modalForm = new FormGroup({
+      additionalName: new FormControl(''),
+      activeSchema: new FormControl(false),
+      generationVariant: new FormControl(true),
+      double: new FormControl(true),
+      abbreviation: new FormControl(true),
+      landscape: new FormControl(true),
+      paperVariant: new FormControl(true)
+    });
+  }
 
   public get switcherSchemaTooltipText(): string {
-    return this.activeSchema ? ALL_WORDS.TOOLTIP.TOOLTIP_SWITCHER_SCHEMA.enable : ALL_WORDS.TOOLTIP.TOOLTIP_SWITCHER_SCHEMA.disable;
+    return this.onlySchema ? ALL_WORDS.TOOLTIP.TOOLTIP_SWITCHER_SCHEMA.enable : ALL_WORDS.TOOLTIP.TOOLTIP_SWITCHER_SCHEMA.disable;
   }
 
   public get autoName(): string {
     let version = '';
-    const setAddWord = this.rendererService.mandalaParamsObj?.double ? '_Удвоенная' : '_Без_удвоен';
-    const abbrMand = this.rendererService.mandalaParamsObj?.abbreviation ? '_Сокращенная' : '_Без_сокращ';
-    const setAlbum = this.rendererService.mandalaParamsObj?.landscape ? '_Альбомная' : '_Портретная';
+    const setAddWord = this.coreService.mandalaParamsObj?.double ? '_Удвоенная' : '_Без_удвоен';
+    const abbrMand = this.coreService.mandalaParamsObj?.abbreviation ? '_Сокращенная' : '_Без_сокращ';
+    const setAlbum = this.coreService.mandalaParamsObj?.landscape ? '_Альбомная' : '_Портретная';
     const choicePaper = `_${this.paperVariant}`;
-    switch (this.rendererService.mandalaParamsObj?.generationVariant) {
+    switch (this.coreService.mandalaParamsObj?.generationVariant) {
       case MandalaVariant.LIGHT_FROM_CENTER_MAND:
         version = '_ЛУЧ_от_центра';
         break;
@@ -49,18 +74,19 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
         break;
     }
     const schemaWord = this.modalForm.get('activeSchema')?.value ? '_Схема' : '_Цвет';
-    return `${this.modalForm.get('additionalName')?.value ? this.modalForm.get('additionalName')?.value : ''}
-    ${this.modalForm.get('additionalName')?.value ? '_' + this.rendererService.mandalaParamsObj?.baseWord : this.rendererService.mandalaParamsObj?.baseWord}
-    ${this.modalForm.get('generationVariant')?.value ? version : ''}
-    ${this.modalForm.get('double')?.value ? setAddWord : ''}
-    ${this.modalForm.get('abbreviation')?.value ? abbrMand : ''}
-    ${this.modalForm.get('landscape')?.value ? setAlbum : ''}
-    ${this.modalForm.get('activeSchema')?.value ? schemaWord : ''}
-    ${this.modalForm.get('paperVariant')?.value ? choicePaper : ''}`;
+    let answer = `${this.modalForm.get('additionalName')?.value ? this.modalForm.get('additionalName')?.value : ''}`;
+    answer += `${this.modalForm.get('additionalName')?.value ? '_' + this.coreService.mandalaParamsObj?.baseWord : this.coreService.mandalaParamsObj?.baseWord}`;
+    answer += `${this.modalForm.get('generationVariant')?.value ? version : ''}`;
+    answer += `${this.modalForm.get('double')?.value ? setAddWord : ''}`;
+    answer += `${this.modalForm.get('abbreviation')?.value ? abbrMand : ''}`;
+    answer += `${this.modalForm.get('landscape')?.value ? setAlbum : ''}`;
+    answer += `${this.modalForm.get('activeSchema')?.value ? schemaWord : ''}`;
+    answer += `${this.modalForm.get('paperVariant')?.value ? choicePaper : ''}`;
+    return answer;
   }
 
   private get paperVariant(): string {
-    switch (this.rendererService.mandalaParamsObj?.paperVariant) {
+    switch (this.coreService.mandalaParamsObj?.paperVariant) {
       case PaperSize.A4:
         return 'a4';
       case PaperSize.A3:
@@ -78,71 +104,108 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
     return this.modalForm.get('additionalName')?.value;
   }
 
-  constructor(private rendererService: CoreService) {
-    super();
-    this.modalForm = new FormGroup({
-      additionalName: new FormControl(''),
-      activeSchema: new FormControl(this.activeSchema),
-      generationVariant: new FormControl(true),
-      double: new FormControl(true),
-      abbreviation: new FormControl(true),
-      landscape: new FormControl(true),
-      paperVariant: new FormControl(true),
-    });
+  private get onlySchema(): boolean {
+    return this.modalForm.get('activeSchema')?.value;
+  }
+
+  private get clearedElement(): HTMLElement {
+    setTimeout(() => this.loadingService.setProgress(4), 10);
+    this.coreService.removeZoomSVG();
+    setTimeout(() => this.loadingService.setProgress(5), 10);
+    const dWith = this.sizes.width;
+    const dHeight = this.sizes.height;
+    setTimeout(() => this.loadingService.setProgress(6), 10);
+    const elem = document.getElementById('svgImg2');
+    setTimeout(() => this.loadingService.setProgress(8), 10);
+    elem.children[0].removeAttribute('transform');
+    setTimeout(() => this.loadingService.setProgress(10), 10);
+    elem.children[0].removeAttribute('style');
+    setTimeout(() => this.loadingService.setProgress(12), 10);
+    elem.setAttribute('viewBox', `${dWith / -2} ${dHeight / -2} ${dWith} ${dHeight}`);
+    setTimeout(() => this.loadingService.setProgress(14), 10);
+    return elem;
   }
 
   public ngOnInit(): void {
     this.addMovingForDialog();
   }
 
-  private static resetColorInImage(mandala: any): any {
-    for (let i = 0; i < mandala.childNodes[0].childNodes[0].childNodes.length; i++) {
-      if (mandala.childNodes[0].childNodes[0].childNodes[i].tagName === 'polygon') {
-        mandala.childNodes[0].childNodes[0].childNodes[i].attributes.fill.value = '#ffffff';
+  public switchOnSchema(): void {
+    if (this.onlySchema) {
+      this.toastService.showNotification(
+        'info',
+        {message: 'Полигоны будут очищены от раскраски. Рекомендуется сохранить, перед экспортом схемы.'}
+      );
+    }
+  }
+
+  public getPDF(): void {
+    setTimeout(() => this.loadingService.setProgress(40), 10);
+    this.savePdfFile(this.onlySchema ? this.resetColorInImage(this.clearedElement) : this.clearedElement);
+  }
+
+  public getImage() {
+    this.saveImageFile(this.onlySchema ? this.resetColorInImage(this.clearedElement) : this.clearedElement);
+  }
+
+  private savePdfFile(elem: HTMLElement): void {
+    setTimeout(() => this.loadingService.setProgress(45), 10);
+    const tmpPdf = new jsPDF(this.sizes.orientation, 'mm', this.paperVariant, false);
+    svg2pdf(elem, tmpPdf, {
+      x: 0,
+      y: 0,
+      width: this.sizes.width,
+      height: this.sizes.height,
+    }).then((value) => {
+      setTimeout(() => this.loadingService.setProgress(100), 10);
+      setTimeout(() => {
+        this.loadingService.setProgress(0);
+        value.save(`${this.autoName}.pdf`);
+        this.activateZoom();
+      }, 500);
+    });
+  }
+
+  private saveImageFile(elem: HTMLElement): void {
+    setTimeout(() => this.loadingService.setProgress(45), 10);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    Canvg.from(ctx, new XMLSerializer().serializeToString(elem)).then((instance) => {
+      instance.start();
+      instance.screen.ctx.save();
+
+      const a = document.createElement('a');
+      a.setAttribute('download', `${this.autoName}.png`);
+      a.setAttribute('href', canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream'));
+      a.setAttribute('target', '_blank');
+
+      setTimeout(() => this.loadingService.setProgress(100), 10);
+      setTimeout(() => {
+        this.loadingService.setProgress(0);
+        a.click();
+        this.activateZoom();
+      }, 500);
+    }).catch((e) => {
+      setTimeout(() => this.loadingService.setProgress(0), 10);
+      this.activateZoom();
+      this.toastService.showNotification(
+        'error',
+        {message: 'Экспорт в PNG ранее созданной мандалы пока не доступен. Воспользуйтесь экспортом в PDF.'}
+      );
+      console.warn('canvg error', e);
+    });
+  }
+
+  private resetColorInImage(mandala: any): any {
+    for (let i = 0; i < mandala.childNodes[0].childNodes.length; i++) {
+      if (mandala.childNodes[0].childNodes[i].tagName === 'polygon') {
+        mandala.childNodes[0].childNodes[i].attributes.fill.value = '#ffffff';
       }
     }
     return mandala;
   }
 
-  public getPDF(): void {
-    const data: any = document.getElementById('renderContainer');
-    this.modalForm.get('activeSchema')?.value ? this.getPdf(SaveImageModalComponent.resetColorInImage(data)) : this.getPdf(data);
-  }
-
-  public getImage() {
-    const data: any = document.getElementById('renderContainer');
-    this.modalForm.get('activeSchema')?.value ? this.getPNG(SaveImageModalComponent.resetColorInImage(data)) : this.getPNG(data);
-  }
-
-  public getPdf(mandala: HTMLElement) {
-    html2canvas(mandala).then((canvas) => {
-      const PDF = new jsPDF({
-        orientation: this.rendererService.mandalaParamsObj?.landscape ? 'l' : 'p',
-        unit: 'px',
-        format: this.paperVariant,
-        hotfixes: ['px_scaling']
-      });
-      PDF.addImage(canvas.toDataURL('image/png', 1), 'png', 0, 0, canvas.width, canvas.height);
-      PDF.save(`${this.autoName}.pdf`);
-    }).catch((error) => console.warn(error));
-  }
-
-  public getPNG(mandala: any) {
-    html2canvas(mandala).then((canvas) => {
-      const name = this.autoName;
-      canvas.toBlob(function(blob) {
-        const newImg = document.createElement('img');
-          const url = URL.createObjectURL(blob);
-        newImg.onload = function() {
-          URL.revokeObjectURL(url);
-        };
-        newImg.src = url;
-        const a = document.createElement('a');
-        a.setAttribute('download', `${name}.png`);
-        a.setAttribute('href', url);
-        a.setAttribute('target', '_blank');
-        a.click();
-      }, 'image/png', 1);
-    }).catch((error) => console.warn(error));
+  private activateZoom(): void {
+    this.coreService.createZoomSVG(document.getElementById('svgImg2'));
   }
 }

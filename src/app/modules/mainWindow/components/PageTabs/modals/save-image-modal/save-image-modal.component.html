@@ -7,7 +7,7 @@
                       offLabel="{{ALL_WORDS.BUTTON.HEADER.switch_schema.disable}}" class="c-prime__button"
                       onIcon="pi pi-check" offIcon="pi pi-times" iconPos="right"
                       pTooltip="{{switcherSchemaTooltipText}}" tooltipPosition="bottom"
-                      formControlName="activeSchema"></p-toggleButton>
+                      formControlName="activeSchema" (onChange)="switchOnSchema()"></p-toggleButton>
     </div>
   </div>
   <div class="c-base__form-field">
