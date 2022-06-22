@@ -95,6 +95,16 @@ export class ElectronService<TData> {
     return this.knex.select(args).from(tableName) as Promise<Array<TCallBackData>>;
   }
 
+
+  /**
+   * @param tableName {string}
+   * @param id {number}
+   * @param args {string, string, ... .etc}
+   */
+  public getDataFromDatabaseWithFilter<TCallBackData>(tableName: string, id: number, ...args): Promise<Array<TCallBackData>> {
+    return this.knex(tableName).where({id}).select(args) as Promise<Array<TCallBackData>>;
+  }
+
   /**
    * @param tableName {string}
    * @param data {Array[Object1{anyName: string}, Object2{anyName: string}, ... .etc ]}
