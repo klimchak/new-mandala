@@ -10,6 +10,7 @@ import {ShadowHelpTextComponent} from './components/shadow-help-text/shadow-help
 import {SharedModalsModule} from './modals/shared-modals.module';
 import {ProgressComponent} from './components/progress/progress.component';
 import {ProgressBarModule} from 'primeng/progressbar';
+import {SharedPipesModule} from './pipes/shared-pipes.module';
 
 @NgModule({
   declarations: [SpinnerComponent, ColorPickerComponent, ShadowHelpTextComponent, ProgressComponent],
@@ -21,7 +22,8 @@ import {ProgressBarModule} from 'primeng/progressbar';
     RippleModule,
     SliderModule,
     SharedModalsModule,
-    ProgressBarModule
+    ProgressBarModule,
+    SharedPipesModule
   ],
   exports: [SpinnerComponent, ColorPickerComponent, ShadowHelpTextComponent, ProgressComponent],
   providers: [DatePipe],
