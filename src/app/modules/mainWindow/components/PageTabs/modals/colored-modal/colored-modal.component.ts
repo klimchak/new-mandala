@@ -23,7 +23,7 @@ export class ColoredModalComponent extends MovingDialogComponent implements OnIn
   }
 
   public get imageIsUploaded(): boolean {
-    return !!this.rendererService.image;
+    return Boolean(this.rendererService.image);
   }
 
   public get image(): string {
