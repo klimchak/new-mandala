@@ -7,7 +7,7 @@
     <div class="c-base__form-field">
       <label class="c-base__form-field-label">Метод расчета</label>
       <p-dropdown [options]="generationVariant" formControlName="generationVariant"
-                  class="c-prime__dropdown" panelStyleClass="c-prime__dropdown--panel" placeholder="Choose Interval" appendTo="body"
+                  class="c-prime__dropdown" panelStyleClass="c-prime__dropdown--panel" placeholder="Выберите вариант" appendTo="body"
                   optionLabel="title" optionValue="value" optionDisabled="inactive"></p-dropdown>
     </div>
     <div class="c-base__form-field main_general--additional">
@@ -30,7 +30,7 @@
     <div class="c-base__form-field">
       <label class="c-base__form-field-label">Размер бумаги</label>
       <p-dropdown [options]="paperVariant" formControlName="paperVariant"
-                  class="c-prime__dropdown" panelStyleClass="c-prime__dropdown--panel" placeholder="Choose Interval" appendTo="body"
+                  class="c-prime__dropdown" panelStyleClass="c-prime__dropdown--panel" placeholder="Выберите размер полотна" appendTo="body"
                   optionLabel="title" optionValue="value"></p-dropdown>
     </div>
     <div class="main_general__double-columns">
@@ -43,11 +43,15 @@
       <div class="main_general__double-columns--right-column">
         <div class="c-base__form-field">
           <label class="c-base__form-field-label">Размер грани в мм.: {{marginSize}}</label>
-          <p-slider formControlName="marginSize" [min]="1" [max]="10"></p-slider>
+          <p-slider formControlName="marginSize" [min]="1" [max]="50" [step]="1"></p-slider>
         </div>
         <div class="c-base__form-field">
-          <label class="c-base__form-field-label">Размер цифр в пт.: {{fontSize}}</label>
-          <p-slider formControlName="fontSize" [min]="1" [max]="24" [step]="2"></p-slider>
+          <label class="c-base__form-field-label">Толщина грани в мм.: {{strokeWidth}}</label>
+          <p-slider formControlName="strokeWidth" [min]="0.1" [max]="2" [step]="0.1"></p-slider>
+        </div>
+        <div class="c-base__form-field">
+          <label class="c-base__form-field-label">Размер цифр в пт.: {{fontSize}}, что соответствует примерно {{fontSizeMM}} с погрешностью {{fontSizeError}}</label>
+          <p-slider formControlName="fontSize" [min]="1" [max]="24" [step]="1"></p-slider>
         </div>
       </div>
 

@@ -9,6 +9,8 @@ import {MandalaParamsModel} from '../../../../../shared/models/mandala-params.mo
 import {PopupActionsEnum, PopupCallbackModel} from '../../../../../shared/models/popup-callback.model';
 import {ALL_WORDS} from '../../../../../shared/constants';
 import {MovingDialogComponent} from '../../../../../shared/modals/moving-dialog/moving-dialog.component';
+import {CoreService} from '../../../../../shared/services/core/core.service';
+import {find} from 'lodash';
 
 @Component({
   selector: 'app-params-modal',
@@ -25,6 +27,7 @@ export class ParamsModalComponent extends MovingDialogComponent implements OnIni
     private dialogRef: DynamicDialogRef,
     private dynamicDialogConfig: DynamicDialogConfig,
     private toastNotificationService: ToastNotificationsService,
+    private coreService: CoreService,
   ) {
     super();
   }
@@ -37,9 +40,33 @@ export class ParamsModalComponent extends MovingDialogComponent implements OnIni
     }
   }
 
+  public get strokeWidth(): string {
+    if (this.paramsForm.get('strokeWidth')?.value) {
+      return `${this.paramsForm.get('strokeWidth')?.value} мм`;
+    } else {
+      return '';
+    }
+  }
+
   public get fontSize(): string {
     if (this.paramsForm.get('fontSize')?.value) {
       return `${this.paramsForm.get('fontSize')?.value} пт`;
+    } else {
+      return '';
+    }
+  }
+
+  public get fontSizeMM(): string {
+    if (this.paramsForm.get('fontSize')?.value) {
+      return `${Math.floor(this.coreService.replacePtToMm(this.paramsForm.get('fontSize')?.value))} мм`;
+    } else {
+      return '';
+    }
+  }
+
+  public get fontSizeError(): string {
+    if (this.paramsForm.get('fontSize')?.value) {
+      return `${Math.floor(100 - ( ( Math.floor(this.coreService.replacePtToMm(this.paramsForm.get('fontSize')?.value)) / this.coreService.replacePtToMm(this.paramsForm.get('fontSize')?.value) ) * 100))} %`;
     } else {
       return '';
     }
@@ -74,7 +101,7 @@ export class ParamsModalComponent extends MovingDialogComponent implements OnIni
   }
 
   private get mandalaParams(): MandalaParamsModel {
-    return this.dynamicDialogConfig.data.mandalaParams;
+    return this.coreService.mandalaParamsObj;
   }
 
 
@@ -88,17 +115,18 @@ export class ParamsModalComponent extends MovingDialogComponent implements OnIni
       landscape: new FormControl(this.mandalaParams?.landscape),
       paperVariant: new FormControl(this.mandalaParams?.paperVariant, [Validators.required]),
       marginSize: new FormControl(this.mandalaParams?.marginSize || 3),
+      strokeWidth: new FormControl(this.mandalaParams?.strokeWidth || 0.5),
       fontSize: new FormControl(this.mandalaParams?.fontSize || 8),
       numberColor: new FormControl(this.mandalaParams?.fontSize || '#575757'),
     });
-    this.setDouble();
+    this.setDouble(this.mandalaParams?.generationVariant);
   }
 
   public closeModalWindow(callback?: PopupCallbackModel): void {
     this.dialogRef.close(callback);
   }
 
-  public setDouble(): void {
+  public setDouble(variant?: MandalaVariant): void {
     if (this.paramsForm.get('double')?.value) {
       this.paramsForm.get('abbreviation')?.enable();
       this.generationVariant.forEach((item) => {
@@ -110,7 +138,8 @@ export class ParamsModalComponent extends MovingDialogComponent implements OnIni
         item.inactive = !(item.value === MandalaVariant.LIGHT_FROM_CENTER_MAND || item.value === MandalaVariant.LIGHT_IN_CENTER_MAND);
       });
     }
-    this.paramsForm.get('generationVariant')?.patchValue('');
+    this.paramsForm.get('generationVariant')
+      .patchValue(typeof variant !== 'undefined' ? variant : find(this.generationVariant, (item) => !item.inactive).value);
   }
 
   public processForm(): void {
