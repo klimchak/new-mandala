@@ -1,13 +1,13 @@
 <div class="page-tabs">
-  <p-tabView [activeIndex]="openTab" (activeIndexChange)="onChangeTab($event)"  >
+  <p-tabView [(activeIndex)]="openTab" (activeIndexChange)="onChangeTab($event)"  >
     <p-tabPanel header="Редактор" [cache]="true">
       <ng-template pTemplate="content">
         <app-editor></app-editor>
       </ng-template>
     </p-tabPanel>
-    <p-tabPanel header="Прошлые мандалы" [cache]="true">
+    <p-tabPanel header="Прошлые мандалы" [cache]="false">
       <ng-template pTemplate="content">
-        <app-savior></app-savior>
+        <app-savior (setRestoredView)="setRestoredView($event)"></app-savior>
       </ng-template>
     </p-tabPanel>
     <p-tabPanel header="Настройки" [disabled]="true" [cache]="true">

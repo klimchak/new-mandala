@@ -23,7 +23,7 @@ import {MandalaParamsModel} from '../../../shared/models/mandala-params.model';
 })
 export class PageTabsComponent implements OnInit, OnDestroy {
   public openTab = Tab.editor;
-  public mandalaParams!: MandalaParamsModel;
+  // public mandalaParams!: MandalaParamsModel;
   public mandalaCreated = false;
   public ALL_WORDS = ALL_WORDS;
 
@@ -36,6 +36,14 @@ export class PageTabsComponent implements OnInit, OnDestroy {
     private rendererService: CoreService,
     private loadingService: LoadingService
   ) {
+  }
+
+  public get mandalaParams(): MandalaParamsModel {
+    return this.rendererService.mandalaParamsObj;
+  }
+
+  public set mandalaParams(value: MandalaParamsModel) {
+    this.rendererService.mandalaParamsObj = value;
   }
 
   public get menuItems(): MenuItem[] {
@@ -100,6 +108,13 @@ export class PageTabsComponent implements OnInit, OnDestroy {
     this.activeZoom ? this.rendererService.enableZoomSVG() : this.rendererService.disableZoomSVG();
   }
 
+  public setRestoredView(event: boolean) {
+    if (event) {
+      this.openTab = Tab.editor;
+      this.onChangeTab(this.openTab);
+      this.rendererService.restoreMandala.next(true);
+    }
+  }
 
   public onChangeTab(event: number): void {
     this.openTab = event;
@@ -163,11 +178,10 @@ export class PageTabsComponent implements OnInit, OnDestroy {
 
   private openParams(): void {
     this.dialogService
-      .open(ParamsModalComponent, {data: {mandalaParams: this.mandalaParams}})
+      .open(ParamsModalComponent, {data: {}})
       .onClose.subscribe((popupCallback: PopupCallbackModel) => {
       if (popupCallback?.changed) {
         this.mandalaParams = popupCallback.body;
-        this.rendererService.mandalaParamsObj = popupCallback.body;
         setTimeout(() => {
           this.loadingService.setProgress(5);
           this.rendererService.mandalaParams.next(popupCallback.body);
@@ -181,7 +195,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
     this.dialogService.open(SaveDbModalComponent, {data: {headerText: ``}})
       .onClose.subscribe((savedParamsData) => {
       if (savedParamsData?.body) {
-
+        this.rendererService.removeZoomSVG();
         if (this.rendererService.modelMandala?.id) {
 
           this.rendererService.modelMandala.personalInfo = {...savedParamsData.body};
@@ -197,29 +211,30 @@ export class PageTabsComponent implements OnInit, OnDestroy {
               }
             }
           }).onClose.subscribe((dataConfirm) => {
-
             if (typeof dataConfirm !== 'undefined') {
               if (dataConfirm.answer) {
-
                 const modelForBaseClass = new MandalaModelUtility(this.rendererService);
-                this.electronService.updateRecordInDatabase<MandalaModelDB>('mandala', modelForBaseClass.databaseInterimData.id,  modelForBaseClass.paramsForCreateRecord[0])
-                  .then((updatedMandala) => this.loadingService.setProgressMockData());
-
+                this.electronService.updateRecordInDatabase<MandalaModelDB>('mandala', modelForBaseClass.databaseInterimData.id, modelForBaseClass.paramsForCreateRecord[0])
+                  .then((updatedMandala) => {
+                    this.loadingService.setProgressMockData();
+                    this.rendererService.createZoomSVG(document.getElementById('svgImg2') as HTMLElement);
+                  });
               } else {
                 const arr = new Date(this.rendererService.modelMandala.personalInfo.createDate).toISOString().split('T');
                 const arr2 = arr[1].split('.');
 
                 this.rendererService.modelMandala.personalInfo.description = `${this.rendererService.modelMandala.personalInfo.description || ''} <b>Создана на основе мандалы ${this.rendererService.modelMandala.source.word} для ${this.rendererService.modelMandala.personalInfo.firstName} ${this.rendererService.modelMandala.personalInfo.lastName} ${arr[0]} в ${arr2[0]} </b>`;
                 this.rendererService.modelMandala.id = Date.now();
-                this.rendererService.modelMandala.personalInfo.createDate = new Date();
+                // @ts-ignore
+                this.rendererService.modelMandala.personalInfo.createDate = new Date().toISOString();
                 const modelForBaseClass = new MandalaModelUtility(this.rendererService);
                 this.electronService.insertRecordsInDatabase<MandalaModelDB>('mandala', modelForBaseClass.paramsForCreateRecord)
                   .then((savedMandala) => {
                     this.loadingService.setProgressMockData();
+                    this.rendererService.createZoomSVG(document.getElementById('svgImg2') as HTMLElement);
                   });
               }
             }
-
           });
         } else {
 
@@ -230,6 +245,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
 
           this.electronService.insertRecordsInDatabase<MandalaModelDB>('mandala', paramsForCreateRecord)
             .then((value) => {
+              this.rendererService.createZoomSVG(document.getElementById('svgImg2') as HTMLElement);
               this.loadingService.setProgressMockData();
             });
         }
