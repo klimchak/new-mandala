@@ -1,10 +1,10 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SVG} from '@svgdotjs/svg.js';
 import {MandalaParamsModel} from '../../../../shared/models/mandala-params.model';
-import {MandalaModel} from '../../../../shared/models/mandala.model';
+import {MandalaModel, PaperOptions} from '../../../../shared/models/mandala.model';
 import {arr_ru, DefaultModel} from '../../../../../constants';
 import {cloneDeep, get} from 'lodash';
-import {Grid} from '../../../../shared/utils/static/BHexTs/BHex.Core';
+import {Axial, Grid} from '../../../../shared/utils/static/BHexTs/BHex.Core';
 import {CoreService} from '../../../../shared/services/core/core.service';
 import {Drawing, Options, Orientation, Point} from '../../../../shared/utils/static/BHexTs/BHex.Drawing';
 import {DialogService} from 'primeng/dynamicdialog';
@@ -12,14 +12,13 @@ import {ColoredModalComponent} from '../modals/colored-modal/colored-modal.compo
 import {CallbackAnyReturn} from '../../../../shared/models/callback-any-return.model';
 import {LoadingService} from '../../../../shared/services/loader/loader.service';
 
-
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit {
-  @ViewChild('testSvg') testSvg: ElementRef | undefined;
+  @ViewChild('svgContainer') svgContainer: ElementRef | undefined;
   public startedParams!: MandalaParamsModel;
   public showWord!: string;
   public showWordInNumbers!: string;
@@ -67,15 +66,30 @@ export class EditorComponent implements OnInit {
     this.showWordInNumbers = '';
     this.dataPolygonMap.clear();
     this.dataTextMap.clear();
-    this.sectorMap.clear();
+    // this.sectorMap.clear();
     this.polygonObj = {};
   }
 
   public ngOnInit(): void {
+    this.rendererService.restoreMandala.subscribe((value) => {
+      if (value) {
+        this.loadingService.setProgress(20);
+        this.svgContainer.nativeElement.innerHTML = '';
+        setTimeout(() => {
+          this.modelMandala.source.drawThisFigure = SVG(this.modelMandala.source.drawThisFigure).addTo('#renderContainer').id('svgImg2');
+          this.setEventInPolygon((e) => this.openColorDialog(e), true);
+          this.addZoomInLayout();
+          this.rendererService.mandalaCreated.next(true);
+          this.loadingService.setProgress(100);
+          setTimeout(() => {
+            this.loadingService.setProgress(0);
+          }, 1000);
+        }, 3000);
+      }
+    });
     this.rendererService.mandalaParams.subscribe((item) => {
-      console.log(item);
-      if (this.testSvg) {
-        this.testSvg.nativeElement.innerHTML = '';
+      if (typeof this.svgContainer !== 'undefined' && this.svgContainer.nativeElement.innerHTML) {
+        this.svgContainer.nativeElement.innerHTML = '';
         this.setToDefault();
         this.startedParams = item;
         this.setMandalaWord();
@@ -89,14 +103,15 @@ export class EditorComponent implements OnInit {
   public setMandalaWord(): void {
     this.modelMandala.source.word = this.startedParams.baseWord.toLowerCase();
     this.modelMandala.source.mandalaVersion = this.startedParams.generationVariant;
-    const setAddWord = this.startedParams.double;
+    // const setAddWord = this.startedParams.double;
     const abbrMand = this.startedParams.abbreviation;
-    const setAlbum = this.startedParams.landscape;
-    const choicePaper = this.getPaperSize();
+    // const setAlbum = this.startedParams.landscape;
+    const choicePaper: PaperOptions = this.rendererService.getPaperSize();
     this.modelMandala.source.pageSize.width = choicePaper.width;
     this.modelMandala.source.pageSize.height = choicePaper.height;
     this.modelMandala.source.rangeMm = this.startedParams.marginSize;
-    this.modelMandala.source.rangeFontSize = this.startedParams.fontSize;
+    this.modelMandala.source.strokeWidth = this.startedParams.strokeWidth || 0.5;
+    this.modelMandala.source.rangeFontSize = this.rendererService.replacePtToMm(this.startedParams.fontSize);
     this.modelMandala.source.colorWord = this.startedParams.numberColor;
 
     this.timeStart = Date.now();
@@ -152,110 +167,162 @@ export class EditorComponent implements OnInit {
     this.showWord = 'Использовано слово: ' + this.modelMandala.source.word;
     this.showWordInNumbers = 'В переведенном виде: ' + strToHex;
     setTimeout(() => this.loadingService.setProgress(5), 1);
-    setTimeout(() => {
-      this.createMandala((e) => this.openColorDialog(e));
-    }, 1000);
+    setTimeout(() => this.createMandala(), 1000);
   }
 
-  private createMandala(openColorDialog: CallbackAnyReturn): void {
-    // if (document.getElementById('svgImg2') !== null) {
-    //   document.getElementById('svgImg2').remove();
-    //   for (let key in modelMandala) {
-    //     if (key === "source") break;
-    //     modelMandala[key].rayCoord = [];
-    //     modelMandala[key].sector = [];
-    //   }
-    //   dataTextMap.clear();
-    //   dataPolygonMap.clear();
-    // }
-    const dWith = this.modelMandala.source.pageSize.width * 3.543307;
-    const dHeight = this.modelMandala.source.pageSize.height * 3.543307;
-    const dRangeMm = this.modelMandala.source.rangeMm * 3.543307;
-    const options = new Options(dRangeMm, Orientation.PointyTop, new Point(dWith, dHeight));
+  private setEventInPolygon(openColorDialog: CallbackAnyReturn, restore = false): void {
+    const dWith = this.modelMandala.source.pageSize.width;
+    const dHeight = this.modelMandala.source.pageSize.height;
+    const addedValue = (restore ? 70 : 20) / this.modelMandala.source.drawThisFigure.node.children.length;
+    let addedValue2 = (restore ? 20 : 30) + addedValue;
+    const restoredPath = 'source.drawThisFigure.node.children[0].children';
+    const primaryPath = 'source.drawThisFigure.node.children';
+    for (let i = 0; i < get(this.modelMandala, restore ? restoredPath : primaryPath).length; i++) {
+      if (i !== 0) {
+        addedValue2 = Math.floor(addedValue2 + addedValue);
+      }
+      if (get(this.modelMandala, restore ? restoredPath : primaryPath)[i].tagName === 'polygon') {
+        const str = get(this.modelMandala, restore ? restoredPath : primaryPath)[i].classList[2];
+        this.dataPolygonMap.set(str, i);
+        get(this.modelMandala, restore ? restoredPath : primaryPath)[i].onclick = (e: any) => {
+          openColorDialog(e);
+        };
+      }
+      setTimeout(() => this.loadingService.setProgress(addedValue2), 500);
+      if (get(this.modelMandala, restore ? restoredPath : primaryPath)[i].tagName === 'text') {
+        const str = get(this.modelMandala, restore ? restoredPath : primaryPath)[i].classList[0];
+        this.dataTextMap.set(str, i);
+      }
+    }
+    this.modelMandala.source.drawThisFigure.viewbox(`${dWith / -2} ${dHeight / -2} ${dWith} ${dHeight}`);
+  }
+
+  private createMandala(): void {
+    const dWith = this.modelMandala.source.pageSize.width;
+    const dHeight = this.modelMandala.source.pageSize.height;
+    const options = new Options(this.modelMandala.source.rangeMm, Orientation.PointyTop, new Point(dWith / 2, dHeight / 2));
     const gridBHex = new Grid(this.modelMandala.source.countWord);
     const gridForPaint = new Drawing(gridBHex, options);
     this.modelMandala.source.gridThisFigure = gridForPaint;
-    this.modelMandala.source.drawThisFigure = SVG().addTo('#renderContainer').size(dWith, dHeight).id('svgImg2');
-    // document.getElementById("svgImg2").setAttribute('style', 'shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd');
+    this.modelMandala.source.drawThisFigure = SVG().size(`${this.modelMandala.source.pageSize.width}mm`, `${this.modelMandala.source.pageSize.height}mm`).id('svgImg2');
+    const group = this.modelMandala.source.drawThisFigure.group()
+    this.modelMandala.source.drawThisFigure.addTo('#renderContainer');
+    // this.modelMandala.source.drawThisFigure.node.style.backgroundColor = '#6366F1';
+    // this.modelMandala.source.drawThisFigure.node.style.border = '1px solid #fc0000';
     setTimeout(() => this.loadingService.setProgress(30), 1);
-    const fontSize = this.modelMandala.source.rangeFontSize;
-    gridForPaint.grid.hexes.forEach((item, index) => {
-      this.modelMandala.source.drawThisFigure
-        .polygon(item.points.map((data: { x: string; y: string }) => `${data.x},${data.y}`))
+
+    console.log('Затрачено времени перед gridForPaint ', this.timeConversion(Date.now() - this.timeStart));
+    const SIZE = 50;
+    const res: any[] = gridForPaint.grid.hexes.reduce((p, c) => {
+      if (p[p.length - 1].length === SIZE) {
+        p.push([]);
+      }
+      p[p.length - 1].push(c);
+      return p;
+    }, [[]]);
+
+    console.log('Затрачено времени после gridForPaint ', this.timeConversion(Date.now() - this.timeStart));
+    const listDrawPolygonExec: Array<Promise<any>> = [];
+    res.forEach((item) => {
+      listDrawPolygonExec.push(this.drawAllPolygon(item, group));
+    });
+
+    Promise.all(listDrawPolygonExec).then((value) => {
+      console.log('Затрачено времени ', this.timeConversion(Date.now() - this.timeStart));
+      this.setEventInPolygon((e) => this.openColorDialog(e), true);
+
+      setTimeout(() => this.loadingService.setProgress(50), 1);
+      setTimeout(() => {
+        if (this.modelMandala.source.mandalaVersion === 1 || this.modelMandala.source.mandalaVersion === 2 || this.modelMandala.source.mandalaVersion === 3 || this.modelMandala.source.mandalaVersion === 4) {
+          this.axialDataSet();
+        }
+        if (this.modelMandala.source.mandalaVersion === 5 || this.modelMandala.source.mandalaVersion === 6 || this.modelMandala.source.mandalaVersion === 7 || this.modelMandala.source.mandalaVersion === 8) {
+          this.borderDataSet();
+        }
+      }, 1000);
+    });
+  }
+
+  private drawAllPolygon(axials: Axial[], groupForDraw: any): Promise<any> {
+    return new Promise<any>((resolve) => {
+      const allExec: Promise<any>[] = [];
+      axials.forEach((item, index) => {
+        allExec.push(this.drawPolygon(item, groupForDraw));
+      });
+      Promise.all(allExec).then((value) => {
+        resolve(value);
+      });
+    });
+  }
+
+  private drawPolygon(item: Axial, groupForDraw: any): Promise<any> {
+    return new Promise<any>((resolve) => {
+      groupForDraw.polygon(item.points.map((data) => `${data.x},${data.y}`))
         .addClass('polygon')
         .addClass('999')
         .addClass(`${item.x},${item.y}`)
         .fill('none')
-        .stroke({width: 1, color: '#000000'})
+        .stroke({width: this.modelMandala.source.strokeWidth, color: '#000000'})
         .css({cursor: 'pointer'})
         .element('title').words(`${item.x},${item.y}`);
-      this.modelMandala.source.drawThisFigure
-        .text(`${item.x},${item.y}`)
+      groupForDraw.text(`${item.x},${item.y}`)
         .addClass(`${item.x},${item.y}`)
         .font({
-          size: fontSize,
+          size: this.modelMandala.source.rangeFontSize,
           anchor: 'middle',
           leading: 1.4,
           fill: this.modelMandala.source.colorWord
         })
-        .translate(item.center.x, item.center.y + 3);
+        .translate(item.center.x, item.center.y + 0.5);
+      resolve(true);
     });
-
-    for (let i = 0; i < this.modelMandala.source.drawThisFigure.node.children.length; i++) {
-      if (this.modelMandala.source.drawThisFigure.node.children[i].tagName === 'polygon') {
-        const str = this.modelMandala.source.drawThisFigure.node.children[i].classList[2];
-        this.dataPolygonMap.set(str, i);
-        this.modelMandala.source.drawThisFigure.node.children[i].onclick = function (e: any) {
-          openColorDialog(e);
-        };
-      }
-      if (this.modelMandala.source.drawThisFigure.node.children[i].tagName === 'text') {
-        const str = this.modelMandala.source.drawThisFigure.node.children[i].classList[0];
-        this.dataTextMap.set(str, i);
-      }
-    }
-    this.modelMandala.source.drawThisFigure.viewbox(dWith / -2 + ' ' + dHeight / -2 + ' ' + dWith + ' ' + dHeight);
-
-    this.modelMandala.source.drawForBase = new XMLSerializer().serializeToString(this.modelMandala.source.drawThisFigure.node);
-    setTimeout(() => this.loadingService.setProgress(50), 1);
-    setTimeout(() => {
-      if (this.modelMandala.source.mandalaVersion === 1 || this.modelMandala.source.mandalaVersion === 2 || this.modelMandala.source.mandalaVersion === 3 || this.modelMandala.source.mandalaVersion === 4) {
-        this.axialDataSet();
-      }
-      if (this.modelMandala.source.mandalaVersion === 5 || this.modelMandala.source.mandalaVersion === 6 || this.modelMandala.source.mandalaVersion === 7 || this.modelMandala.source.mandalaVersion === 8) {
-        this.borderDataSet();
-      }
-    }, 1000);
   }
 
   private openColorDialog(event: any): void {
     this.dialogService.open(ColoredModalComponent, {data: {blockData: event.target}, dismissableMask: true});
   }
 
+  private setValueInRay(path: string, numb: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const rayCoord = get(this.modelMandala, path).rayCoord as any[];
+      if (typeof rayCoord !== 'undefined') {
+        for (let i = 0; i < rayCoord.length; i++) {
+          const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, rayCoord[i][0], rayCoord[i][1], false);
+          obj.classList.replace('999', String(this.modelMandala.source.wordInInt[numb]));
+          obj.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
+          obj.attributes.fill.value = '#ececec';
+          const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, rayCoord[i][0], rayCoord[i][1], true);
+          objText.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
+          numb++;
+        }
+        resolve(true);
+      } else {
+        reject();
+      }
+    });
+  }
+
   // Axis мандала
-  // установка значений в класс для автовыбора при расскращивании.
+  // установка значений в класс для автовыбора при раскрашивании.
   private axialDataSet(): void {
     console.log('Затрачено времени ', this.timeConversion(Date.now() - this.timeStart));
     this.getArrOnRayAndSector();
+
     // установка значений по осям
     let numb = 1;
     setTimeout(() => this.loadingService.setProgress(70), 1);
-    for (const key in this.modelMandala) {
+    const listSetRayValueExec: Array<Promise<any>> = [];
+    Object.keys(this.modelMandala).forEach((key) => {
       numb = 1;
-      if (key === 'source') {
-        break;
+      if (key !== 'source' && key !== 'id' && key !== 'personalInfo') {
+        listSetRayValueExec.push(this.setValueInRay(key, numb));
       }
-      for (let i = 0; i < get(this.modelMandala, key).rayCoord.length; i++) {
-        const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], false);
-        obj.classList.replace('999', String(this.modelMandala.source.wordInInt[numb]));
-        obj.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
-        obj.attributes.fill.value = '#ececec';
-        const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], true);
-        objText.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
-        numb++;
-      }
-    }
+    });
+    Promise.all(listSetRayValueExec).then((value) => {
+      console.log('listSetRayValueExec', value);
+    });
     setTimeout(() => this.loadingService.setProgress(80), 1);
+
     // установка значений по полям
     for (const key in this.modelMandala) {
       const countStep = 1;
@@ -303,6 +370,7 @@ export class EditorComponent implements OnInit {
         }
       }
     }
+
     // установка центрального значения
     const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, false);
     obj.classList.replace('999', String(this.modelMandala.source.wordInInt[0]));
@@ -339,25 +407,42 @@ export class EditorComponent implements OnInit {
     setTimeout(() => this.loadingService.setProgress(55), 1);
     this.getArrOnBorderAndSector();
     setTimeout(() => this.loadingService.setProgress(60), 1);
+
+    // // установка значений по осям
+    // let numb = 0;
+    // for (const key in this.modelMandala) {
+    //   numb = 0;
+    //   if (key === 'source') {
+    //     break;
+    //   }
+    //   for (let i = 0; i < get(this.modelMandala, key).rayCoord.length; i++) {
+    //     const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], false);
+    //     obj.classList.replace('999', String(this.modelMandala.source.wordInInt[numb]));
+    //     obj.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
+    //     obj.attributes.fill.value = '#ececec';
+    //     const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], true);
+    //     objText.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
+    //     // this.sectorMap.set(i, String(this.modelMandala.source.wordInInt[numb]));
+    //     numb++;
+    //   }
+    // }
+    // setTimeout(() => this.loadingService.setProgress(70), 1);
+
     // установка значений по осям
-    let numb = 0;
-    for (const key in this.modelMandala) {
-      numb = 0;
-      if (key === 'source') {
-        break;
-      }
-      for (let i = 0; i < get(this.modelMandala, key).rayCoord.length; i++) {
-        const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], false);
-        obj.classList.replace('999', String(this.modelMandala.source.wordInInt[numb]));
-        obj.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
-        obj.attributes.fill.value = '#ececec';
-        const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], true);
-        objText.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
-        this.sectorMap.set(i, String(this.modelMandala.source.wordInInt[numb]));
-        numb++;
-      }
-    }
+    let numb = 1;
     setTimeout(() => this.loadingService.setProgress(70), 1);
+    const listSetRayValueExec: Array<Promise<any>> = [];
+    Object.keys(this.modelMandala).forEach((key) => {
+      numb = 1;
+      if (key !== 'source' && key !== 'id' && key !== 'personalInfo') {
+        listSetRayValueExec.push(this.setValueInRay(key, numb));
+      }
+    });
+    Promise.all(listSetRayValueExec).then((value) => {
+      console.log('listSetRayValueExec', value);
+    });
+    setTimeout(() => this.loadingService.setProgress(80), 1);
+
     // установка значений по полям
     for (const key in this.modelMandala) {
       const countStep = 1;
@@ -424,8 +509,9 @@ export class EditorComponent implements OnInit {
     console.log('Затрачено времени ', this.timeConversion(this.timeEnd - this.timeStart));
 
 
-    this.loadingService.setProgress(90);
+    setTimeout(() => this.loadingService.setProgress(90), 1);
 
+    console.log('!!!!!!', this.modelMandala.source.drawThisFigure)
     this.rendererService.mandalaCreated.next(true);
     this.addZoomInLayout();
   }
@@ -763,41 +849,11 @@ export class EditorComponent implements OnInit {
     if (text) {
       const o = this.dataTextMap.get(strForSearch);
       // @ts-ignore
-      return (stage.node.children as HTMLCollection)[o];
+      return (stage.node.children[0].children as HTMLCollection)[o];
     } else {
       const o = this.dataPolygonMap.get(strForSearch);
       // @ts-ignore
-      return stage.node.children[o];
-    }
-  }
-
-  private getPaperSize(): { width: number; height: number } {
-    if (this.startedParams.landscape) {
-      switch (this.startedParams.paperVariant) {
-        case 1:
-          return {width: 297, height: 210};
-        case 2:
-          return {width: 420, height: 297};
-        case 3:
-          return {width: 594, height: 420};
-        case 4:
-          return {width: 841, height: 594};
-        default:
-          return {width: 297, height: 210};
-      }
-    } else {
-      switch (this.startedParams.paperVariant) {
-        case 1:
-          return {height: 297, width: 210};
-        case 2:
-          return {height: 420, width: 297};
-        case 3:
-          return {height: 594, width: 420};
-        case 4:
-          return {height: 841, width: 594};
-        default:
-          return {height: 297, width: 210};
-      }
+      return stage.node.children[0].children[o];
     }
   }
 
