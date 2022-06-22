@@ -32,6 +32,8 @@ import {EditorModule} from 'primeng/editor';
 import {TableModule} from 'primeng/table';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {ContextMenuModule} from 'primeng/contextmenu';
+import {SharedPipesModule} from '../shared/pipes/shared-pipes.module';
+import {InputNumberModule} from 'primeng/inputnumber';
 
 const tabsComponents = [
   ParamsModalComponent,
@@ -72,7 +74,9 @@ const tabsComponents = [
         EditorModule,
         TableModule,
         AngularSvgIconModule,
-        ContextMenuModule
+        ContextMenuModule,
+        SharedPipesModule,
+        InputNumberModule
     ],
   exports: [...tabsComponents]
 })
