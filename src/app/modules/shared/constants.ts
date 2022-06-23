@@ -83,7 +83,7 @@ export const ALL_WORDS = {
       confirm_dialog_text: 'Найден файл базы данных предыдущей версии. Импортировать данные из предыдущей базы?',
     }
   }
-}
+};
 
 export const EDITOR_MODULES = {
   toolbar: [

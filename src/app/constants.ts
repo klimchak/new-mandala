@@ -52,7 +52,7 @@ export const arr_ru = {
   ъ: 30, э: 31, ю: 32, я: 33
 };
 
-export const DefaultModel: MandalaModel = {
+export const defaultModel: MandalaModel = {
   rayA: {
     rayCoord: [],
     sector: []

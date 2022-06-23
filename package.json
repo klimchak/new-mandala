@@ -30,7 +30,8 @@
     "e2e:show-trace": "playwright show-trace e2e/tracing/trace.zip",
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "lint": "ng lint",
-    "heroku-postbuild": "npm-run-all -p web:build",
+    "build_angular": "ng build --allowed-common-js-dependencies --base-href ./",
+    "heroku-postbuild": "npm-run-all build_angular",
     "start": "node app/server.js"
   },
   "dependencies": {

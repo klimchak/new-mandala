@@ -3,7 +3,7 @@ import {BehaviorSubject, Subject} from 'rxjs';
 import {MandalaParamsModel} from '../../models/mandala-params.model';
 import {MandalaModel, PaperOptions} from '../../models/mandala.model';
 import {cloneDeep} from 'lodash';
-import {DefaultModel} from '../../../../constants';
+import {defaultModel} from '../../../../constants';
 import * as svgPanZoom from 'svg-pan-zoom';
 import {ApplicationOptionModel} from '../../models/application-option.model';
 
@@ -25,7 +25,7 @@ export class CoreService {
   private polygon: any;
   private imageData = '';
   constructor() {
-    this.modelMandala = cloneDeep(DefaultModel);
+    this.modelMandala = cloneDeep(defaultModel);
   }
 
   public set modelMandala(data: MandalaModel) {

@@ -66,7 +66,7 @@
                 <ng-template pTemplate="input">
                   <ng-container *ngIf="itemIsDate(mandala, headerItem.dataField)">
                     <p-calendar [(ngModel)]="mandala[headerItem.dataField]" appendTo="body"
-                                class="c-prime__calendar" panelStyleClass="c-prime__datepicker" required></p-calendar>
+                                class="c-prime__calendar" panelStyleClass="c-prime__datepicker"></p-calendar>
                   </ng-container>
 
                   <ng-container *ngIf="headerItem.dataField === 'description'">
@@ -77,7 +77,7 @@
 
                   <ng-container
                     *ngIf="!itemIsDate(mandala, headerItem.dataField) && headerItem.dataField !== 'description'">
-                    <input pInputText type="text" [(ngModel)]="mandala[headerItem.dataField]" [disabled]="headerItem.dataField === 'word'" required>
+                    <input pInputText type="text" [(ngModel)]="mandala[headerItem.dataField]" [disabled]="headerItem.dataField === 'word'">
                   </ng-container>
                 </ng-template>
 

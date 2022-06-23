@@ -14,7 +14,7 @@ export class TableConfigModel {
 export class TableHeaderModel {
   title: string;
   columnName: string;
-  dataField: string | string[];
+  dataField: string;
   sort?: boolean;
   sortActive?: boolean;
   sortType?: SortType;

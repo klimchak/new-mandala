@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SVG} from '@svgdotjs/svg.js';
 import {MandalaParamsModel} from '../../../../shared/models/mandala-params.model';
 import {MandalaModel, PaperOptions} from '../../../../shared/models/mandala.model';
-import {arr_ru, DefaultModel} from '../../../../../constants';
+import {arr_ru, defaultModel} from '../../../../../constants';
 import {cloneDeep, get} from 'lodash';
 import {Axial, Grid} from '../../../../shared/utils/static/BHexTs/BHex.Core';
 import {CoreService} from '../../../../shared/services/core/core.service';
@@ -61,7 +61,7 @@ export class EditorComponent implements OnInit {
   }
 
   private setToDefault(): void {
-    this.modelMandala = cloneDeep(DefaultModel);
+    this.modelMandala = cloneDeep(defaultModel);
     this.showWord = '';
     this.showWordInNumbers = '';
     this.dataPolygonMap.clear();
