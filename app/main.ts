@@ -41,13 +41,17 @@ function createWindow(): BrowserWindow {
     y: 0,
     width: size.width,
     height: size.height,
+    // frame: false,
+    // maximizable: false,
+    // minimizable: false,
+    title: 'MandalaApp 2.0.0',
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve),
       contextIsolation: false,  // false if you want to run e2e test with Spectron
     },
   });
-
+  //win.setTitle('sdsdsdsds');
   webContext = win.webContents;
 
   if (serve) {
