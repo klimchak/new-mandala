@@ -1,23 +1,25 @@
-import {app, BrowserWindow, screen, ipcRenderer, ipcMain} from 'electron';
+import {app, BrowserWindow, ipcMain, screen} from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as url from 'url';
-import {fullUpdateAnswer, SessionModel} from "../src/app/modules/shared/models/session.model";
-import {dataTablePath} from "../src/app/constants";
 import {knex} from "knex";
+
+const fullUpdateAnswer = ['id', 'sessionStart', 'sessionStop'];
+const dataTablePath = '../src/assets/database/db.db';
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
-let session: SessionModel = {
+let session = {
   id: Date.now(),
   sessionStart: new Date().toISOString(),
   sessionStop: null
 };
 
 let webContext: any;
+console.log('db path', path.join(__dirname, dataTablePath));
 const knexAdapter = knex({
   client: 'sqlite3',
   connection: {
