@@ -6,7 +6,7 @@ import {
   MandalaTableModelClass,
   selectTableRows
 } from '../../../../shared/models/mandala.model';
-import {isDate, isEmpty, unionBy} from 'lodash';
+import {get, isDate, isEmpty, unionBy} from 'lodash';
 import {TableConfigModel} from '../../../../shared/models/tableTypes';
 import {EDITOR_MODULES} from '../../../../shared/constants';
 import {$animations} from '../../../../shared/animations/animations';
@@ -84,11 +84,13 @@ export class SaviorComponent implements OnInit {
     this.selectedItemsEventValue = !this.selectedItemsEventValue;
   }
 
-
-  public itemIsDate(item: any): boolean {
-    return isDate(item);
+  public itemIsDate(item: MandalaTableModelClass, field: string): boolean {
+    return isDate(get(item, field));
   }
 
+  public getValueFromEvent(event: Event): any {
+    return get(event.target, 'value');
+  }
 
   public isDateField(item: string): boolean {
     return item.toLowerCase().includes('date');

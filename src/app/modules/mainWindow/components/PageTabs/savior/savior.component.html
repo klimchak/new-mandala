@@ -19,7 +19,7 @@
             <span class="p-input-icon-left ml-auto" style="width: 350px">
                 <i class="pi pi-search"></i>
                 <input pInputText type="text" style="width: 100%"
-                       (input)="saviorTable.filterGlobal($event.target?.value, 'contains')" placeholder="Поиск по всей таблице" />
+                       (input)="saviorTable.filterGlobal(getValueFromEvent($event), 'contains')" placeholder="Поиск по всей таблице" />
             </span>
             <button pButton class="p-button-outlined margin-left-1" icon="pi pi-refresh"
                     pTooltip="Обновить данные в таблице" tooltipPosition="bottom"
@@ -64,7 +64,7 @@
               <p-cellEditor style="width: 100%;">
 
                 <ng-template pTemplate="input">
-                  <ng-container *ngIf="itemIsDate(mandala[headerItem.dataField])">
+                  <ng-container *ngIf="itemIsDate(mandala, headerItem.dataField)">
                     <p-calendar [(ngModel)]="mandala[headerItem.dataField]" appendTo="body"
                                 class="c-prime__calendar" panelStyleClass="c-prime__datepicker" required></p-calendar>
                   </ng-container>
@@ -76,14 +76,14 @@
                   </ng-container>
 
                   <ng-container
-                    *ngIf="!itemIsDate(mandala[headerItem.dataField]) && headerItem.dataField !== 'description'">
+                    *ngIf="!itemIsDate(mandala, headerItem.dataField) && headerItem.dataField !== 'description'">
                     <input pInputText type="text" [(ngModel)]="mandala[headerItem.dataField]" [disabled]="headerItem.dataField === 'word'" required>
                   </ng-container>
                 </ng-template>
 
                 <ng-template pTemplate="output">
                   <ng-container
-                    *ngIf="itemIsDate(mandala[headerItem.dataField]); else text">{{mandala[headerItem.dataField] | date}}</ng-container>
+                    *ngIf="itemIsDate(mandala, headerItem.dataField); else text">{{mandala[headerItem.dataField] | date}}</ng-container>
                   <ng-template #text>
                     <div [innerHTML]="mandala[headerItem.dataField] | RemoveHtml"></div>
                   </ng-template>
