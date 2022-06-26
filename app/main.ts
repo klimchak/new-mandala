@@ -5,10 +5,18 @@ import * as url from 'url';
 import {knex} from "knex";
 
 const fullUpdateAnswer = ['id', 'sessionStart', 'sessionStop'];
-const dataTablePath = '../src/assets/database/db.db';
 
+// const dataTablePath = '../src/assets/database/db.db';
+// const dataTablePath = '\\assets\\database\\db.db';
+
+const assetsPath = process.env?.APP_DEV ? '/src/assets' : '\\assets';
+const dataTablePath = process.env?.APP_DEV ? `${assetsPath}/database/db.db` : `${assetsPath}\\database\\db.db`;
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+
+fs.appendFileSync('mylog.txt', __dirname + '\n');
+
 let win: BrowserWindow = null;
+let preloaderWindow: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
@@ -19,17 +27,19 @@ let session = {
 };
 
 let webContext: any;
-console.log('db path', path.join(__dirname, dataTablePath));
 const knexAdapter = knex({
   client: 'sqlite3',
   connection: {
-    filename: path.join(__dirname, dataTablePath),
+    // filename: path.join(__dirname, dataTablePath),
+    filename: `${app.getAppPath()}${dataTablePath}`,
   },
   useNullAsDefault: true
 });
 
 knexAdapter('serviceInfo').insert([{id: session.id, sessionStart: session.sessionStart}], fullUpdateAnswer).then(() => {
-  console.warn('session start', session);
+  fs.appendFileSync('mylog.txt', JSON.stringify(session) + '\n');
+}).catch((e) => {
+  fs.appendFileSync('mylog.txt', 'knexAdapter ERROR:  ' + e + '\n');
 });
 
 function createWindow(): BrowserWindow {
@@ -41,12 +51,15 @@ function createWindow(): BrowserWindow {
   win = new BrowserWindow({
     x: 0,
     y: 0,
+    // opacity: 0.9,
+    // modal: true,
     width: size.width,
     height: size.height,
     // frame: false,
     // maximizable: false,
     // minimizable: false,
     title: 'MandalaApp 2.0.0',
+    show: false,
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve),
@@ -55,6 +68,33 @@ function createWindow(): BrowserWindow {
   });
   //win.setTitle('sdsdsdsds');
   webContext = win.webContents;
+
+  // Create the browser window.
+  preloaderWindow = new BrowserWindow({
+    opacity: 0.9,
+    width: 600,
+    height: 400,
+    frame: false,
+    show: true,
+    alwaysOnTop: true,
+    webPreferences: {
+      nodeIntegration: true,
+      allowRunningInsecureContent: (serve),
+      contextIsolation: false,
+    },
+  });
+
+  preloaderWindow.loadURL(url.format({
+    pathname: `${app.getAppPath()}${assetsPath}\\preload\\preload.html`,
+    protocol: 'file:',
+    slashes: true
+  }));
+  preloaderWindow.center();
+  setTimeout(function () {
+    preloaderWindow.close();
+    win.show();
+  }, 5000);
+
 
   if (serve) {
     const debug = require('electron-debug');
@@ -70,7 +110,7 @@ function createWindow(): BrowserWindow {
     let pathIndex = './index.html';
 
     if (fs.existsSync(path.join(__dirname, '../dist/index.html'))) {
-       // Path when running electron in local folder
+      // Path when running electron in local folder
       pathIndex = '../dist/index.html';
     }
 
@@ -120,11 +160,11 @@ try {
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
       console.warn('outSession');
-      knexAdapter('serviceInfo').where('id', session.id).update({ sessionStop: new Date().toISOString()})
+      knexAdapter('serviceInfo').where('id', session.id).update({sessionStop: new Date().toISOString()})
         .then((value) => {
-        console.warn('inserted value when app quiting', value);
-        app.quit();
-      })
+          console.warn('inserted value when app quiting', value);
+          app.quit();
+        })
     }
   });
 
@@ -137,7 +177,7 @@ try {
   });
 
   ipcMain.on('quitApp', (e, value) => {
-    if (value){
+    if (value) {
       win.close();
     }
   });
