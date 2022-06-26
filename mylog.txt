@@ -1,0 +1,20 @@
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+{"id":1656272873123,"sessionStart":"2022-06-26T19:47:53.123Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656272874023,"sessionStart":"2022-06-26T19:47:54.023Z","sessionStop":null}
