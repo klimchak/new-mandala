@@ -10,6 +10,7 @@ import * as path from 'path';
 import {dataTablePath} from '../../../constants';
 import {ElectronMessage} from '../../../modules/shared/models/electron-message';
 import {SessionModel} from '../../../modules/shared/models/session.model';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -28,10 +29,16 @@ export class ElectronService<TData> {
     sessionStop: null
   };
 
+  public messageForUpdate: BehaviorSubject<{ message: string; restart: boolean }> = new BehaviorSubject<{ message: string; restart: boolean }>({
+    message: 'Доступно новое обновление',
+    restart: false
+  });
+
   constructor() {
     // Conditional imports
     if (this.isElectron) {
       this.ipcRenderer = window.require('electron').ipcRenderer;
+
       this.webFrame = window.require('electron').webFrame;
 
       this.childProcess = window.require('child_process');
@@ -44,6 +51,7 @@ export class ElectronService<TData> {
         },
         useNullAsDefault: true
       });
+
       // Notes :
       // * A NodeJS's dependency imported with 'window.require' MUST BE present in `dependencies` of both `app/package.json`
       // and `package.json (root folder)` in order to make it work here in Electron's Renderer process (src folder)
@@ -60,6 +68,10 @@ export class ElectronService<TData> {
 
   get isElectron(): boolean {
     return !!(window && window.process && window.process.type);
+  }
+
+  public restartApp() {
+    this.ipcRenderer.send('restart_app');
   }
 
   /**

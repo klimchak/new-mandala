@@ -1,8 +1,16 @@
-import {app, BrowserWindow, ipcMain, screen} from 'electron';
+import {app, BrowserWindow, ipcMain, screen, autoUpdater} from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as url from 'url';
 import {knex} from "knex";
+import SimpleUpdater from "electron-simple-updater"
+
+
+
+const updater = SimpleUpdater.init({
+  checkUpdateOnStart: true,
+  autoDownload: true,
+});
 
 const fullUpdateAnswer = ['id', 'sessionStart', 'sessionStop'];
 
@@ -20,11 +28,6 @@ let preloaderWindow: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
-let session = {
-  id: Date.now(),
-  sessionStart: new Date().toISOString(),
-  sessionStop: null
-};
 
 let webContext: any;
 const knexAdapter = knex({
@@ -35,6 +38,12 @@ const knexAdapter = knex({
   },
   useNullAsDefault: true
 });
+
+let session = {
+  id: Date.now(),
+  sessionStart: new Date().toISOString(),
+  sessionStop: null
+};
 
 knexAdapter('serviceInfo').insert([{id: session.id, sessionStart: session.sessionStart}], fullUpdateAnswer).then(() => {
   fs.appendFileSync('mylog.txt', JSON.stringify(session) + '\n');
@@ -59,7 +68,7 @@ function createWindow(): BrowserWindow {
     // maximizable: false,
     // minimizable: false,
     title: 'MandalaApp 2.0.0',
-    show: false,
+    show: true,
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve),
@@ -69,32 +78,27 @@ function createWindow(): BrowserWindow {
   //win.setTitle('sdsdsdsds');
   webContext = win.webContents;
 
-  // Create the browser window.
-  preloaderWindow = new BrowserWindow({
-    opacity: 0.9,
-    width: 600,
-    height: 400,
-    frame: false,
-    show: true,
-    alwaysOnTop: true,
-    webPreferences: {
-      nodeIntegration: true,
-      allowRunningInsecureContent: (serve),
-      contextIsolation: false,
-    },
-  });
-
-  preloaderWindow.loadURL(url.format({
-    pathname: `${app.getAppPath()}${assetsPath}\\preload\\preload.html`,
-    protocol: 'file:',
-    slashes: true
-  }));
-  preloaderWindow.center();
-  setTimeout(function () {
-    preloaderWindow.close();
-    win.show();
-  }, 5000);
-
+  // // Create the browser window.
+  // preloaderWindow = new BrowserWindow({
+  //   opacity: 0.9,
+  //   width: 600,
+  //   height: 400,
+  //   frame: false,
+  //   show: true,
+  //   alwaysOnTop: true,
+  //   webPreferences: {
+  //     nodeIntegration: true,
+  //     allowRunningInsecureContent: (serve),
+  //     contextIsolation: false,
+  //   },
+  // });
+  //
+  // preloaderWindow.loadURL(url.format({
+  //   pathname: `${app.getAppPath()}${assetsPath}\\preload\\preload.html`,
+  //   protocol: 'file:',
+  //   slashes: true
+  // }));
+  // preloaderWindow.center();
 
   if (serve) {
     const debug = require('electron-debug');
@@ -146,6 +150,7 @@ function createWindow(): BrowserWindow {
 }
 
 try {
+
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
@@ -176,10 +181,35 @@ try {
     }
   });
 
+  updater.on('update-available', () => {
+    win.webContents.send('update-available');
+  });
+  updater.on('update-downloading', () => {
+    win.webContents.send('update-downloading');
+  });
+  updater.on('update-downloaded', () => {
+    win.webContents.send('update-downloaded');
+  });
+
   ipcMain.on('quitApp', (e, value) => {
     if (value) {
       win.close();
     }
+  });
+
+  ipcMain.on('updaterIsClosed', (e, value) => {
+    if (value) {
+      preloaderWindow.close();
+      win.show();
+    }
+  });
+
+  ipcMain.on('restart_app', () => {
+    updater.quitAndInstall();
+  });
+
+  ipcMain.on('start-update', () => {
+    updater.checkForUpdates();
   });
 
 } catch (e) {

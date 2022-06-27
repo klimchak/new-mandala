@@ -1,15 +1,25 @@
 {
   "name": "mandala_app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "main.js",
+  "description": "Application for create mandala based on Angular 13 with Electron 18",
+  "homepage": "https://github.com/klimchak/new-mandala",
+  "author": {
+    "name": "Ilya Klimchyk",
+    "email": "shpektras@gmail.com"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^14.0.3",
     "@angular/cdk": "^14.0.3",
+    "@electron-delta/updater": "^0.1.15",
     "@mapbox/node-pre-gyp": "^1.0.9",
     "@svgdotjs/svg.js": "^3.1.2",
     "@types/jspdf": "^2.0.0",
+    "@types/node": "^18.0.0",
     "angular-svg-icon": "^14.0.0",
+    "electron-log": "^4.4.8",
+    "electron-simple-updater": "^2.0.11",
     "express": "^4.18.1",
     "honeycomb-grid": "^3.1.8",
     "html2canvas": "^1.4.1",
@@ -21,6 +31,11 @@
     "quill": "^1.3.7",
     "sqlite3": "^5.0.8",
     "svg-pan-zoom": "^3.6.1",
-    "svg2pdf.js": "^2.2.0"
+    "svg2pdf.js": "^2.2.0",
+    "uaup-js": "^0.0.22",
+    "update-electron-app": "^2.0.1"
+  },
+  "devDependencies": {
+    "electron-installer-zip": "^0.1.2"
   }
 }
