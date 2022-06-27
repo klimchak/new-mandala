@@ -18,3 +18,141 @@ C:\develop\new-mandala\app
 {"id":1656272873123,"sessionStart":"2022-06-26T19:47:53.123Z","sessionStop":null}
 C:\develop\new-mandala\app
 {"id":1656272874023,"sessionStart":"2022-06-26T19:47:54.023Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656273956389,"sessionStart":"2022-06-26T20:05:56.389Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656274841051,"sessionStart":"2022-06-26T20:20:41.051Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656275302815,"sessionStart":"2022-06-26T20:28:22.815Z","sessionStop":null}
+C:\develop\new-mandala\app
+C:\develop\new-mandala\app
+C:\develop\new-mandala\app
+C:\develop\new-mandala\app
+C:\develop\new-mandala\app
+{"id":1656276203465,"sessionStart":"2022-06-26T20:43:23.465Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656277971078,"sessionStart":"2022-06-26T21:12:51.078Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656278027363,"sessionStart":"2022-06-26T21:13:47.363Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656278339180,"sessionStart":"2022-06-26T21:18:59.180Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656278376880,"sessionStart":"2022-06-26T21:19:36.880Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656278517695,"sessionStart":"2022-06-26T21:21:57.695Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656278554753,"sessionStart":"2022-06-26T21:22:34.753Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656278663908,"sessionStart":"2022-06-26T21:24:23.908Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656278715698,"sessionStart":"2022-06-26T21:25:15.698Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656278760436,"sessionStart":"2022-06-26T21:26:00.436Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656278799754,"sessionStart":"2022-06-26T21:26:39.754Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656280087417,"sessionStart":"2022-06-26T21:48:07.417Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656280251607,"sessionStart":"2022-06-26T21:50:51.607Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656280405012,"sessionStart":"2022-06-26T21:53:25.012Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656280762611,"sessionStart":"2022-06-26T21:59:22.611Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656282288929,"sessionStart":"2022-06-26T22:24:48.929Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656282614455,"sessionStart":"2022-06-26T22:30:14.455Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656282648366,"sessionStart":"2022-06-26T22:30:48.366Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656282694389,"sessionStart":"2022-06-26T22:31:34.389Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656282875332,"sessionStart":"2022-06-26T22:34:35.332Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656283184722,"sessionStart":"2022-06-26T22:39:44.722Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656329998571,"sessionStart":"2022-06-27T11:39:58.571Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656330107969,"sessionStart":"2022-06-27T11:41:47.969Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656330261400,"sessionStart":"2022-06-27T11:44:21.400Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656330963992,"sessionStart":"2022-06-27T11:56:03.992Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656331000056,"sessionStart":"2022-06-27T11:56:40.056Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656331088240,"sessionStart":"2022-06-27T11:58:08.240Z","sessionStop":null}
+C:\develop\new-mandala\app
+C:\develop\new-mandala\app
+C:\develop\new-mandala\app
+{"id":1656337343619,"sessionStart":"2022-06-27T13:42:23.619Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656337591299,"sessionStart":"2022-06-27T13:46:31.299Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656337712327,"sessionStart":"2022-06-27T13:48:32.328Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656337854244,"sessionStart":"2022-06-27T13:50:54.245Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656337922182,"sessionStart":"2022-06-27T13:52:02.182Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656338121668,"sessionStart":"2022-06-27T13:55:21.668Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656338397052,"sessionStart":"2022-06-27T13:59:57.052Z","sessionStop":null}
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+knexAdapter ERROR:  Error: SQLITE_CANTOPEN: unable to open database file
+C:\develop\new-mandala\app
+{"id":1656342410208,"sessionStart":"2022-06-27T15:06:50.208Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656345362498,"sessionStart":"2022-06-27T15:56:02.498Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656345626218,"sessionStart":"2022-06-27T16:00:26.218Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656353620110,"sessionStart":"2022-06-27T18:13:40.110Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656353766870,"sessionStart":"2022-06-27T18:16:06.870Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656354069861,"sessionStart":"2022-06-27T18:21:09.861Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656354525612,"sessionStart":"2022-06-27T18:28:45.612Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656354669013,"sessionStart":"2022-06-27T18:31:09.013Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656359225047,"sessionStart":"2022-06-27T19:47:05.047Z","sessionStop":null}
+C:\develop\new-mandala\app
+{"id":1656365891418,"sessionStart":"2022-06-27T21:38:11.418Z","sessionStop":null}

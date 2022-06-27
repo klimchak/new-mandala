@@ -8,6 +8,7 @@
     "name": "Ilya Klimchyk",
     "email": "shpektras@gmail.com"
   },
+  "license": "MIT",
   "keywords": [
     "mandala",
     "electron",
@@ -17,7 +18,10 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/klimchak/new-mandala.git"
+    "url": "git+https://github.com/klimchak/new-mandala.git"
+  },
+  "updater": {
+    "url": "https://github.com/klimchak/new-mandala/blob/electron-integration/updates.json"
   },
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
@@ -32,8 +36,7 @@
     "electron:serve-tsc": "tsc -p tsconfig.serve.json",
     "electron:serve": "wait-on tcp:4200 && npm run electron:serve-tsc && electron . --serve",
     "electron:local": "npm run build:prod && electron .",
-    "electron:build": "npm run build:prod && electron-builder build --publish=always && npm run publish echo 'done!",
-    "publish": "publish",
+    "electron:build": "npm run build:prod && electron-builder build --publish=always && echo 'done!",
     "test": "ng test --watch=false",
     "test:watch": "ng test",
     "e2e": "npm run build:prod && playwright test -c e2e/playwright.config.ts e2e/",
@@ -43,9 +46,6 @@
     "build_angular": "ng build --allowed-common-js-dependencies --base-href ./",
     "heroku-postbuild": "npm-run-all build_angular",
     "start_server": "node app/server.js"
-  },
-  "updater": {
-    "url": "https://github.com/klimchak/new-mandala/blob/electron-integration/updates.json"
   },
   "dependencies": {
     "@angular/animations": "~13.2.0",
@@ -129,7 +129,9 @@
     "ts-node": "10.7.0",
     "typescript": "4.5.5",
     "wait-on": "6.0.1",
-    "webdriver-manager": "12.1.8"
+    "webdriver-manager": "12.1.8",
+    "electron-builder-squirrel-windows": "*",
+    "electron-simple-publisher": "*"
   },
   "browserslist": [
     "chrome 100"

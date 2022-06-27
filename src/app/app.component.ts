@@ -76,6 +76,8 @@ export class AppComponent implements OnInit {
         });
       });
       this.electronService.ipcRenderer.send('start-update');
+      alert('ver 3')
+      console.log('bla bla bla')
     }
 
   }

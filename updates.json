@@ -2,7 +2,7 @@
   "win32-x64-prod": {
     "readme": "release 3",
     "update": "https://github.com/klimchak/new-mandala/blob/electron-integration/release.info.json",
-    "install": "https://github.com/klimchak/new-mandala/releases/download/untagged-960bf7f6c5696ee8c73f/mandala_app-Setup-0.0.3.exe",
+    "install": "https://github.com/klimchak/new-mandala/releases/download/untagged-34eef16380d0e818e768/Mandala-app-Setup-0.0.3.exe",
     "version": "0.0.3"
   },
   "darwin-x64-prod": {

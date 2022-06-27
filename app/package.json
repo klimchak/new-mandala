@@ -1,6 +1,6 @@
 {
   "name": "mandala_app",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "main.js",
   "description": "Application for create mandala based on Angular 13 with Electron 18",
   "homepage": "https://github.com/klimchak/new-mandala",
@@ -36,6 +36,8 @@
     "update-electron-app": "^2.0.1"
   },
   "devDependencies": {
-    "electron-installer-zip": "^0.1.2"
+    "electron-installer-zip": "^0.1.2",
+    "electron-builder-squirrel-windows": "*",
+    "electron-simple-publisher": "*"
   }
 }
