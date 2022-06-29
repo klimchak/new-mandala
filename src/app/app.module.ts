@@ -22,34 +22,36 @@ import {ToastModule} from 'primeng/toast';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AngularSvgIconModule} from 'angular-svg-icon';
+import {ButtonModule} from "primeng/button";
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserAnimationsModule,
-    CommonModule,
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    CoreModule,
-    SharedModule,
-    HomeModule,
-    DetailModule,
-    AppRoutingModule,
-    AngularSvgIconModule,
-    AngularSvgIconModule.forRoot(),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
-    ToastModule
-  ],
+    imports: [
+        BrowserAnimationsModule,
+        CommonModule,
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        CoreModule,
+        SharedModule,
+        HomeModule,
+        DetailModule,
+        AppRoutingModule,
+        AngularSvgIconModule,
+        AngularSvgIconModule.forRoot(),
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: httpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        ToastModule,
+        ButtonModule
+    ],
   providers: [DialogService, MessageService, CoreService],
   bootstrap: [AppComponent]
 })

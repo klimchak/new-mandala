@@ -6,7 +6,6 @@ import {PrimeNGConfig} from 'primeng/api';
 import {ApplicationOptionModel} from './modules/shared/models/application-option.model';
 import {MandalaModel} from './modules/shared/models/mandala.model';
 import {CoreService} from './modules/shared/services/core/core.service';
-import {UpdateDialogComponent} from './modules/shared/modals/update-dialog/update-dialog.component';
 import {DialogService} from 'primeng/dynamicdialog';
 
 
@@ -58,27 +57,6 @@ export class AppComponent implements OnInit {
             noRemandEdit: Boolean(item[item.length - 1].noRemandEdit),
           };
         });
-
-      this.electronService.ipcRenderer.on('update-available', () => {
-        this.dialogService.open(UpdateDialogComponent, {data: {}, closeOnEscape: true, closable: false, dismissableMask: true});
-      });
-      this.electronService.ipcRenderer.on('update-downloading', () => {
-        this.electronService.messageForUpdate.next({
-          message: 'Идет скачивание обновления',
-          restart: false
-        });
-      });
-      this.electronService.ipcRenderer.on('update-downloaded', () => {
-        this.electronService.ipcRenderer.removeAllListeners('update_downloaded');
-        this.electronService.messageForUpdate.next({
-          message: 'Обновление скачано и будет установлено после перезапуска. Перезапустить сейчас?',
-          restart: true
-        });
-      });
-      this.electronService.ipcRenderer.send('start-update');
-      alert('ver 3')
-      console.log('bla bla bla')
     }
-
   }
 }

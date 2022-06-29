@@ -38,7 +38,26 @@
               "jspdf",
               "canvg",
               "raf",
-              "@babel/runtime-corejs3"
+              "@babel/runtime-corejs3",
+              "rxjs-compat",
+              "core-js/modules/es.array.index-of.js",
+              "core-js/modules/es.array.iterator.js",
+              "core-js/modules/es.array.reduce.js",
+              "core-js/modules/es.array.reverse.js",
+              "core-js/modules/es.promise.js",
+              "core-js/modules/es.promise.js",
+              "core-js/modules/es.regexp.to-string.js",
+              "core-js/modules/es.regexp.to-string.js",
+              "core-js/modules/es.string.ends-with.js",
+              "core-js/modules/es.string.includes.js",
+              "core-js/modules/es.string.match.js",
+              "core-js/modules/es.string.replace.js",
+              "core-js/modules/es.string.split.js",
+              "core-js/modules/es.string.starts-with.js",
+              "core-js/modules/es.string.trim.js",
+              "core-js/modules/web.dom-collections.iterator.js",
+              "rxjs/operators",
+              "rxjs"
             ],
             "styles": [
               "src/styles.scss",
@@ -75,14 +94,14 @@
               ]
             },
             "production": {
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
+              "namedChunks": true,
+              "aot": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
+              "vendorChunk": true,
+              "buildOptimizer": false,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -208,5 +227,5 @@
       }
     }
   },
-  "defaultProject": "angular-electron"
+  "defaultProject": "MandalaApp"
 }
