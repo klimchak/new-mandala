@@ -44,13 +44,14 @@ export class ElectronService<TData> {
       this.childProcess = window.require('child_process');
       this.fs = window.require('fs');
       this.path = window.require('path');
-      this.knex = window.require('knex')({
-        client: 'sqlite3',
-        connection: {
-          filename: path.join(__dirname, dataTablePath),
-        },
-        useNullAsDefault: true
-      });
+      this.createConnection();
+      // this.knex = window.require('knex')({
+      //   client: 'sqlite3',
+      //   connection: {
+      //     filename: path.join(__dirname, dataTablePath),
+      //   },
+      //   useNullAsDefault: true
+      // });
 
       // Notes :
       // * A NodeJS's dependency imported with 'window.require' MUST BE present in `dependencies` of both `app/package.json`
@@ -66,8 +67,22 @@ export class ElectronService<TData> {
     }
   }
 
-  get isElectron(): boolean {
+  public get isElectron(): boolean {
     return !!(window && window.process && window.process.type);
+  }
+
+  public get isKnex(): boolean {
+    return typeof this.knex !== 'undefined';
+  }
+
+  public createConnection(): void {
+    this.knex = window.require('knex')({
+      client: 'sqlite3',
+      connection: {
+        filename: path.join(__dirname, dataTablePath),
+      },
+      useNullAsDefault: true
+    });
   }
 
   public restartApp() {

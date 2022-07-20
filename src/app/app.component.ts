@@ -29,6 +29,9 @@ export class AppComponent implements OnInit {
     // console.log('APP_CONFIG', APP_CONFIG);
 
     if (electronService.isElectron) {
+      if (!this.electronService.isKnex){
+        this.electronService.createConnection();
+      }
       // console.log(process.env);
       // console.log('Run in electron');
       // console.log('Electron ipcRenderer', this.electronService.ipcRenderer);

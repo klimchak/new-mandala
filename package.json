@@ -1,7 +1,7 @@
 {
   "name": "mandala_app",
   "productName": "Mandala app",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Application for create mandala based on Angular 13 with Electron 18",
   "homepage": "https://github.com/klimchak/new-mandala",
   "author": {
@@ -20,13 +20,10 @@
     "type": "git",
     "url": "git+https://github.com/klimchak/new-mandala.git"
   },
-  "updater": {
-    "url": "https://github.com/klimchak/new-mandala/blob/electron-integration/updates.json"
-  },
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "ng": "ng",
-    "start": "set APP_DEV=true && npm-run-all web:build electron:serve ng:serve",
+    "start": "set APP_DEV=true && npm run web:build && npm-run-all -p electron:serve ng:serve",
     "ng:serve": "ng serve -c web -o",
     "build": "npm run electron:serve-tsc && ng build --base-href ./",
     "build:dev": "npm run build -- -c dev",

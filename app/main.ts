@@ -1,12 +1,8 @@
-import {app, ipcMain, ipcRenderer} from 'electron';
-import {download} from "electron-dl";
+import {app, ipcMain} from 'electron';
 import {AppUpdater, KnexAdapter, MainWindow, PreloaderWindow} from "./electron-app.model";
+import {isEmpty, sortBy} from "lodash";
+import {copySync, remove} from "fs-extra";
 
-
-const dbPath = {
-  rootDBPath: `${app.getAppPath()}\\db.db`,
-  workDBPath: `${app.getAppPath()}\\resources\\app\\assets\\database\\db.db`
-}
 
 let knexAdapter: KnexAdapter;
 let mainWindow: MainWindow;
@@ -17,28 +13,104 @@ let appUpdater: AppUpdater;
 function startProgram(): void {
   setTimeout(() => {
     knexAdapter = new KnexAdapter();
-    mainWindow = new MainWindow(knexAdapter);
-    preloaderWindow = new PreloaderWindow(knexAdapter);
-    appUpdater = new AppUpdater(knexAdapter);
-    if (preloaderWindow.isDevMode) {
-      startMainWindow();
+    if (knexAdapter.isDevMode) {
+      preloaderWindow = new PreloaderWindow(knexAdapter);
+      knexAdapter.addKnexConnection();
+      knexAdapter.addSessionRecord();
+      setTimeout(() => mainWindow.createMainWindow(), 1000);
     } else {
-      preloaderWindow.createLoaderWindow(() => startMainWindowActions());
-      setTimeout(() => {
-        appUpdater.startCheckingUpdate(
-          preloaderWindow.window,
-          () => startMainWindowActions(),
-          () => ipcRenderer.send('start-update', true)
-        );
-      }, 1000);
+      knexAdapter.addKnexConnection();
+      try {
+        knexAdapter.readServiceInfo((items) => {
+          if (!isEmpty(items)) {
+            items = sortBy(items, (item) => {
+              return item.id
+            });
+            console.log('sessionLogs', items)
+            if (!items[items.length - 1].firstAfterUpdate) {
+              console.log('backupDBFile start copy')
+              knexAdapter.backupOrRestoreDBFile(true);
+              console.log('backupDBFile end copy')
+
+              knexAdapter.addKnexConnection();
+              preloaderWindow = new PreloaderWindow(knexAdapter);
+              mainWindow = new MainWindow(knexAdapter);
+              appUpdater = new AppUpdater(knexAdapter);
+              preloaderWindow.createLoaderWindow(() => startMainWindowActions());
+              setTimeout(() => {
+                appUpdater.startCheckingUpdate(
+                  preloaderWindow.window,
+                  () => startMainWindowActions(),
+                  () => {
+                    appUpdater.appUpdater.quitAndInstall();
+                  }
+                );
+              }, 1000);
+            } else {
+              console.log('restoreDBFile start copy')
+              if (knexAdapter.isConnected){
+                console.log('!!!!   isConnected    !!!!')
+                knexAdapter.knexAdapter.destroy();
+                knexAdapter.backupOrRestoreDBFile(false);
+                remove(knexAdapter.dataTablePath, (e) => {
+                  console.log('!@!@!@!@@ ', e)
+                  copySync(knexAdapter.dataTableReqPath, knexAdapter.dataTablePath, {overwrite: true});
+
+
+                  knexAdapter.addKnexConnection();
+
+                  preloaderWindow = new PreloaderWindow(knexAdapter);
+                  mainWindow = new MainWindow(knexAdapter);
+                  appUpdater = new AppUpdater(knexAdapter);
+
+                  preloaderWindow.createLoaderWindow(() => startMainWindowActions());
+                  setTimeout(() => {
+                    appUpdater.startCheckingUpdate(
+                      preloaderWindow.window,
+                      () => startMainWindowActions(),
+                      () => {
+                        appUpdater.appUpdater.quitAndInstall();
+                      }
+                    );
+                  }, 1000);
+
+
+                  console.log('restoreDBFile end copy')
+                });
+              }else {
+                console.log('!!!!   is disconnected    !!!!')
+                remove(knexAdapter.dataTablePath, (e) => {
+                  console.log('!@!@!@!@@ ', e)
+                  copySync(knexAdapter.dataTableReqPath, knexAdapter.dataTablePath, {overwrite: true});
+
+
+                  knexAdapter.addKnexConnection();
+
+                  preloaderWindow = new PreloaderWindow(knexAdapter);
+                  mainWindow = new MainWindow(knexAdapter);
+                  appUpdater = new AppUpdater(knexAdapter);
+
+                  preloaderWindow.createLoaderWindow(() => startMainWindowActions());
+                  setTimeout(() => {
+                    appUpdater.startCheckingUpdate(
+                      preloaderWindow.window,
+                      () => startMainWindowActions(),
+                      () => {
+                        appUpdater.appUpdater.quitAndInstall();
+                      }
+                    );
+                  }, 1000);
+                  console.log('restoreDBFile end copy')
+                });
+              }
+            }
+          }
+        });
+      } catch (e: any) {
+        console.log('error restore: ', e)
+      }
     }
   }, 500);
-}
-
-function startMainWindow(): void {
-  knexAdapter.addKnexConnection();
-  knexAdapter.addSessionRecord();
-  setTimeout(() => mainWindow.createMainWindow(), 1000);
 }
 
 function startMainWindowActions(): void {
@@ -47,7 +119,9 @@ function startMainWindowActions(): void {
     if (typeof preloaderWindow.window !== 'undefined') {
       preloaderWindow.window.close();
     }
-    startMainWindow();
+    knexAdapter.addKnexConnection();
+    knexAdapter.addSessionRecord();
+    setTimeout(() => mainWindow.createMainWindow(), 1000);
   }
 }
 
@@ -80,17 +154,6 @@ try {
   ipcMain.on('updaterIsClosed', (e, value) => {
     if (value) {
       startMainWindowActions();
-    }
-  });
-
-  ipcMain.on('start-update', (e, value) => {
-    if (value) {
-      console.log('start-update');
-      console.log('app version: ', app.getVersion());
-      download(mainWindow.window, dbPath.workDBPath, {errorTitle: 'errror'})
-        .then((value) => {
-          setTimeout(() => appUpdater.appUpdater.quitAndInstall(), 1000);
-        });
     }
   });
 

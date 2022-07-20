@@ -3,7 +3,7 @@ import * as url from 'url';
 import {Knex, knex} from "knex";
 import {NsisUpdater} from 'electron-updater';
 import {GithubOptions} from "builder-util-runtime/out/publishOptions";
-import {appendFileSync} from 'fs-extra'
+import {appendFileSync, copySync, remove} from 'fs-extra'
 import {UpdateInfo} from "builder-util-runtime";
 import {UpdateDownloadedEvent} from "electron-updater/out/main";
 import MessageBoxOptions = Electron.MessageBoxOptions;
@@ -42,6 +42,7 @@ export class MainWindow extends BaseWindow {
   constructor(knexAdapter: KnexAdapter) {
     super(knexAdapter);
     process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+    // console.log('process.env', process.env)
     this.setArgsAndServe();
   }
 
@@ -95,12 +96,27 @@ export class PreloaderWindow extends BaseWindow {
   }
 }
 
+export interface SessionLog {
+  id: number;
+  sessionStart: string;
+  sessionStop: string;
+  firstAfterUpdate: boolean;
+}
+
 
 export class KnexAdapter {
   public knexAdapter: Knex;
+  public dataTableReqPath: string = process.env['APPDATA'] + '\\dbreq.db';
   public dataTablePath = this.isDevMode ? `${app.getAppPath()}/src/assets/database/db.db` : `${app.getAppPath()}\\assets\\database\\db.db`;
-
-  private session = {id: Date.now(), sessionStart: new Date().toISOString(), sessionStop: null};
+  public get isConnected(): boolean{
+    return typeof this.knexAdapter !== 'undefined';
+  }
+  private session: SessionLog = {
+    id: Date.now(),
+    sessionStart: new Date().toISOString(),
+    sessionStop: null,
+    firstAfterUpdate: false
+  };
 
   public get isDevMode(): boolean {
     return !!process.env?.APP_DEV;
@@ -115,10 +131,19 @@ export class KnexAdapter {
       },
       useNullAsDefault: true
     });
+    console.log('@@@@@@@@@@@@@@@@@    new knex adapter       @@@@@@@@@@@@@@@@@@@@@@@@@')
   }
 
   public closeKnexConnection(): Promise<void> {
     return this.knexAdapter.destroy();
+  }
+
+  public readServiceInfo(callback?: (items) => void): void {
+    this.knexAdapter('serviceInfo').select('id', 'sessionStart', 'sessionStop', 'firstAfterUpdate').then((items) => {
+      callback(items);
+    }).catch((e) => {
+      this.addLogFileRecord('knexAdapter ERROR:  ' + e);
+    });
   }
 
   public addSessionRecord(callback?: () => void): void {
@@ -131,7 +156,10 @@ export class KnexAdapter {
   }
 
   public updateSessionRecord(callback?: () => void): void {
-    this.knexAdapter('serviceInfo').where('id', this.session.id).update({sessionStop: new Date().toISOString()})
+    this.knexAdapter('serviceInfo').where('id', this.session.id).update({
+      sessionStop: new Date().toISOString(),
+      firstAfterUpdate: false
+    })
       .then((value) => {
         this.addLogFileRecord(JSON.stringify(this.session));
         callback();
@@ -140,6 +168,17 @@ export class KnexAdapter {
 
   public addLogFileRecord(value: string): void {
     appendFileSync('mylog.txt', `${value} \n`);
+  }
+
+  public backupOrRestoreDBFile(backup: boolean): void {
+    if (backup) {
+      copySync(this.dataTablePath, this.dataTableReqPath, {overwrite: true});
+    } else {
+      remove(this.dataTablePath, (e) => {
+        console.log('!@!@!@!@@ ', e)
+        copySync(this.dataTableReqPath, this.dataTablePath, {overwrite: true});
+      });
+    }
   }
 }
 
@@ -156,20 +195,21 @@ export class AppUpdater {
     channel: 'latest',
     releaseType: "release",
   } as GithubOptions;
+
   public noListeners = false;
   public appUpdater: NsisUpdater;
 
   public knexAdapter: KnexAdapter;
 
   constructor(knexAdapter: KnexAdapter) {
-    this.appUpdater = new NsisUpdater(this.options);
     this.knexAdapter = knexAdapter;
+    this.appUpdater = new NsisUpdater(this.options);
   }
 
   public startCheckingUpdate(window: BrowserWindow, UpdateNotAvailableCallback: () => void, UpdateDownloadedCallback: () => void): void {
     this.updaterError(window, () => UpdateNotAvailableCallback());
-    this.updaterCheckingForUpdate();
-    this.updaterUpdateAvailable();
+    // this.updaterCheckingForUpdate();
+    // this.updaterUpdateAvailable();
     this.updaterUpdateNotAvailable(() => UpdateNotAvailableCallback());
     this.updaterUpdateDownloaded(window, () => UpdateDownloadedCallback());
     this.appUpdater.checkForUpdatesAndNotify({body: 'Идет получение необходимых файлов.', title: 'Обновление найдено'});
@@ -218,15 +258,15 @@ export class AppUpdater {
       UpdaterEventsType.update_downloaded,
       (event: UpdateDownloadedEvent) => {
         this.knexAdapter.addLogFileRecord('start-update update-downloaded: ' + event);
-        this.showDialog(
-          window,
-          'question',
-          'Обновление программы',
-          'Новая версия доступна для установки. Программа обновится автоматически после закрытия.',
-          () => {
+        // this.showDialog(
+        //   window,
+        //   'question',
+        //   'Обновление программы',
+        //   'Новая версия доступна для установки. Программа обновится автоматически после закрытия.',
+        //   () => {
             callback();
-          }
-        );
+          // }
+        // );
       });
   }
 
