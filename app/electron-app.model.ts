@@ -85,7 +85,7 @@ export class PreloaderWindow extends BaseWindow {
   }
 
   public createLoaderWindow(callback: () => void): void {
-    this.window = new BrowserWindow({width: 600, height: 400, frame: true, autoHideMenuBar: true, opacity: 0.9});
+    this.window = new BrowserWindow({width: 600, height: 400, frame: false, autoHideMenuBar: true, opacity: 0.9});
     this.webContext = this.window.webContents;
     this.loadingUrl();
     this.webContext.on('did-fail-load', () => this.loadingUrl());

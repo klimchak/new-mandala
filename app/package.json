@@ -1,6 +1,6 @@
 {
   "name": "mandala_app",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "main.js",
   "description": "Application for create mandala based on Angular 13 with Electron 18",
   "homepage": "https://github.com/klimchak/new-mandala",
