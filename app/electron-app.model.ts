@@ -149,7 +149,9 @@ export class KnexAdapter {
   public addSessionRecord(callback?: () => void): void {
     this.knexAdapter('serviceInfo').insert([this.session]).then(() => {
       this.addLogFileRecord(JSON.stringify(this.session));
-      callback();
+      if (typeof callback !== 'undefined'){
+        callback();
+      }
     }).catch((e) => {
       this.addLogFileRecord('knexAdapter ERROR:  ' + e);
     });
@@ -162,7 +164,9 @@ export class KnexAdapter {
     })
       .then((value) => {
         this.addLogFileRecord(JSON.stringify(this.session));
-        callback();
+        if (typeof callback !== 'undefined'){
+          callback();
+        }
       })
   }
 
