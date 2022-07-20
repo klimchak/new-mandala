@@ -17,6 +17,7 @@ function startProgram(): void {
       preloaderWindow = new PreloaderWindow(knexAdapter);
       knexAdapter.addKnexConnection();
       knexAdapter.addSessionRecord();
+      mainWindow = new MainWindow(knexAdapter);
       setTimeout(() => mainWindow.createMainWindow(), 1000);
     } else {
       knexAdapter.addKnexConnection();

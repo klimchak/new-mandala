@@ -103,9 +103,7 @@ export class EditorComponent implements OnInit {
   public setMandalaWord(): void {
     this.modelMandala.source.word = this.startedParams.baseWord.toLowerCase();
     this.modelMandala.source.mandalaVersion = this.startedParams.generationVariant;
-    // const setAddWord = this.startedParams.double;
     const abbrMand = this.startedParams.abbreviation;
-    // const setAlbum = this.startedParams.landscape;
     const choicePaper: PaperOptions = this.rendererService.getPaperSize();
     this.modelMandala.source.pageSize.width = choicePaper.width;
     this.modelMandala.source.pageSize.height = choicePaper.height;
@@ -117,51 +115,34 @@ export class EditorComponent implements OnInit {
     this.timeStart = Date.now();
 
     let strToHex = '';
-    for (let i = 0; i < this.modelMandala.source.word.length; i++) {
-      // @ts-ignore
-      let r = arr_ru[this.modelMandala.source.word[i]];
-      if (r === 10 || r === 20 || r === 30) {
-        if (r === 10) {
-          r = 1;
-        }
-        if (r === 20) {
-          r = 2;
-        }
-        if (r === 30) {
-          r = 3;
-        }
-      }
-      strToHex += String(r);
-    }
+    this.modelMandala.source.word.split('').forEach((item) => strToHex = `${strToHex}${this.fromDecToOne(arr_ru[item])}`);
+
     strToHex.trim();
     let countHex = strToHex.length - 1;
     // доп параметры
     // обратный вариант
-    if (this.modelMandala.source.mandalaVersion === 2 || this.modelMandala.source.mandalaVersion === 6) {
+    if (this.modelMandala.source.mandalaVersion === 2) {
       strToHex = strToHex.split('').reverse().join('');
     }
     // от центра с удвоением
-    if (this.modelMandala.source.mandalaVersion === 3 || this.modelMandala.source.mandalaVersion === 7) {
-      const strB = strToHex;
-      const strA = strToHex.split('').reverse().join('');
+    if (this.modelMandala.source.mandalaVersion === 3 || this.modelMandala.source.mandalaVersion === 5) {
       if (abbrMand) {
-        strToHex = String(strA) + String(strB).substr(1, strB.length);
+        strToHex = `${strToHex}${strToHex.split('').reverse().splice(1, strToHex.split('').length).join('')}`;
       } else {
-        strToHex = String(strA) + String(strB);
+        strToHex = `${strToHex}${strToHex.split('').reverse().join('')}`;
       }
       countHex = strToHex.length - 1;
     }
     // к центру с удвоением
-    if (this.modelMandala.source.mandalaVersion === 4 || this.modelMandala.source.mandalaVersion === 8) {
-      const strB = strToHex;
-      const strA = strToHex.split('').reverse().join('');
+    if (this.modelMandala.source.mandalaVersion === 4 || this.modelMandala.source.mandalaVersion === 6) {
       if (abbrMand) {
-        strToHex = String(strB) + String(strA).substr(1, strA.length);
+        strToHex = `${strToHex.split('').reverse().splice(1, strToHex.split('').length).join('')}${strToHex}`;
       } else {
-        strToHex = String(strB) + String(strA);
+        strToHex = `${strToHex.split('').reverse().join('')}${strToHex}`;
       }
       countHex = strToHex.length - 1;
     }
+    console.log('слово ', strToHex, 'число цифр', strToHex);
     this.modelMandala.source.wordInInt = strToHex;
     this.modelMandala.source.countWord = countHex;
     this.showWord = 'Использовано слово: ' + this.modelMandala.source.word;
@@ -855,6 +836,16 @@ export class EditorComponent implements OnInit {
       // @ts-ignore
       return stage.node.children[0].children[o];
     }
+  }
+
+  private fromDecToOne(numb: number): number {
+    if (numb >= 10){
+      numb = Number(String(numb)[0]) + Number(String(numb)[1]);
+    }
+    if (numb >= 10){
+      numb = Number(String(numb)[0]) + Number(String(numb)[1]);
+    }
+    return numb;
   }
 
   private timeConversion(millisec: number) {

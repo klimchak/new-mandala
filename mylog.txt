@@ -329,3 +329,8 @@ knexAdapter ERROR:  TypeError: callback is not a function
 {"id":1658170866660,"sessionStart":"2022-07-18T19:01:06.660Z","sessionStop":null,"firstAfterUpdate":false} 
 {"id":1658242577295,"sessionStart":"2022-07-19T14:56:17.295Z","sessionStop":null,"firstAfterUpdate":false} 
 knexAdapter ERROR:  TypeError: callback is not a function 
+{"id":1658304894945,"sessionStart":"2022-07-20T08:14:54.945Z","sessionStop":null,"firstAfterUpdate":false} 
+knexAdapter ERROR:  TypeError: callback is not a function 
+{"id":1658305011901,"sessionStart":"2022-07-20T08:16:51.901Z","sessionStop":null,"firstAfterUpdate":false} 
+knexAdapter ERROR:  TypeError: callback is not a function 
+{"id":1658305011901,"sessionStart":"2022-07-20T08:16:51.901Z","sessionStop":null,"firstAfterUpdate":false} 

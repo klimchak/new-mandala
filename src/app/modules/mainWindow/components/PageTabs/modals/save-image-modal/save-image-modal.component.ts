@@ -66,10 +66,10 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
       case MandalaVariant.LIGHT_IN_CENTER_LIGHT:
         version = '_ЛУЧ_к_центру';
         break;
-      case MandalaVariant.MARGIN_CENTER_APEX:
+      case MandalaVariant.MARGIN_FROM_CENTER_TO_APEX:
         version = '_ГРАНЬ_от_центра';
         break;
-      case MandalaVariant.MARGIN_APEX_CENTER:
+      case MandalaVariant.MARGIN_FROM_APEX_TO_CENTER:
         version = '_ГРАНЬ_к_центру';
         break;
     }

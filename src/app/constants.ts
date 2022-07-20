@@ -18,10 +18,10 @@ export enum PaperSize {
 export enum MandalaVariant {
   LIGHT_FROM_CENTER_MAND = 1,
   LIGHT_IN_CENTER_MAND,
-  LIGHT_FROM_CENTER_LIGHT,
   LIGHT_IN_CENTER_LIGHT,
-  MARGIN_CENTER_APEX,
-  MARGIN_APEX_CENTER,
+  LIGHT_FROM_CENTER_LIGHT,
+  MARGIN_FROM_APEX_TO_CENTER,
+  MARGIN_FROM_CENTER_TO_APEX,
 }
 
 export const MANDALA_VARIANTS = [
@@ -29,8 +29,8 @@ export const MANDALA_VARIANTS = [
   {value: MandalaVariant.LIGHT_IN_CENTER_MAND, title: 'По лучам к центру мандалы', inactive: false},
   {value: MandalaVariant.LIGHT_FROM_CENTER_LIGHT, title: 'По лучам от центра луча', inactive: true},
   {value: MandalaVariant.LIGHT_IN_CENTER_LIGHT, title: 'По лучам к центру луча', inactive: true},
-  {value: MandalaVariant.MARGIN_CENTER_APEX, title: 'По грани от центра к вершине', inactive: true},
-  {value: MandalaVariant.MARGIN_APEX_CENTER, title: 'По грани от вершины к центру', inactive: true},
+  {value: MandalaVariant.MARGIN_FROM_CENTER_TO_APEX, title: 'По грани от центра к вершине', inactive: true},
+  {value: MandalaVariant.MARGIN_FROM_APEX_TO_CENTER, title: 'По грани от вершины к центру', inactive: true},
 ];
 
 export const PAPER_VARIANTS = [

@@ -47,9 +47,9 @@ export class ShadowHelpTextComponent {
         return 'по лучу от центра луча';
       case MandalaVariant.LIGHT_IN_CENTER_LIGHT:
         return 'по лучу к центру луча';
-      case MandalaVariant.MARGIN_CENTER_APEX:
+      case MandalaVariant.MARGIN_FROM_CENTER_TO_APEX:
         return 'по грани от центра грани';
-      case MandalaVariant.MARGIN_APEX_CENTER:
+      case MandalaVariant.MARGIN_FROM_APEX_TO_CENTER:
         return 'по грани к центру грани';
     }
   }
