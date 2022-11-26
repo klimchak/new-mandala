@@ -1,17 +1,17 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {jsPDF} from 'jspdf';
-import {CoreService} from '../../../../../shared/services/core/core.service';
+import {CoreService} from '../../../../shared/services/core/core.service';
 import {FormControl, FormGroup} from '@angular/forms';
-import {MandalaVariant, PaperSize} from '../../../../../../constants';
-import {ALL_WORDS} from '../../../../../shared/constants';
-import {MovingDialogComponent} from '../../../../../shared/modals/moving-dialog/moving-dialog.component';
+import {MandalaVariant, PaperSize} from '../../../../../constants';
+import {ALL_WORDS} from '../../../../shared/constants';
+import {MovingDialogComponent} from '../../../../shared/modals/moving-dialog/moving-dialog.component';
 import {svg2pdf} from 'svg2pdf.js';
-import {PaperOptions} from '../../../../../shared/models/mandala.model';
-import {LoadingService} from '../../../../../shared/services/loader/loader.service';
+import {PaperOptions} from '../../../../shared/models/mandala.model';
+import {LoadingService} from '../../../../shared/services/loader/loader.service';
 import {Canvg} from 'canvg';
 import {
   ToastNotificationsService
-} from '../../../../../shared/services/toast-notifications/toast-notifications.service';
+} from '../../../../shared/services/toast-notifications/toast-notifications.service';
 
 @Component({
   selector: 'app-save-image-modal',

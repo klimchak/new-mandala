@@ -16,7 +16,7 @@ import { DetailModule } from './detail/detail.module';
 import { AppComponent } from './app.component';
 import {SharedModule} from './modules/shared/shared.module';
 import {DialogService} from 'primeng/dynamicdialog';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {CoreService} from './modules/shared/services/core/core.service';
 import {ToastModule} from 'primeng/toast';
 import {CommonModule} from '@angular/common';
@@ -52,7 +52,7 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
         ToastModule,
         ButtonModule
     ],
-  providers: [DialogService, MessageService, CoreService],
+  providers: [DialogService, MessageService, CoreService, ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

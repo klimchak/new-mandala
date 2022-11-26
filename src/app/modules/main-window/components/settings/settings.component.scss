@@ -1,0 +1,135 @@
+@import "../../../../../styles";
+
+.app-setting {
+  height: calc(100vh - 97px);
+  width: 100%;
+
+  &__progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(44, 51, 63, 0.61);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &--bar {
+      width: calc(100% - 100px);
+    }
+  }
+
+  &__container {
+    &__actions {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      padding: 1rem;
+
+      &__wrapper {
+        margin-bottom: 1rem;
+      }
+
+      &__top {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        flex: 8;
+      }
+
+      &__bottom {
+        display: flex;
+        flex: 1;
+        align-items: flex-end;
+        &--action{
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      &__title {
+        margin-bottom: 1rem;
+        @include text-base(18px);
+      }
+
+      &__label {
+        margin-bottom: .5rem;
+      }
+    }
+
+    &__logs {
+      display: flex;
+      flex-direction: column;
+      flex: 3;
+      padding: 1rem;
+      @include text-base(14px);
+
+      &__wrapper {
+        margin-bottom: 1rem;
+        margin-left: .5rem;
+        padding-left: .5rem;
+
+        &:hover {
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.25) !important;
+          filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.8));
+        }
+      }
+
+      &__top {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        flex: 8;
+      }
+
+      &__bottom {
+        display: flex;
+        flex: 1;
+        align-items: flex-end;
+        &--action{
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      &__title {
+        margin-bottom: 1rem;
+        @include text-base(18px);
+      }
+
+      &--title {
+        margin-bottom: .5rem;
+        color: $black-color;
+      }
+
+      &__content {
+        color: $grey-color-1;
+
+        &--value {
+          color: $black-color;
+        }
+      }
+
+      &__actions {
+        padding-top: 1rem;
+      }
+    }
+  }
+}
+
+.p-splitter .p-splitter-gutter {
+  background: #d4d4d4;
+}
+
+.p-splitter .p-splitter-gutter .p-splitter-gutter-handle {
+  background: #747679;
+}
+
+.p-scrollpanel .p-scrollpanel-bar {
+  background: #747679;
+}
+
+.error-content {
+  color: $error-color;
+}

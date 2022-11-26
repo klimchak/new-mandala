@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {DynamicDialogConfig} from 'primeng/dynamicdialog';
-import {CoreService} from '../../../../../shared/services/core/core.service';
-import {CallbackAnyReturn} from '../../../../../shared/models/callback-any-return.model';
+import {CoreService} from '../../../../shared/services/core/core.service';
+import {CallbackAnyReturn} from '../../../../shared/models/callback-any-return.model';
 import {FormControl, FormGroup} from '@angular/forms';
-import {MandalaModel} from '../../../../../shared/models/mandala.model';
-import {CheckedColor} from '../../../../../shared/models/checked-color.model';
-import {$animations} from '../../../../../shared/animations/animations';
-import {MovingDialogComponent} from '../../../../../shared/modals/moving-dialog/moving-dialog.component';
+import {MandalaModel} from '../../../../shared/models/mandala.model';
+import {CheckedColor} from '../../../../shared/models/checked-color.model';
+import {$animations} from '../../../../shared/animations/animations';
+import {MovingDialogComponent} from '../../../../shared/modals/moving-dialog/moving-dialog.component';
 
 @Component({
   selector: 'app-colored-modal',

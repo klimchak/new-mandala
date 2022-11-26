@@ -1,9 +1,8 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {PageTabsComponent} from "./components/page-tabs/page-tabs.component";
 
-import {MainWindowComponent} from "./components/main-window.component";
-
-const routes: Routes = [{ path: '', component: MainWindowComponent}];
+const routes: Routes = [{ path: '', component: PageTabsComponent}];
 
 @NgModule({
   imports: [

@@ -1,14 +1,14 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {MovingDialogComponent} from '../../../../../shared/modals/moving-dialog/moving-dialog.component';
-import {MandalaParamsModel} from '../../../../../shared/models/mandala-params.model';
+import {MovingDialogComponent} from '../../../../shared/modals/moving-dialog/moving-dialog.component';
+import {MandalaParamsModel} from '../../../../shared/models/mandala-params.model';
 import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {
   ToastNotificationsService
-} from '../../../../../shared/services/toast-notifications/toast-notifications.service';
+} from '../../../../shared/services/toast-notifications/toast-notifications.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {PopupActionsEnum, PopupCallbackModel} from '../../../../../shared/models/popup-callback.model';
-import {EDITOR_MODULES} from '../../../../../shared/constants';
-import {CoreService} from '../../../../../shared/services/core/core.service';
+import {PopupActionsEnum, PopupCallbackModel} from '../../../../shared/models/popup-callback.model';
+import {EDITOR_MODULES} from '../../../../shared/constants';
+import {CoreService} from '../../../../shared/services/core/core.service';
 import {isDate} from 'lodash';
 
 @Component({

@@ -10,8 +10,9 @@
         <app-savior (setRestoredView)="setRestoredView($event)"></app-savior>
       </ng-template>
     </p-tabPanel>
-    <p-tabPanel header="Настройки" [disabled]="true" [cache]="true">
+    <p-tabPanel header="Настройки" [disabled]="false" [cache]="true">
       <ng-template pTemplate="content">
+        <app-settings></app-settings>
       </ng-template>
     </p-tabPanel>
 

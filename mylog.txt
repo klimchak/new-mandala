@@ -268,76 +268,80 @@ C:\develop\new-mandala\app
 {"id":1656431825324,"sessionStart":"2022-06-28T15:57:05.324Z","sessionStop":null}
 C:\develop\new-mandala\app
 {"id":1656431970361,"sessionStart":"2022-06-28T15:59:30.361Z","sessionStop":null}
-{"id":1656455037925,"sessionStart":"2022-06-28T22:23:57.925Z","sessionStop":null} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1656455037925,"sessionStart":"2022-06-28T22:23:57.925Z","sessionStop":null} 
-{"id":1656455090467,"sessionStart":"2022-06-28T22:24:50.467Z","sessionStop":null} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1656455090467,"sessionStart":"2022-06-28T22:24:50.467Z","sessionStop":null} 
-{"id":1656455217997,"sessionStart":"2022-06-28T22:26:57.997Z","sessionStop":null} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1656455217997,"sessionStart":"2022-06-28T22:26:57.997Z","sessionStop":null} 
-{"id":1656457725165,"sessionStart":"2022-06-28T23:08:45.165Z","sessionStop":null} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1656457725165,"sessionStart":"2022-06-28T23:08:45.165Z","sessionStop":null} 
-{"id":1656668341669,"sessionStart":"2022-07-01T09:39:01.669Z","sessionStop":null} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658046193572,"sessionStart":"2022-07-17T08:23:13.572Z","sessionStop":null} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658160077333,"sessionStart":"2022-07-18T16:01:17.333Z","sessionStop":null} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658160864067,"sessionStart":"2022-07-18T16:14:24.067Z","sessionStop":null} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658160972760,"sessionStart":"2022-07-18T16:16:12.760Z","sessionStop":null} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658163915627,"sessionStart":"2022-07-18T17:05:15.627Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658163915627,"sessionStart":"2022-07-18T17:05:15.627Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658163985771,"sessionStart":"2022-07-18T17:06:25.771Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658163985771,"sessionStart":"2022-07-18T17:06:25.771Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658164056562,"sessionStart":"2022-07-18T17:07:36.562Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658164328533,"sessionStart":"2022-07-18T17:12:08.533Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-knexAdapter ERROR:  Error: aborted 
-{"id":1658169264798,"sessionStart":"2022-07-18T18:34:24.798Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658169264798,"sessionStart":"2022-07-18T18:34:24.798Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658169362656,"sessionStart":"2022-07-18T18:36:02.656Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658169517836,"sessionStart":"2022-07-18T18:38:37.836Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658169782587,"sessionStart":"2022-07-18T18:43:02.587Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658169782587,"sessionStart":"2022-07-18T18:43:02.587Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658169929805,"sessionStart":"2022-07-18T18:45:29.805Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658169929805,"sessionStart":"2022-07-18T18:45:29.805Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658170082970,"sessionStart":"2022-07-18T18:48:02.970Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658170436959,"sessionStart":"2022-07-18T18:53:56.959Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658170530234,"sessionStart":"2022-07-18T18:55:30.234Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658170530234,"sessionStart":"2022-07-18T18:55:30.234Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658170644968,"sessionStart":"2022-07-18T18:57:24.968Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658170644968,"sessionStart":"2022-07-18T18:57:24.968Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658170866660,"sessionStart":"2022-07-18T19:01:06.660Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658170866660,"sessionStart":"2022-07-18T19:01:06.660Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658242577295,"sessionStart":"2022-07-19T14:56:17.295Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658304894945,"sessionStart":"2022-07-20T08:14:54.945Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658305011901,"sessionStart":"2022-07-20T08:16:51.901Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658305011901,"sessionStart":"2022-07-20T08:16:51.901Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658312885276,"sessionStart":"2022-07-20T10:28:05.276Z","sessionStop":null,"firstAfterUpdate":false} 
-knexAdapter ERROR:  TypeError: callback is not a function 
-{"id":1658312885276,"sessionStart":"2022-07-20T10:28:05.276Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658313373502,"sessionStart":"2022-07-20T10:36:13.502Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658313373502,"sessionStart":"2022-07-20T10:36:13.502Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658313461752,"sessionStart":"2022-07-20T10:37:41.752Z","sessionStop":null,"firstAfterUpdate":false} 
-{"id":1658313461752,"sessionStart":"2022-07-20T10:37:41.752Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1656455037925,"sessionStart":"2022-06-28T22:23:57.925Z","sessionStop":null}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1656455037925,"sessionStart":"2022-06-28T22:23:57.925Z","sessionStop":null}
+{"id":1656455090467,"sessionStart":"2022-06-28T22:24:50.467Z","sessionStop":null}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1656455090467,"sessionStart":"2022-06-28T22:24:50.467Z","sessionStop":null}
+{"id":1656455217997,"sessionStart":"2022-06-28T22:26:57.997Z","sessionStop":null}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1656455217997,"sessionStart":"2022-06-28T22:26:57.997Z","sessionStop":null}
+{"id":1656457725165,"sessionStart":"2022-06-28T23:08:45.165Z","sessionStop":null}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1656457725165,"sessionStart":"2022-06-28T23:08:45.165Z","sessionStop":null}
+{"id":1656668341669,"sessionStart":"2022-07-01T09:39:01.669Z","sessionStop":null}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658046193572,"sessionStart":"2022-07-17T08:23:13.572Z","sessionStop":null}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658160077333,"sessionStart":"2022-07-18T16:01:17.333Z","sessionStop":null}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658160864067,"sessionStart":"2022-07-18T16:14:24.067Z","sessionStop":null}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658160972760,"sessionStart":"2022-07-18T16:16:12.760Z","sessionStop":null}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658163915627,"sessionStart":"2022-07-18T17:05:15.627Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658163915627,"sessionStart":"2022-07-18T17:05:15.627Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658163985771,"sessionStart":"2022-07-18T17:06:25.771Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658163985771,"sessionStart":"2022-07-18T17:06:25.771Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658164056562,"sessionStart":"2022-07-18T17:07:36.562Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658164328533,"sessionStart":"2022-07-18T17:12:08.533Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+knexAdapter ERROR:  Error: aborted
+{"id":1658169264798,"sessionStart":"2022-07-18T18:34:24.798Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658169264798,"sessionStart":"2022-07-18T18:34:24.798Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658169362656,"sessionStart":"2022-07-18T18:36:02.656Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658169517836,"sessionStart":"2022-07-18T18:38:37.836Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658169782587,"sessionStart":"2022-07-18T18:43:02.587Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658169782587,"sessionStart":"2022-07-18T18:43:02.587Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658169929805,"sessionStart":"2022-07-18T18:45:29.805Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658169929805,"sessionStart":"2022-07-18T18:45:29.805Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658170082970,"sessionStart":"2022-07-18T18:48:02.970Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658170436959,"sessionStart":"2022-07-18T18:53:56.959Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658170530234,"sessionStart":"2022-07-18T18:55:30.234Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658170530234,"sessionStart":"2022-07-18T18:55:30.234Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658170644968,"sessionStart":"2022-07-18T18:57:24.968Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658170644968,"sessionStart":"2022-07-18T18:57:24.968Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658170866660,"sessionStart":"2022-07-18T19:01:06.660Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658170866660,"sessionStart":"2022-07-18T19:01:06.660Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658242577295,"sessionStart":"2022-07-19T14:56:17.295Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658304894945,"sessionStart":"2022-07-20T08:14:54.945Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658305011901,"sessionStart":"2022-07-20T08:16:51.901Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658305011901,"sessionStart":"2022-07-20T08:16:51.901Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658312885276,"sessionStart":"2022-07-20T10:28:05.276Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  TypeError: callback is not a function
+{"id":1658312885276,"sessionStart":"2022-07-20T10:28:05.276Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658313373502,"sessionStart":"2022-07-20T10:36:13.502Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658313373502,"sessionStart":"2022-07-20T10:36:13.502Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658313461752,"sessionStart":"2022-07-20T10:37:41.752Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658313461752,"sessionStart":"2022-07-20T10:37:41.752Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1669470229330,"sessionStart":"2022-11-26T13:43:49.330Z","sessionStop":null,"firstAfterUpdate":false}
+knexAdapter ERROR:  Error: insert into `serviceInfo` (`firstAfterUpdate`, `id`, `sessionStart`, `sessionStop`) values (false, 1669470875339, '2022-11-26T13:54:35.339Z', NULL) - SQLITE_ERROR: table serviceInfo has no column named firstAfterUpdate
+{"id":1669471083415,"sessionStart":"2022-11-26T13:58:03.415Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1669476804491,"sessionStart":"2022-11-26T15:33:24.491Z","sessionStop":null,"firstAfterUpdate":false}

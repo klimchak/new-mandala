@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 // If you import a module but never use any of the imported values other than as TypeScript types,
 // the resulting javascript file will look as if you never imported the module at all.
-import {ipcRenderer, webFrame} from 'electron';
+import {ipcRenderer, webFrame, shell} from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
 import {Knex} from 'knex';
@@ -22,6 +22,7 @@ export class ElectronService<TData> {
   fs: typeof fs;
   knex: Knex;
   path: typeof path;
+  electronShell: typeof shell;
 
   public session: SessionModel = {
     id: null,
@@ -40,6 +41,7 @@ export class ElectronService<TData> {
       this.ipcRenderer = window.require('electron').ipcRenderer;
 
       this.webFrame = window.require('electron').webFrame;
+      this.electronShell = window.require('electron').shell;
 
       this.childProcess = window.require('child_process');
       this.fs = window.require('fs');
@@ -52,18 +54,6 @@ export class ElectronService<TData> {
       //   },
       //   useNullAsDefault: true
       // });
-
-      // Notes :
-      // * A NodeJS's dependency imported with 'window.require' MUST BE present in `dependencies` of both `app/package.json`
-      // and `package.json (root folder)` in order to make it work here in Electron's Renderer process (src folder)
-      // because it will loaded at runtime by Electron.
-      // * A NodeJS's dependency imported with TS module import (ex: import { Dropbox } from 'dropbox') CAN only be present
-      // in `dependencies` of `package.json (root folder)` because it is loaded during build phase and does not need to be
-      // in the final bundle. Reminder : only if not used in Electron's Main process (app folder)
-
-      // If you want to use a NodeJS 3rd party deps in Renderer process,
-      // ipcRenderer.invoke can serve many common use cases.
-      // https://www.electronjs.org/docs/latest/api/ipc-renderer#ipcrendererinvokechannel-args
     }
   }
 
@@ -73,6 +63,11 @@ export class ElectronService<TData> {
 
   public get isKnex(): boolean {
     return typeof this.knex !== 'undefined';
+  }
+
+  public openAppFolder(): void{
+    // this.electronShell.showItemInFolder('');
+    this.electronShell.openPath('');
   }
 
   public createConnection(): void {
@@ -111,6 +106,20 @@ export class ElectronService<TData> {
    */
   public removeFile(filePath: string): any {
     this.fs.rmdirSync(filePath);
+  }
+
+  /**
+   * @param filePath {string}
+   */
+  public readeFile(filePath: string): any {
+    return this.fs.readFileSync(filePath, {encoding: 'utf-8'})
+  }
+
+  /**
+   * @param filePath {string}
+   */
+  public clearFile(filePath: string): any {
+    return this.fs.writeFileSync(filePath, '');
   }
 
 

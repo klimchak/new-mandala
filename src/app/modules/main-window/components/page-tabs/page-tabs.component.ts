@@ -1,13 +1,13 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {DialogService} from 'primeng/dynamicdialog';
 import {PopupCallbackModel} from '../../../shared/models/popup-callback.model';
-import {ParamsModalComponent} from './modals/params-modal/params-modal.component';
+import {ParamsModalComponent} from '../modals/params-modal/params-modal.component';
 import {CoreService} from '../../../shared/services/core/core.service';
-import {SaveImageModalComponent} from './modals/save-image-modal/save-image-modal.component';
+import {SaveImageModalComponent} from '../modals/save-image-modal/save-image-modal.component';
 import {Subject, takeUntil} from 'rxjs';
 import {ALL_WORDS} from '../../../shared/constants';
 import {MenuItem} from 'primeng/api';
-import {SaveDbModalComponent} from './modals/save-db-modal/save-db-modal.component';
+import {SaveDbModalComponent} from '../modals/save-db-modal/save-db-modal.component';
 import {Tab} from '../../../../constants';
 import {MandalaModel, MandalaModelDB, MandalaModelUtility} from '../../../shared/models/mandala.model';
 import {ElectronService} from '../../../../core/services';

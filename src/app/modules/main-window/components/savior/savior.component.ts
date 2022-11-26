@@ -1,22 +1,22 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {ElectronService} from '../../../../../core/services';
+import {ElectronService} from '../../../../core/services';
 import {
   DBCallbackAbbreviated, MandalaModel,
   MandalaModelDB, MandalaModelUtility,
   MandalaTableModelClass,
   selectTableRows
-} from '../../../../shared/models/mandala.model';
+} from '../../../shared/models/mandala.model';
 import {get, isDate, isEmpty, unionBy} from 'lodash';
-import {TableConfigModel} from '../../../../shared/models/tableTypes';
-import {EDITOR_MODULES} from '../../../../shared/constants';
-import {$animations} from '../../../../shared/animations/animations';
+import {TableConfigModel} from '../../../shared/models/tableTypes';
+import {EDITOR_MODULES} from '../../../shared/constants';
+import {$animations} from '../../../shared/animations/animations';
 import {Table} from 'primeng/table';
 import {DialogService} from 'primeng/dynamicdialog';
-import {ConfirmationDialogComponent} from '../../../../shared/modals/confirmation-dialog/confirmation-dialog.component';
-import {ApplicationOptionModel} from '../../../../shared/models/application-option.model';
-import {NoRemandType} from '../../../../shared/models/confirm-popup.model';
-import {CoreService} from '../../../../shared/services/core/core.service';
-import {ToastNotificationsService} from '../../../../shared/services/toast-notifications/toast-notifications.service';
+import {ConfirmationDialogComponent} from '../../../shared/modals/confirmation-dialog/confirmation-dialog.component';
+import {ApplicationOptionModel} from '../../../shared/models/application-option.model';
+import {NoRemandType} from '../../../shared/models/confirm-popup.model';
+import {CoreService} from '../../../shared/services/core/core.service';
+import {ToastNotificationsService} from '../../../shared/services/toast-notifications/toast-notifications.service';
 
 @Component({
   selector: 'app-savior',

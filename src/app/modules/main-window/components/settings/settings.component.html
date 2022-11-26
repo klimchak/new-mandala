@@ -1,0 +1,78 @@
+<div class="app-setting" [formGroup]="settingForm">
+  <p-splitter [style]="{'height': '100%'}" [panelSizes]="[40,60]" [minSizes]="[30,30]" stateKey="settingSplit"
+              stateStorage="local">
+    <ng-template pTemplate>
+      <div class="app-setting__container app-setting__container__actions">
+        <div class="app-setting__container__actions__top">
+          <div class="app-setting__container__actions__title">{{settingsStrings.appSetting}}</div>
+          <div class="app-setting__container__actions__wrapper">
+            <div class="app-setting__container__actions__label">{{settingsStrings.openRecent}}</div>
+            <p-selectButton [options]="baseVariant" formControlName="openRecent" optionLabel="name"
+                            optionValue="value"></p-selectButton>
+          </div>
+          <div class="app-setting__container__actions__wrapper">
+            <div class="app-setting__container__actions__label">{{settingsStrings.autoSaveEditor}}</div>
+            <p-selectButton [options]="baseVariant" formControlName="autoSaveEditor" optionLabel="name"
+                            optionValue="value"></p-selectButton>
+          </div>
+          <div class="app-setting__container__actions__wrapper">
+            <div class="app-setting__container__actions__label">{{settingsStrings.darkMode}}</div>
+            <p-selectButton [options]="baseVariant" formControlName="darkMode" optionLabel="name"
+                            optionValue="value"></p-selectButton>
+          </div>
+        </div>
+        <div class="app-setting__container__actions__bottom">
+          <button pButton [disabled]="true" class="app-setting__container__actions__bottom--action"
+                  icon="pi pi-save" label="{{settingsStrings.appSaveSetting}}"
+                  (click)="confirm($event, confirmVariant.save_setting)"></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate>
+      <div class="app-setting__container app-setting__container__logs" #logsContainer>
+        <div class="app-setting__container__logs__top">
+          <div class="app-setting__container__logs__title">{{settingsStrings.appLogs}}</div>
+          <p-scrollPanel [style]="{width: '100%', height: logsContainer.clientHeight - 250 + 'px'}" *ngIf="!logIsCleared">
+            <ng-container *ngFor="let item of logScrollerData; index as i">
+              <div class="app-setting__container__logs__wrapper">
+                <div class="app-setting__container__logs--title">Log {{item.logIndex}}</div>
+                <ng-container *ngIf="logIsString(item.logData)">
+                  <div class="app-setting__container__logs__content" [ngClass]="{'error-content': isError(item.logData)}">{{item.logData}}</div>
+                </ng-container>
+                <ng-container *ngIf="logIsObject(item.logData)">
+                  <div class="app-setting__container__logs__content">
+                    <div class="app-setting__container__logs__content" *ngIf="getDataFromObject(item.logData, 'sessionStart')">
+                      {{settingsStrings.sessionStart}}:
+                      <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'sessionStart') | date}}</span>
+                    </div>
+                    <div class="app-setting__container__logs__content" *ngIf="getDataFromObject(item.logData, 'sessionStop')">
+                      {{settingsStrings.sessionStart}}:
+                      <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'sessionStop') | date}}</span>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+          </p-scrollPanel>
+          <div class="app-setting__container__logs__content" *ngIf="logIsCleared">{{settingsStrings.appLogFileIsEmpty}}</div>
+        </div>
+        <div class="app-setting__container__logs__bottom">
+          <button pButton class="p-button-warning app-setting__container__logs__bottom--action" icon="pi pi-pencil"
+                  label="{{settingsStrings.appLogsRemove}}"
+                  (click)="confirm($event, confirmVariant.clear_log)"></button>
+          <button pButton class="app-setting__container__logs__bottom--action" icon="pi pi-replay"
+                  label="{{settingsStrings.appLogsUpdate}}"
+                  (click)="confirm($event, confirmVariant.update_log)"></button>
+          <button pButton class="app-setting__container__logs__bottom--action" icon="pi pi-folder"
+                  label="{{settingsStrings.appFolder}}"
+                  (click)="openAppFolder()"></button>
+        </div>
+      </div>
+    </ng-template>
+  </p-splitter>
+</div>
+
+<p-confirmPopup></p-confirmPopup>
+<div class="app-setting__progress" *ngIf="fakeProgress">
+  <p-progressBar class="app-setting__progress--bar" [value]="fakeProgress"></p-progressBar>
+</div>

@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {MANDALA_VARIANTS, MandalaVariant, PAPER_VARIANTS} from '../../../../../../constants';
+import {MANDALA_VARIANTS, MandalaVariant, PAPER_VARIANTS} from '../../../../../constants';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {
   ToastNotificationsService
-} from '../../../../../shared/services/toast-notifications/toast-notifications.service';
-import {MandalaParamsModel} from '../../../../../shared/models/mandala-params.model';
-import {PopupActionsEnum, PopupCallbackModel} from '../../../../../shared/models/popup-callback.model';
-import {ALL_WORDS} from '../../../../../shared/constants';
-import {MovingDialogComponent} from '../../../../../shared/modals/moving-dialog/moving-dialog.component';
-import {CoreService} from '../../../../../shared/services/core/core.service';
+} from '../../../../shared/services/toast-notifications/toast-notifications.service';
+import {MandalaParamsModel} from '../../../../shared/models/mandala-params.model';
+import {PopupActionsEnum, PopupCallbackModel} from '../../../../shared/models/popup-callback.model';
+import {ALL_WORDS} from '../../../../shared/constants';
+import {MovingDialogComponent} from '../../../../shared/modals/moving-dialog/moving-dialog.component';
+import {CoreService} from '../../../../shared/services/core/core.service';
 import {find} from 'lodash';
 
 @Component({

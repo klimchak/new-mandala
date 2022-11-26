@@ -82,6 +82,27 @@ export const ALL_WORDS = {
     appComponent: {
       confirm_dialog_text: 'Найден файл базы данных предыдущей версии. Импортировать данные из предыдущей базы?',
     }
+  },
+  otherStrings: {
+    on: 'Включено',
+    off: 'Выключено',
+  },
+  settings: {
+    openRecent: 'Открывать последнюю мандалу',
+    autoSaveEditor: 'Автоматическое сохранение в базу',
+    darkMode: 'Темный режим приложения',
+    sessionStart: 'Приложение запущено',
+    sessionStop: 'Приложение закрыто',
+    appSetting: 'Настройки приложения',
+    appSaveSetting: 'Сохранить настройки',
+    appLogs: 'Логи приложения',
+    appLogsRemove: 'Удалить логи',
+    appLogsUpdate: 'Обновить логи',
+    appFolder: 'Пака программы',
+    appSureClearLogs: 'Уверены, что хотите очистить файл логов?',
+    appSureReloadLogs: 'Уверены, что хотите очистить файл логов?',
+    appSureSaveSetting: 'Уверены, что хотите сохранить настройки?',
+    appLogFileIsEmpty: 'Файл логов пустой'
   }
 };
 

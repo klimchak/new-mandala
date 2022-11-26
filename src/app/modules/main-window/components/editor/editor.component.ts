@@ -1,16 +1,16 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SVG} from '@svgdotjs/svg.js';
-import {MandalaParamsModel} from '../../../../shared/models/mandala-params.model';
-import {MandalaModel, PaperOptions} from '../../../../shared/models/mandala.model';
-import {arr_ru, defaultModel} from '../../../../../constants';
+import {MandalaParamsModel} from '../../../shared/models/mandala-params.model';
+import {MandalaModel, PaperOptions} from '../../../shared/models/mandala.model';
+import {arr_ru, defaultModel} from '../../../../constants';
 import {cloneDeep, get} from 'lodash';
-import {Axial, Grid} from '../../../../shared/utils/static/BHexTs/BHex.Core';
-import {CoreService} from '../../../../shared/services/core/core.service';
-import {Drawing, Options, Orientation, Point} from '../../../../shared/utils/static/BHexTs/BHex.Drawing';
+import {Axial, Grid} from '../../../shared/utils/static/BHexTs/BHex.Core';
+import {CoreService} from '../../../shared/services/core/core.service';
+import {Drawing, Options, Orientation, Point} from '../../../shared/utils/static/BHexTs/BHex.Drawing';
 import {DialogService} from 'primeng/dynamicdialog';
 import {ColoredModalComponent} from '../modals/colored-modal/colored-modal.component';
-import {CallbackAnyReturn} from '../../../../shared/models/callback-any-return.model';
-import {LoadingService} from '../../../../shared/services/loader/loader.service';
+import {CallbackAnyReturn} from '../../../shared/models/callback-any-return.model';
+import {LoadingService} from '../../../shared/services/loader/loader.service';
 
 @Component({
   selector: 'app-editor',
