@@ -157,23 +157,31 @@ export class SaviorComponent implements OnInit {
 
 
   public onDeleteItems(items = this.selectedItems, fromContextMenu = false): void {
-    this.dialogService.open(ConfirmationDialogComponent, {
-      data: {
-        headerText: 'Записи будут удалены без возможности восстановления, удалить выбранные записи?',
-        acceptText: true,
-        noRemandAgain: false,
-        removeLatestVersion: false,
-      }
-    }).onClose.subscribe((data) => {
-      if (data?.answer) {
-        items.forEach((item, index) => {
-          this.deleteItem(item);
+    let deletedItem = null;
+    items.forEach((item, index) => deletedItem = item);
+    console.log(this.coreService.applicationOption)
+    if (!this.coreService.applicationOption.noRemandDelete){
+      this.dialogService.open(ConfirmationDialogComponent, {
+        data: {
+          headerText: 'Записи будут удалены без возможности восстановления, удалить выбранные записи?',
+          acceptText: true,
+          noRemandAgain: false,
+          removeLatestVersion: false,
+        }
+      }).onClose.subscribe((data) => {
+        if (data?.answer) {
+          this.deleteItem(deletedItem);
           if (fromContextMenu) {
             this.selectedItemsContextMenu = null;
           }
-        });
+        }
+      });
+    }else {
+      this.deleteItem(deletedItem);
+      if (fromContextMenu) {
+        this.selectedItemsContextMenu = null;
       }
-    });
+    }
   }
 
   public openInEditor(deletedMandala = this.selectedItemsContextMenu): void {
@@ -204,7 +212,7 @@ export class SaviorComponent implements OnInit {
     const editedMandalaDb: MandalaModelDB = editedMandala.getDataForDB();
     this.electronService.updateRecordInDatabase<MandalaModelDB>('mandala', editedMandala.id, editedMandalaDb, selectTableRows)
       .then((value) => {
-        if (editedMandala.id.toString() === this.coreService.modelMandala.id.toString()) {
+        if (editedMandala?.id?.toString() === this.coreService.modelMandala?.id?.toString()) {
           this.setCurrentDataInModelMandala(editedMandala);
         } else {
           this.getDataForTable();

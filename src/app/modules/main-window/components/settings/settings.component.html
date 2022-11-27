@@ -1,6 +1,5 @@
 <div class="app-setting" [formGroup]="settingForm">
-  <p-splitter [style]="{'height': '100%'}" [panelSizes]="[40,60]" [minSizes]="[30,30]" stateKey="settingSplit"
-              stateStorage="local">
+  <p-splitter [style]="{'height': '100%'}" [panelSizes]="[40,60]" >
 
     <ng-template pTemplate>
       <div class="app-setting__container app-setting__container__actions">
@@ -24,20 +23,20 @@
 
           <div class="app-setting__container__actions__title">{{settingsStrings.notRemain}}</div>
           <div class="app-setting__container__actions__wrapper">
-            <div class="app-setting__container__actions__label">{{settingsStrings.notRemainForEdit}}</div>
-            <p-selectButton [options]="baseVariant" formControlName="noRemandDelete" optionLabel="name"
-                            optionValue="value"></p-selectButton>
-          </div>
-          <div class="app-setting__container__actions__wrapper">
-            <div class="app-setting__container__actions__label">{{settingsStrings.notRemainForDelete}}</div>
+            <div class="app-setting__container__actions__label">{{settingsStrings.notRemainForUpdate}}</div>
             <p-selectButton [options]="baseVariant" formControlName="noRemandEdit" optionLabel="name"
                             optionValue="value"></p-selectButton>
           </div>
           <div class="app-setting__container__actions__wrapper">
-            <div class="app-setting__container__actions__label">{{settingsStrings.notRemainForUpdate}}</div>
-            <p-selectButton [options]="baseVariant" formControlName="noRemandUpdate" optionLabel="name"
+            <div class="app-setting__container__actions__label">{{settingsStrings.notRemainForDelete}}</div>
+            <p-selectButton [options]="baseVariant" formControlName="noRemandDelete" optionLabel="name"
                             optionValue="value"></p-selectButton>
           </div>
+<!--          <div class="app-setting__container__actions__wrapper">-->
+<!--            <div class="app-setting__container__actions__label">{{settingsStrings.notRemainForUpdate}}</div>-->
+<!--            <p-selectButton [options]="baseVariant" formControlName="noRemandUpdate" optionLabel="name"-->
+<!--                            optionValue="value"></p-selectButton>-->
+<!--          </div>-->
 
         </div>
         <div class="app-setting__container__actions__bottom">

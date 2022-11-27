@@ -68,6 +68,7 @@ export const ALL_WORDS = {
       },
       menu: {
         button_text: 'Меню',
+        fast_save: 'Быстрое сохранение',
         menu_model: {
           create: 'Создать',
           edit: 'Редактировать',

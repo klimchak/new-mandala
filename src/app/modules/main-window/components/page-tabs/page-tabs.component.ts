@@ -30,6 +30,10 @@ export class PageTabsComponent implements OnInit, OnDestroy {
   public mandalaCreated = false;
   public ALL_WORDS = ALL_WORDS;
 
+  public get fastSaveIsOn(): boolean {
+    return this.rendererService.applicationOption?.autoSaveEditor;
+  }
+
   public get mandalaParams(): MandalaParamsModel {
     return this.rendererService.mandalaParamsObj;
   }
@@ -102,7 +106,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.onChangeTab(this.openTab);
     this.rendererService.mandalaCreated.pipe(takeUntil(this.destroy)).subscribe((value) => this.mandalaCreated = value);
-    if (this.coreService.applicationOption.openRecent){
+    if (this.coreService.applicationOption.openRecent) {
       this.electronService.getLastRowDataFromDatabase<MandalaModelDB>(
         'mandala', 'createDate',
         'id', 'createDate', 'personalInfo', 'rayA',
@@ -110,7 +114,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
         'rayC2', 'imageData', 'source', 'drawForBase',
         'gridThisFigure', 'drawThisFigure', 'mandalaParamsObj'
       ).then((data) => {
-        if (data.length > 0){
+        if (data.length > 0) {
           const restoredMandala = new MandalaModelUtility(this.coreService, data[0]);
           restoredMandala.setMandalaModel();
           this.setRestoredView(true, true);
@@ -215,53 +219,63 @@ export class PageTabsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private simpleSaveInDB(): void {
+    const modelForBaseClass = new MandalaModelUtility(this.rendererService);
+    this.electronService.updateRecordInDatabase<MandalaModelDB>('mandala', modelForBaseClass.databaseInterimData.id, modelForBaseClass.paramsForCreateRecord[0])
+      .then((updatedMandala) => {
+        this.loadingService.setProgressMockData();
+        this.rendererService.createZoomSVG(document.getElementById('svgImg2') as HTMLElement);
+      });
+  }
+
+  private saveNewByLastVersion(): void {
+    const arr = new Date(this.rendererService.modelMandala.personalInfo.createDate).toISOString().split('T');
+    const arr2 = arr[1].split('.');
+
+    this.rendererService.modelMandala.personalInfo.description = `${this.rendererService.modelMandala.personalInfo.description || ''} <b>Создана на основе мандалы ${this.rendererService.modelMandala.source.word} для ${this.rendererService.modelMandala.personalInfo.firstName} ${this.rendererService.modelMandala.personalInfo.lastName} ${arr[0]} в ${arr2[0]} </b>`;
+    this.rendererService.modelMandala.id = Date.now();
+    // @ts-ignore
+    this.rendererService.modelMandala.personalInfo.createDate = new Date().toISOString();
+    const modelForBaseClass = new MandalaModelUtility(this.rendererService);
+    this.electronService.insertRecordsInDatabase<MandalaModelDB>('mandala', modelForBaseClass.paramsForCreateRecord)
+      .then((savedMandala) => {
+        this.loadingService.setProgressMockData();
+        this.rendererService.createZoomSVG(document.getElementById('svgImg2') as HTMLElement);
+      });
+  }
+
   private openSaveDBModal(): void {
     this.dialogService.open(SaveDbModalComponent, {data: {headerText: ``}})
       .onClose.subscribe((savedParamsData) => {
       if (savedParamsData?.body) {
         this.rendererService.removeZoomSVG();
         if (this.rendererService.modelMandala?.id) {
-
-          this.rendererService.modelMandala.personalInfo = {...savedParamsData.body};
-          this.dialogService.open(ConfirmationDialogComponent, {
-            data: {
-              headerText: 'Перезаписать мандалу или создать новую на основе этой?',
-              acceptText: true,
-              noRemandAgain: false,
-              removeLatestVersion: false,
-              footerButtonLabel: {
-                confirm: 'Перезаписать',
-                cancel: 'Создать новую'
+          if (!this.coreService.applicationOption.noRemandEdit) {
+            this.rendererService.modelMandala.personalInfo = {...savedParamsData.body};
+            this.dialogService.open(ConfirmationDialogComponent, {
+              data: {
+                headerText: 'Перезаписать мандалу или создать новую на основе этой?',
+                acceptText: true,
+                noRemandAgain: false,
+                removeLatestVersion: false,
+                footerButtonLabel: {
+                  confirm: 'Перезаписать',
+                  cancel: 'Создать новую'
+                }
               }
-            }
-          }).onClose.subscribe((dataConfirm) => {
-            if (typeof dataConfirm !== 'undefined') {
-              if (dataConfirm.answer) {
-                const modelForBaseClass = new MandalaModelUtility(this.rendererService);
-                this.electronService.updateRecordInDatabase<MandalaModelDB>('mandala', modelForBaseClass.databaseInterimData.id, modelForBaseClass.paramsForCreateRecord[0])
-                  .then((updatedMandala) => {
-                    this.loadingService.setProgressMockData();
-                    this.rendererService.createZoomSVG(document.getElementById('svgImg2') as HTMLElement);
-                  });
-              } else {
-                const arr = new Date(this.rendererService.modelMandala.personalInfo.createDate).toISOString().split('T');
-                const arr2 = arr[1].split('.');
-
-                this.rendererService.modelMandala.personalInfo.description = `${this.rendererService.modelMandala.personalInfo.description || ''} <b>Создана на основе мандалы ${this.rendererService.modelMandala.source.word} для ${this.rendererService.modelMandala.personalInfo.firstName} ${this.rendererService.modelMandala.personalInfo.lastName} ${arr[0]} в ${arr2[0]} </b>`;
-                this.rendererService.modelMandala.id = Date.now();
-                // @ts-ignore
-                this.rendererService.modelMandala.personalInfo.createDate = new Date().toISOString();
-                const modelForBaseClass = new MandalaModelUtility(this.rendererService);
-                this.electronService.insertRecordsInDatabase<MandalaModelDB>('mandala', modelForBaseClass.paramsForCreateRecord)
-                  .then((savedMandala) => {
-                    this.loadingService.setProgressMockData();
-                    this.rendererService.createZoomSVG(document.getElementById('svgImg2') as HTMLElement);
-                  });
+            }).onClose.subscribe((dataConfirm) => {
+              if (typeof dataConfirm !== 'undefined') {
+                if (dataConfirm.answer) {
+                  this.simpleSaveInDB();
+                } else {
+                  this.saveNewByLastVersion();
+                }
               }
-            }
-          });
+            });
+          }else {
+            this.simpleSaveInDB();
+          }
         } else {
-
           this.rendererService.modelMandala.personalInfo = {...savedParamsData.body};
           this.rendererService.modelMandala.id = Date.now();
           const modelForBaseClass = new MandalaModelUtility(this.rendererService);
@@ -271,10 +285,30 @@ export class PageTabsComponent implements OnInit, OnDestroy {
             .then((value) => {
               this.rendererService.createZoomSVG(document.getElementById('svgImg2') as HTMLElement);
               this.loadingService.setProgressMockData();
-            });
+            }).catch(() => this.rendererService.createZoomSVG(document.getElementById('svgImg2') as HTMLElement));
         }
       }
     });
+  }
+
+  public actionFastSave(): void {
+    if (this.rendererService.modelMandala?.personalInfo) {
+      const modelForBaseClass = new MandalaModelUtility(this.rendererService);
+      this.toastNotificationService.showNotification(ToastVariant.INFO, {
+        summary: this.messagesStrings.startMandalaSaveDb,
+        message: `Слово: ${this.coreService.mandalaParamsObj.baseWord}, для ${this.rendererService.modelMandala?.personalInfo.firstName} ${this.rendererService.modelMandala?.personalInfo.lastName}`
+      });
+      this.electronService.updateRecordInDatabase<MandalaModelDB>('mandala', modelForBaseClass.databaseInterimData.id, modelForBaseClass.paramsForCreateRecord[0])
+        .then((updatedMandala) => {
+          this.rendererService.createZoomSVG(document.getElementById('svgImg2') as HTMLElement);
+          this.toastNotificationService.showNotification(ToastVariant.INFO, {
+            summary: this.messagesStrings.saveDbSuccessful,
+            message: `Слово: ${this.coreService.mandalaParamsObj.baseWord}, для ${this.rendererService.modelMandala?.personalInfo.firstName} ${this.rendererService.modelMandala?.personalInfo.lastName}`
+          });
+        });
+    } else {
+      this.openSaveDBModal();
+    }
   }
 
   private openSaveImageModal(): void {
