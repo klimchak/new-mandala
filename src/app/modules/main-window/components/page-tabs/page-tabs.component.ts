@@ -213,6 +213,7 @@ export class PageTabsComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.loadingService.setProgress(5);
           this.rendererService.mandalaParams.next(popupCallback.body);
+          this.coreService.mandalaIsRestored = false;
           this.activeShadowText = true;
         }, 1000);
       }

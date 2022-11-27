@@ -40,7 +40,7 @@
     <label class="c-base__form-field-label">Сохранить файл в расширении:</label>
     <div class="actions">
       <button pButton class="c-prime__button" (click)="getPDF()">PDF</button>
-      <button pButton class="c-prime__button" (click)="getImage()">PNG</button>
+      <button pButton [disabled]="mandalaIsRestored" class="c-prime__button" (click)="getImage()">PNG</button>
     </div>
   </div>
 </div>

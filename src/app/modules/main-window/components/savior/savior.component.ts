@@ -18,7 +18,6 @@ import {ConfirmationDialogComponent} from '../../../shared/modals/confirmation-d
 import {ApplicationOptionModel} from '../../../shared/models/application-option.model';
 import {NoRemandType} from '../../../shared/models/confirm-popup.model';
 import {CoreService} from '../../../shared/services/core/core.service';
-import {ToastNotificationsService} from '../../../shared/services/toast-notifications/toast-notifications.service';
 import {AdvancedPreviewComponent} from "../modals/advanced-preview/advanced-preview.component";
 
 @Component({
@@ -61,7 +60,6 @@ export class SaviorComponent implements OnInit {
     private dialogService: DialogService,
     private coreService: CoreService,
     private electronService: ElectronService<MandalaModelDB>,
-    private toastNotificationsService: ToastNotificationsService
   ) {
   }
 
@@ -194,6 +192,7 @@ export class SaviorComponent implements OnInit {
       'gridThisFigure', 'drawThisFigure', 'mandalaParamsObj').then((item) => {
       const restoredMandala = new MandalaModelUtility(this.coreService, item[0]);
       restoredMandala.setMandalaModel();
+      this.coreService.mandalaIsRestored = true;
       this.setRestoredView.emit(true);
     });
   }

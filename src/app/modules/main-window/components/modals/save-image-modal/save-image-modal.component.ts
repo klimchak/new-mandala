@@ -19,10 +19,15 @@ import ToastVariant = ToastNotificationsModel.ToastVariant;
   encapsulation: ViewEncapsulation.None
 })
 export class SaveImageModalComponent extends MovingDialogComponent implements OnInit {
-  public modalForm: FormGroup;
-  public ALL_WORDS = ALL_WORDS;
-  private sizes: PaperOptions;
   public readonly messagesStrings = ALL_WORDS.otherStrings.messages;
+  public ALL_WORDS = ALL_WORDS;
+  public modalForm: FormGroup;
+
+  public get mandalaIsRestored(): boolean {
+    return this.coreService.mandalaIsRestored;
+  }
+
+  private sizes: PaperOptions;
 
   constructor(
     private coreService: CoreService,
@@ -142,7 +147,7 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
       a.setAttribute('href', canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream'));
       a.setAttribute('target', '_blank');
 
-      this.toastNotificationsService.showNotification(ToastVariant.SUCCESS, {message: this.messagesStrings.settingSaveSuccessful});
+      this.toastNotificationsService.showNotification(ToastVariant.SUCCESS, {message: this.messagesStrings.saveImageFileSuccessful});
       setTimeout(() => this.loadingService.setProgress(100), 10);
       setTimeout(() => {
         this.loadingService.setProgress(0);
@@ -152,7 +157,10 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
     }).catch((e) => {
       setTimeout(() => this.loadingService.setProgress(0), 10);
       this.activateZoom();
-      this.toastNotificationsService.showNotification(ToastVariant.ERROR, {message: this.messagesStrings.saveImageFileError});
+      this.toastNotificationsService.showNotification(ToastVariant.ERROR, {
+        message: this.messagesStrings.saveImageFileError,
+        summary: e
+      });
     });
   }
 

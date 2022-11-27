@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SVG} from '@svgdotjs/svg.js';
 import {MandalaParamsModel} from '../../../shared/models/mandala-params.model';
 import {MandalaModel, PaperOptions} from '../../../shared/models/mandala.model';
-import {alphabet_and_number, defaultModel} from '../../../../constants';
+import {alphabet_and_number, defaultModel, MandalaVariant} from '../../../../constants';
 import {cloneDeep, get} from 'lodash';
 import {Axial, Grid} from '../../../shared/utils/static/BHexTs/BHex.Core';
 import {CoreService} from '../../../shared/services/core/core.service';
@@ -103,7 +103,6 @@ export class EditorComponent implements OnInit {
   public setMandalaWord(): void {
     this.modelMandala.source.word = this.startedParams.baseWord.toLowerCase();
     this.modelMandala.source.mandalaVersion = this.startedParams.generationVariant;
-    const abbrMand = this.startedParams.abbreviation;
     const choicePaper: PaperOptions = this.rendererService.getPaperSize();
     this.modelMandala.source.pageSize.width = choicePaper.width;
     this.modelMandala.source.pageSize.height = choicePaper.height;
@@ -122,22 +121,22 @@ export class EditorComponent implements OnInit {
     let countHex = strToHex.length - 1;
     // доп параметры
     // обратный вариант
-    if (this.modelMandala.source.mandalaVersion === 2) {
+    if (this.modelMandala.source.mandalaVersion === MandalaVariant.LIGHT_IN_CENTER_MAND) {
       strToHex = strToHex.split('').reverse().join('');
     }
     // от центра с удвоением
-    if (this.modelMandala.source.mandalaVersion === 3 || this.modelMandala.source.mandalaVersion === 5) {
-      if (abbrMand) {
-        strToHex = `${strToHex}${strToHex.split('').reverse().splice(1, strToHex.split('').length).join('')}`;
+    if (this.modelMandala.source.mandalaVersion === MandalaVariant.LIGHT_IN_CENTER_LIGHT || this.modelMandala.source.mandalaVersion === MandalaVariant.MARGIN_FROM_APEX_TO_CENTER) {
+      if (this.startedParams.abbreviation) {
+        strToHex = `${strToHex}${strToHex.substring(0, strToHex.length - 1).split('').reverse().join('')}`;
       } else {
         strToHex = `${strToHex}${strToHex.split('').reverse().join('')}`;
       }
       countHex = strToHex.length - 1;
     }
     // к центру с удвоением
-    if (this.modelMandala.source.mandalaVersion === 4 || this.modelMandala.source.mandalaVersion === 6) {
-      if (abbrMand) {
-        strToHex = `${strToHex.split('').reverse().splice(1, strToHex.split('').length).join('')}${strToHex}`;
+    if (this.modelMandala.source.mandalaVersion === MandalaVariant.LIGHT_FROM_CENTER_LIGHT || this.modelMandala.source.mandalaVersion === MandalaVariant.MARGIN_FROM_CENTER_TO_APEX) {
+      if (this.startedParams.abbreviation) {
+        strToHex = `${strToHex.split('').reverse().join('').substring(0, strToHex.length - 1)}${strToHex}`;
       } else {
         strToHex = `${strToHex.split('').reverse().join('')}${strToHex}`;
       }
@@ -216,7 +215,7 @@ export class EditorComponent implements OnInit {
         if (this.modelMandala.source.mandalaVersion === 1 || this.modelMandala.source.mandalaVersion === 2 || this.modelMandala.source.mandalaVersion === 3 || this.modelMandala.source.mandalaVersion === 4) {
           this.axialDataSet();
         }
-        if (this.modelMandala.source.mandalaVersion === 5 || this.modelMandala.source.mandalaVersion === 6 || this.modelMandala.source.mandalaVersion === 7 || this.modelMandala.source.mandalaVersion === 8) {
+        if (this.modelMandala.source.mandalaVersion === 5 || this.modelMandala.source.mandalaVersion === 6/* || this.modelMandala.source.mandalaVersion === 7 || this.modelMandala.source.mandalaVersion === 8*/) {
           this.borderDataSet();
         }
       }, 1000);
@@ -266,7 +265,7 @@ export class EditorComponent implements OnInit {
           const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, rayCoord[i][0], rayCoord[i][1], false);
           obj.classList.replace('999', String(this.modelMandala.source.wordInInt[numb]));
           obj.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
-          obj.attributes.fill.value = '#4bffe9';
+          obj.attributes.fill.value = '#ffffff';
           const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, rayCoord[i][0], rayCoord[i][1], true);
           objText.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
           numb++;
@@ -351,7 +350,7 @@ export class EditorComponent implements OnInit {
     const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, false);
     obj.classList.replace('999', String(this.modelMandala.source.wordInInt[0]));
     obj.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[0]);
-    obj.attributes.fill.value = '#ececec';
+    obj.attributes.fill.value = '#ffffff';
     const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, true);
     objText.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[0]);
     objText.setAttribute('font-weight', '900');
@@ -383,33 +382,12 @@ export class EditorComponent implements OnInit {
     setTimeout(() => this.loadingService.setProgress(55), 1);
     this.getArrOnBorderAndSector();
     setTimeout(() => this.loadingService.setProgress(60), 1);
-
-    // // установка значений по осям
-    // let numb = 0;
-    // for (const key in this.modelMandala) {
-    //   numb = 0;
-    //   if (key === 'source') {
-    //     break;
-    //   }
-    //   for (let i = 0; i < get(this.modelMandala, key).rayCoord.length; i++) {
-    //     const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], false);
-    //     obj.classList.replace('999', String(this.modelMandala.source.wordInInt[numb]));
-    //     obj.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
-    //     obj.attributes.fill.value = '#ececec';
-    //     const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, get(this.modelMandala, key).rayCoord[i][0], get(this.modelMandala, key).rayCoord[i][1], true);
-    //     objText.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
-    //     // this.sectorMap.set(i, String(this.modelMandala.source.wordInInt[numb]));
-    //     numb++;
-    //   }
-    // }
-    // setTimeout(() => this.loadingService.setProgress(70), 1);
-
     // установка значений по осям
-    let numb = 1;
+    let numb = 0;
     setTimeout(() => this.loadingService.setProgress(70), 1);
     const listSetRayValueExec: Array<Promise<any>> = [];
     Object.keys(this.modelMandala).forEach((key) => {
-      numb = 1;
+      numb = 0;
       if (key !== 'source' && key !== 'id' && key !== 'personalInfo') {
         listSetRayValueExec.push(this.setValueInRay(key, numb));
       }
@@ -418,6 +396,7 @@ export class EditorComponent implements OnInit {
       console.log('listSetRayValueExec', value);
     });
     setTimeout(() => this.loadingService.setProgress(80), 1);
+
 
     // установка значений по полям
     for (const key in this.modelMandala) {
@@ -477,13 +456,12 @@ export class EditorComponent implements OnInit {
     }
     obj.classList.replace('999', String(res));
     obj.firstChild.innerHTML = String(res);
-    obj.attributes.fill.value = '#ececec';
+    obj.attributes.fill.value = '#ffffff';
     const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, 0, 0, true);
     objText.firstChild.innerHTML = String(res);
     objText.setAttribute('font-weight', '900');
     this.timeEnd = Date.now();
     console.log('Затрачено времени ', this.timeConversion(this.timeEnd - this.timeStart));
-
 
     setTimeout(() => this.loadingService.setProgress(90), 1);
 

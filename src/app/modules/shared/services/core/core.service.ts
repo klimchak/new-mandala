@@ -9,6 +9,7 @@ import {ApplicationOptionModel} from '../../models/application-option.model';
 
 @Injectable({providedIn: 'root'})
 export class CoreService {
+  public mandalaIsRestored = false;
   public applicationOption: ApplicationOptionModel = {};
   public restoreMandala: Subject<boolean> = new Subject<boolean>();
   public mandalaParams: Subject<MandalaParamsModel> = new Subject<MandalaParamsModel>();

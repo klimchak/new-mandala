@@ -113,7 +113,7 @@ export class ParamsModalComponent extends MovingDialogComponent implements OnIni
   public ngOnInit(): void {
     this.addMovingForDialog();
     this.paramsForm = new FormGroup({
-      baseWord: new FormControl(this.mandalaParams?.baseWord || 'дружба', [/*Validators.pattern(ru_and_number_validation_pattern),*/ Validators.required]),
+      baseWord: new FormControl(this.mandalaParams?.baseWord || '', [/*Validators.pattern(ru_and_number_validation_pattern),*/ Validators.required]),
       generationVariant: new FormControl(this.mandalaParams?.generationVariant, [Validators.required]),
       double: new FormControl(typeof this.mandalaParams?.double !== 'undefined' ? this.mandalaParams?.double : false),
       abbreviation: new FormControl({value: typeof this.mandalaParams?.abbreviation !== 'undefined' ? this.mandalaParams?.abbreviation : false, disabled: true}),
