@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {MANDALA_VARIANTS, MandalaVariant, PAPER_VARIANTS} from '../../../../../constants';
+import {MANDALA_VARIANTS, MandalaVariant, PAPER_VARIANTS, PaperSize} from '../../../../../constants';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
-import {
-  ToastNotificationsService
-} from '../../../../shared/services/toast-notifications/toast-notifications.service';
+import {DynamicDialogRef} from 'primeng/dynamicdialog';
+import {ToastNotificationsService} from '../../../../shared/services/toast-notifications/toast-notifications.service';
 import {MandalaParamsModel} from '../../../../shared/models/mandala-params.model';
 import {PopupActionsEnum, PopupCallbackModel} from '../../../../shared/models/popup-callback.model';
 import {ALL_WORDS} from '../../../../shared/constants';
 import {MovingDialogComponent} from '../../../../shared/modals/moving-dialog/moving-dialog.component';
 import {CoreService} from '../../../../shared/services/core/core.service';
 import {find} from 'lodash';
+import {ToastNotificationsModel} from "../../../../shared/models/toast-notifications.model";
+import ToastVariant = ToastNotificationsModel.ToastVariant;
 
 @Component({
   selector: 'app-params-modal',
@@ -18,14 +18,19 @@ import {find} from 'lodash';
   styleUrls: ['params-modal.component.scss']
 })
 export class ParamsModalComponent extends MovingDialogComponent implements OnInit {
+  public readonly otherStrings = ALL_WORDS.otherStrings;
+  public readonly messagesStrings = ALL_WORDS.otherStrings.messages;
   public generationVariant = MANDALA_VARIANTS;
   public paperVariant = PAPER_VARIANTS;
   public paramsForm: FormGroup = new FormGroup({});
+  public baseVariant = [
+    {name: this.otherStrings.on, value: true},
+    {name: this.otherStrings.off, value: false}
+  ];
   private ALL_WORDS = ALL_WORDS;
 
   constructor(
     private dialogRef: DynamicDialogRef,
-    private dynamicDialogConfig: DynamicDialogConfig,
     private toastNotificationService: ToastNotificationsService,
     private coreService: CoreService,
   ) {
@@ -108,16 +113,16 @@ export class ParamsModalComponent extends MovingDialogComponent implements OnIni
   public ngOnInit(): void {
     this.addMovingForDialog();
     this.paramsForm = new FormGroup({
-      baseWord: new FormControl(this.mandalaParams?.baseWord, [Validators.pattern(/^[а-яА-ЯёЁ0-9]+$/), Validators.required]),
+      baseWord: new FormControl(this.mandalaParams?.baseWord || 'дружба', [/*Validators.pattern(ru_and_number_validation_pattern),*/ Validators.required]),
       generationVariant: new FormControl(this.mandalaParams?.generationVariant, [Validators.required]),
-      double: new FormControl(this.mandalaParams?.double),
-      abbreviation: new FormControl({value: this.mandalaParams?.abbreviation || false, disabled: true}),
-      landscape: new FormControl(this.mandalaParams?.landscape),
-      paperVariant: new FormControl(this.mandalaParams?.paperVariant, [Validators.required]),
+      double: new FormControl(typeof this.mandalaParams?.double !== 'undefined' ? this.mandalaParams?.double : false),
+      abbreviation: new FormControl({value: typeof this.mandalaParams?.abbreviation !== 'undefined' ? this.mandalaParams?.abbreviation : false, disabled: true}),
+      landscape: new FormControl(typeof this.mandalaParams?.landscape !== 'undefined' ? this.mandalaParams?.landscape : true, Validators.required),
+      paperVariant: new FormControl(this.mandalaParams?.paperVariant || PaperSize.A4, [Validators.required]),
       marginSize: new FormControl(this.mandalaParams?.marginSize || 3),
       strokeWidth: new FormControl(this.mandalaParams?.strokeWidth || 0.5),
       fontSize: new FormControl(this.mandalaParams?.fontSize || 8),
-      numberColor: new FormControl(this.mandalaParams?.fontSize || '#575757'),
+      numberColor: new FormControl(this.mandalaParams?.numberColor || '#575757'),
     });
     this.setDouble(this.mandalaParams?.generationVariant);
   }
@@ -133,6 +138,7 @@ export class ParamsModalComponent extends MovingDialogComponent implements OnIni
         item.inactive = item.value === MandalaVariant.LIGHT_FROM_CENTER_MAND || item.value === MandalaVariant.LIGHT_IN_CENTER_MAND;
       });
     } else {
+      this.paramsForm.get('abbreviation')?.patchValue(false);
       this.paramsForm.get('abbreviation')?.disable();
       this.generationVariant.forEach((item) => {
         item.inactive = !(item.value === MandalaVariant.LIGHT_FROM_CENTER_MAND || item.value === MandalaVariant.LIGHT_IN_CENTER_MAND);
@@ -146,10 +152,15 @@ export class ParamsModalComponent extends MovingDialogComponent implements OnIni
     this.paramsForm.markAllAsTouched();
     if (this.paramsForm.valid) {
       const payload = {...this.mandalaParams, ...this.paramsForm.getRawValue()};
+      payload.baseWord = payload.baseWord.replaceAll(' ', '')
       const actionType = payload.id ? PopupActionsEnum.UPDATE : PopupActionsEnum.CREATE;
+      this.toastNotificationService.showNotification(ToastVariant.INFO, {
+        summary: this.messagesStrings.startMandalaGeneration,
+        message: `Слово: ${payload.baseWord}, параметры: ${this.coreService.mandalaVariantString(payload.generationVariant)}, ${this.coreService.isAbbreviationString(payload.abbreviation)}, ${this.coreService.isDoubleString(payload.double)}, ${this.coreService.isLandscapeString(payload.landscape)}`
+      });
       this.closeModalWindow({body: payload, action: actionType, changed: true});
     } else {
-      this.toastNotificationService.showNotification('warning', {message: 'Data in the fields is`t valid'});
+      this.toastNotificationService.showNotification(ToastVariant.WARN, {message: this.messagesStrings.paramsForGenerateError});
     }
   }
 }

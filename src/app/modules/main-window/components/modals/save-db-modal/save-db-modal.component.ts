@@ -7,9 +7,11 @@ import {
 } from '../../../../shared/services/toast-notifications/toast-notifications.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {PopupActionsEnum, PopupCallbackModel} from '../../../../shared/models/popup-callback.model';
-import {EDITOR_MODULES} from '../../../../shared/constants';
+import {ALL_WORDS, EDITOR_MODULES} from '../../../../shared/constants';
 import {CoreService} from '../../../../shared/services/core/core.service';
 import {isDate} from 'lodash';
+import {ToastNotificationsModel} from "../../../../shared/models/toast-notifications.model";
+import ToastVariant = ToastNotificationsModel.ToastVariant;
 
 @Component({
   selector: 'app-save-db-modal',
@@ -20,6 +22,7 @@ import {isDate} from 'lodash';
 export class SaveDbModalComponent extends MovingDialogComponent implements OnInit {
   public popupForm: FormGroup;
   public editorModules = EDITOR_MODULES;
+  public readonly messagesStrings = ALL_WORDS.otherStrings.messages;
   constructor(
     private coreService: CoreService,
     private dialogRef: DynamicDialogRef,
@@ -60,9 +63,13 @@ export class SaveDbModalComponent extends MovingDialogComponent implements OnIni
       const payload = {...this.mandalaParams, ...this.popupForm.getRawValue()};
       payload.createDate = payload.createDate.toISOString();
       const actionType = payload.id ? PopupActionsEnum.UPDATE : PopupActionsEnum.CREATE;
+      this.toastNotificationService.showNotification(ToastVariant.INFO, {
+        summary: this.messagesStrings.startMandalaSaveDb,
+        message: `Слово: ${this.coreService.mandalaParamsObj.baseWord}, для ${payload.firstName} ${payload.lastName}`
+      });
       this.closeModalWindow({body: payload, action: actionType, changed: true});
     } else {
-      this.toastNotificationService.showNotification('warning', {message: 'Data in the fields is`t valid'});
+      this.toastNotificationService.showNotification(ToastVariant.WARN, {message: this.messagesStrings.paramsForGenerateError});
     }
   }
 }

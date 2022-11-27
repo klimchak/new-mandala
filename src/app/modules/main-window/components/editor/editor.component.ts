@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SVG} from '@svgdotjs/svg.js';
 import {MandalaParamsModel} from '../../../shared/models/mandala-params.model';
 import {MandalaModel, PaperOptions} from '../../../shared/models/mandala.model';
-import {arr_ru, defaultModel} from '../../../../constants';
+import {alphabet_and_number, defaultModel} from '../../../../constants';
 import {cloneDeep, get} from 'lodash';
 import {Axial, Grid} from '../../../shared/utils/static/BHexTs/BHex.Core';
 import {CoreService} from '../../../shared/services/core/core.service';
@@ -115,7 +115,8 @@ export class EditorComponent implements OnInit {
     this.timeStart = Date.now();
 
     let strToHex = '';
-    this.modelMandala.source.word.split('').forEach((item) => strToHex = `${strToHex}${this.fromDecToOne(arr_ru[item])}`);
+    // this.modelMandala.source.word.split('').forEach((item) => strToHex = `${strToHex}${this.fromDecToOne(arr_ru[item])}`); // а вот тут было добавлено перевод двухзначных цифр в одну.
+    this.modelMandala.source.word.split('').forEach((item) => strToHex = `${strToHex}${alphabet_and_number[item]}`);
 
     strToHex.trim();
     let countHex = strToHex.length - 1;
@@ -204,9 +205,7 @@ export class EditorComponent implements OnInit {
 
     console.log('Затрачено времени после gridForPaint ', this.timeConversion(Date.now() - this.timeStart));
     const listDrawPolygonExec: Array<Promise<any>> = [];
-    res.forEach((item) => {
-      listDrawPolygonExec.push(this.drawAllPolygon(item, group));
-    });
+    res.forEach((item) => listDrawPolygonExec.push(this.drawAllPolygon(item, group)));
 
     Promise.all(listDrawPolygonExec).then((value) => {
       console.log('Затрачено времени ', this.timeConversion(Date.now() - this.timeStart));
@@ -227,12 +226,8 @@ export class EditorComponent implements OnInit {
   private drawAllPolygon(axials: Axial[], groupForDraw: any): Promise<any> {
     return new Promise<any>((resolve) => {
       const allExec: Promise<any>[] = [];
-      axials.forEach((item, index) => {
-        allExec.push(this.drawPolygon(item, groupForDraw));
-      });
-      Promise.all(allExec).then((value) => {
-        resolve(value);
-      });
+      axials.forEach((item, index) => allExec.push(this.drawPolygon(item, groupForDraw)) );
+      Promise.all(allExec).then((value) => resolve(value));
     });
   }
 
@@ -271,7 +266,7 @@ export class EditorComponent implements OnInit {
           const obj = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, rayCoord[i][0], rayCoord[i][1], false);
           obj.classList.replace('999', String(this.modelMandala.source.wordInInt[numb]));
           obj.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
-          obj.attributes.fill.value = '#ececec';
+          obj.attributes.fill.value = '#4bffe9';
           const objText = this.getValOnCoordinate(this.modelMandala.source.drawThisFigure, rayCoord[i][0], rayCoord[i][1], true);
           objText.firstChild.innerHTML = String(this.modelMandala.source.wordInInt[numb]);
           numb++;

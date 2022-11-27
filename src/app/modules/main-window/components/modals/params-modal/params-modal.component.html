@@ -12,19 +12,25 @@
     </div>
     <div class="c-base__form-field main_general--additional">
       <div class="main_general--additional-block">
-        <p-toggleButton onLabel="Удвоенно" offLabel="Без удвоения" formControlName="double" class="c-prime__button"
-                        pTooltip="{{doubleTooltipText}}" tooltipPosition="bottom"
-                        onIcon="pi pi-check" offIcon="pi pi-times" (onChange)="setDouble()"></p-toggleButton>
+        <div class="main_general--additional-block__label">
+          Удвоение слова <i class="pi pi-question-circle" pTooltip="{{doubleTooltipText}}"></i>
+        </div>
+        <p-selectButton [options]="baseVariant" formControlName="double" optionLabel="name"
+                        optionValue="value" (onChange)="setDouble()"></p-selectButton>
       </div>
       <div class="main_general--additional-block">
-        <p-toggleButton onLabel="Сокращенно" offLabel="Без сокращения" formControlName="abbreviation" class="c-prime__button"
-                        pTooltip="{{abbreviationTooltipText}}" tooltipPosition="bottom"
-                        onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
+        <div class="main_general--additional-block__label">
+          Сокращение при удвоении <i class="pi pi-question-circle" pTooltip="{{abbreviationTooltipText}}"></i>
+        </div>
+        <p-selectButton [options]="baseVariant" formControlName="abbreviation" optionLabel="name"
+                        optionValue="value"></p-selectButton>
       </div>
       <div class="main_general--additional-block">
-        <p-toggleButton onLabel="Альбом" offLabel="Портрет" formControlName="landscape" class="c-prime__button"
-                        pTooltip="{{landscapeTooltipText}}" tooltipPosition="bottom"
-                        onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
+        <div class="main_general--additional-block__label">
+          Альбомная ориентация <i class="pi pi-question-circle" pTooltip="{{landscapeTooltipText}}"></i>
+        </div>
+        <p-selectButton [options]="baseVariant" formControlName="landscape" optionLabel="name"
+                        optionValue="value"></p-selectButton>
       </div>
     </div>
     <div class="c-base__form-field">
@@ -62,5 +68,5 @@
 
 <div class="popup__buttons">
   <button pButton class="c-prime__button c-prime__button--grey-text" (click)="closeModalWindow()">Отмена</button>
-  <button pButton class="c-prime__button" (click)="processForm()">Сохранить</button>
+  <button pButton class="c-prime__button" (click)="processForm()">Создать</button>
 </div>

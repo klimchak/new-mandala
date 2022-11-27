@@ -130,6 +130,18 @@
   background: #747679;
 }
 
-.error-content {
-  color: $error-color;
+.content {
+  &-success{
+    color: $success-color;
+  }
+  &-info{
+    color: $focus-color;
+  }
+  &-warn{
+    color: $pending-color;
+  }
+  &-error{
+    color: $error-color;
+  }
+
 }

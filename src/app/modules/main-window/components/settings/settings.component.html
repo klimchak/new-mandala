@@ -1,6 +1,7 @@
 <div class="app-setting" [formGroup]="settingForm">
   <p-splitter [style]="{'height': '100%'}" [panelSizes]="[40,60]" [minSizes]="[30,30]" stateKey="settingSplit"
               stateStorage="local">
+
     <ng-template pTemplate>
       <div class="app-setting__container app-setting__container__actions">
         <div class="app-setting__container__actions__top">
@@ -11,7 +12,7 @@
                             optionValue="value"></p-selectButton>
           </div>
           <div class="app-setting__container__actions__wrapper">
-            <div class="app-setting__container__actions__label">{{settingsStrings.autoSaveEditor}}</div>
+            <div class="app-setting__container__actions__label">{{settingsStrings.fastSaveEditor}}</div>
             <p-selectButton [options]="baseVariant" formControlName="autoSaveEditor" optionLabel="name"
                             optionValue="value"></p-selectButton>
           </div>
@@ -20,14 +21,33 @@
             <p-selectButton [options]="baseVariant" formControlName="darkMode" optionLabel="name"
                             optionValue="value"></p-selectButton>
           </div>
+
+          <div class="app-setting__container__actions__title">{{settingsStrings.notRemain}}</div>
+          <div class="app-setting__container__actions__wrapper">
+            <div class="app-setting__container__actions__label">{{settingsStrings.notRemainForEdit}}</div>
+            <p-selectButton [options]="baseVariant" formControlName="noRemandDelete" optionLabel="name"
+                            optionValue="value"></p-selectButton>
+          </div>
+          <div class="app-setting__container__actions__wrapper">
+            <div class="app-setting__container__actions__label">{{settingsStrings.notRemainForDelete}}</div>
+            <p-selectButton [options]="baseVariant" formControlName="noRemandEdit" optionLabel="name"
+                            optionValue="value"></p-selectButton>
+          </div>
+          <div class="app-setting__container__actions__wrapper">
+            <div class="app-setting__container__actions__label">{{settingsStrings.notRemainForUpdate}}</div>
+            <p-selectButton [options]="baseVariant" formControlName="noRemandUpdate" optionLabel="name"
+                            optionValue="value"></p-selectButton>
+          </div>
+
         </div>
         <div class="app-setting__container__actions__bottom">
-          <button pButton [disabled]="true" class="app-setting__container__actions__bottom--action"
+          <button pButton class="app-setting__container__actions__bottom--action"
                   icon="pi pi-save" label="{{settingsStrings.appSaveSetting}}"
                   (click)="confirm($event, confirmVariant.save_setting)"></button>
         </div>
       </div>
     </ng-template>
+
     <ng-template pTemplate>
       <div class="app-setting__container app-setting__container__logs" #logsContainer>
         <div class="app-setting__container__logs__top">
@@ -35,20 +55,48 @@
           <p-scrollPanel [style]="{width: '100%', height: logsContainer.clientHeight - 250 + 'px'}" *ngIf="!logIsCleared">
             <ng-container *ngFor="let item of logScrollerData; index as i">
               <div class="app-setting__container__logs__wrapper">
+
                 <div class="app-setting__container__logs--title">Log {{item.logIndex}}</div>
+
                 <ng-container *ngIf="logIsString(item.logData)">
-                  <div class="app-setting__container__logs__content" [ngClass]="{'error-content': isError(item.logData)}">{{item.logData}}</div>
+                  <div class="app-setting__container__logs__content simple-string-log"
+                       [ngClass]="{'content-error': setStateClass(item.logData, toastVariant.ERROR)}">{{item.logData}}</div>
                 </ng-container>
+
                 <ng-container *ngIf="logIsObject(item.logData)">
                   <div class="app-setting__container__logs__content">
-                    <div class="app-setting__container__logs__content" *ngIf="getDataFromObject(item.logData, 'sessionStart')">
-                      {{settingsStrings.sessionStart}}:
+
+                    <div class="app-setting__container__logs__content sessionStart-log" *ngIf="getDataFromObject(item.logData, 'sessionStart')">
+                      {{settingsStrings.sessionStart}}
                       <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'sessionStart') | date}}</span>
                     </div>
-                    <div class="app-setting__container__logs__content" *ngIf="getDataFromObject(item.logData, 'sessionStop')">
-                      {{settingsStrings.sessionStart}}:
+
+                    <div class="app-setting__container__logs__content sessionStop-log" *ngIf="getDataFromObject(item.logData, 'sessionStop')">
+                      {{settingsStrings.sessionStop}}
                       <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'sessionStop') | date}}</span>
                     </div>
+
+                    <ng-container *ngIf="getDataFromObject(item.logData, 'severity') && getDataFromObject(item.logData, 'summary')">
+                      <div class="app-setting__container__logs__content message-log">
+                        {{settingsStrings.type}}
+                        <span class="app-setting__container__logs__content--value"
+                              [ngClass]="{'content-success': setStateClass(getDataFromObject(item.logData, 'severity'), toastVariant.SUCCESS),
+                              'content-info': setStateClass(getDataFromObject(item.logData, 'severity'), toastVariant.INFO),
+                              'content-warn': setStateClass(getDataFromObject(item.logData, 'severity'), toastVariant.WARN),
+                              'content-error': setStateClass(getDataFromObject(item.logData, 'severity'), toastVariant.ERROR)}">
+                          {{getDataFromObject(item.logData, 'severity')}}
+                        </span>
+                      </div>
+                      <div class="app-setting__container__logs__content message-log">
+                        {{settingsStrings.summary}}
+                        <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'summary')}}</span>
+                      </div>
+                      <div class="app-setting__container__logs__content message-log" *ngIf="getDataFromObject(item.logData, 'detail')">
+                        {{settingsStrings.detail}}
+                        <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'detail')}}</span>
+                      </div>
+                    </ng-container>
+
                   </div>
                 </ng-container>
               </div>
@@ -69,6 +117,7 @@
         </div>
       </div>
     </ng-template>
+
   </p-splitter>
 </div>
 

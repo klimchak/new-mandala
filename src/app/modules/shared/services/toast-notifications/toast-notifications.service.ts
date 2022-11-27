@@ -1,33 +1,42 @@
 import {Injectable} from '@angular/core';
 import {get} from 'lodash';
 import {MessageService} from 'primeng/api';
+import {ToastNotificationsModel} from "../../models/toast-notifications.model";
+import ToastVariant = ToastNotificationsModel.ToastVariant;
+import ToastOptions = ToastNotificationsModel.ToastOptions;
+import ToastVariantString = ToastNotificationsModel.ToastVariantString;
+import {ElectronService} from "../../../../core/services";
+import {logsPath} from "../../../../constants";
+import {ALL_WORDS} from "../../constants";
 
 @Injectable({providedIn: 'root'})
 export class ToastNotificationsService {
-  constructor(private messageService: MessageService) {
+  private readonly otherString = ALL_WORDS.otherStrings;
+  constructor(
+    private messageService: MessageService,
+    private electronService: ElectronService<any>
+    ) {
   }
 
-  public showNotification(type: string, message?: {message: string}): void {
-    let text = get(message, 'message', 'Error occurred') as string;
-    switch (type) {
-      case 'success': {
-        text = get(message, 'message') as string;
-        this.messageService.add({severity: 'success', summary: 'Success', detail: text});
-        break;
-      }
-      case 'info': {
-        text = get(message, 'message') as string;
-        this.messageService.add({severity: 'info', summary: 'Information', detail: text});
-        break;
-      }
-      case 'warning': {
-        this.messageService.add({severity: 'warn', summary: 'Warning', detail: text});
-        break;
-      }
-      case 'error': {
-        this.messageService.add({severity: 'error', summary: 'Error', detail: text});
-        break;
-      }
+  public showNotification(toastVariant: ToastVariant, toastOptions: ToastOptions): void {
+    this.messageService.add({
+      severity: ToastVariantString[toastVariant],
+      summary: toastOptions?.summary ?? this.getDefaultSummary(toastVariant),
+      detail: toastOptions?.message
+    });
+    this.electronService.addRowMessageLogInFile(logsPath, {
+      severity: ToastVariantString[toastVariant],
+      summary: toastOptions?.summary ?? this.getDefaultSummary(toastVariant),
+      detail: toastOptions?.message
+    });
+  }
+
+  private getDefaultSummary(toastVariant: ToastVariant): string {
+    switch (toastVariant) {
+      case ToastVariant.SUCCESS: return this.otherString.off;
+      case ToastVariant.INFO: return this.otherString.info;
+      case ToastVariant.WARN: return this.otherString.warning;
+      case ToastVariant.ERROR: return this.otherString.error;
     }
   }
 }

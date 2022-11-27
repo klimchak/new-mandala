@@ -1,8 +1,10 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ElectronService} from '../../../../core/services';
 import {
-  DBCallbackAbbreviated, MandalaModel,
-  MandalaModelDB, MandalaModelUtility,
+  DBCallbackAbbreviated,
+  MandalaModel,
+  MandalaModelDB,
+  MandalaModelUtility,
   MandalaTableModelClass,
   selectTableRows
 } from '../../../shared/models/mandala.model';
@@ -17,6 +19,7 @@ import {ApplicationOptionModel} from '../../../shared/models/application-option.
 import {NoRemandType} from '../../../shared/models/confirm-popup.model';
 import {CoreService} from '../../../shared/services/core/core.service';
 import {ToastNotificationsService} from '../../../shared/services/toast-notifications/toast-notifications.service';
+import {AdvancedPreviewComponent} from "../modals/advanced-preview/advanced-preview.component";
 
 @Component({
   selector: 'app-savior',
@@ -45,7 +48,7 @@ export class SaviorComponent implements OnInit {
   public selectedItemsContextMenu: MandalaTableModelClass;
   public selectedItemsEventValue = false;
   public contextMenuOptions = [
-    {label: 'Расширенный просмотр', icon: 'pi pi-fw pi-search', command: () => this.openFullViewMandala()},
+    {label: 'Расширенный просмотр', icon: 'pi pi-fw pi-search', command: () => this.openFullViewMandala(unionBy([this.selectedItemsContextMenu], this.selectedItems, 'id'))},
     {label: 'Открыть в редакторе', icon: 'pi pi-fw pi-palette', command: () => this.openInEditor()},
     {
       label: 'Удалить', icon: 'pi pi-fw pi-times', command: () => {
@@ -247,7 +250,9 @@ export class SaviorComponent implements OnInit {
     value.forEach((item) => this.mandalas.push(new MandalaTableModelClass(item.id, item.personalInfo, item.source)));
   }
 
-  private openFullViewMandala(): void {
-    this.toastNotificationsService.showNotification('info', {message: 'Данная опция будет добавлена с обновлениями.'});
+  private openFullViewMandala(items = this.selectedItems): void {
+    let id = null;
+    items.forEach((item) => id = item.id);
+    this.dialogService.open(AdvancedPreviewComponent, {data: {id}});
   }
 }

@@ -119,9 +119,16 @@ export class ElectronService<TData> {
    * @param filePath {string}
    */
   public clearFile(filePath: string): any {
-    return this.fs.writeFileSync(filePath, '');
+    return this.fs.appendFileSync(filePath, '');
   }
 
+  /**
+   * @param filePath {string}
+   * @param data {severity: string; message: string; summary?: string;}
+   */
+  public addRowMessageLogInFile(filePath: string, data: {severity: string; summary: string; detail?: string;}): any {
+    return this.fs.appendFileSync(filePath, JSON.stringify(data) + '\r\n');
+  }
 
   /**
    * @param tableName {string}
@@ -129,6 +136,14 @@ export class ElectronService<TData> {
    */
   public getDataFromDatabase<TCallBackData>(tableName: string, ...args): Promise<Array<TCallBackData>> {
     return this.knex.select(args).from(tableName) as Promise<Array<TCallBackData>>;
+  }
+
+  /**
+   * @param tableName {string}
+   * @param args {string, string, ... .etc}
+   */
+  public getLastRowDataFromDatabase<TCallBackData>(tableName: string, orderBy: string,  ...args): Promise<Array<TCallBackData>> {
+    return this.knex.select(args).from(tableName).orderBy(orderBy, 'desc').limit(1) as Promise<Array<TCallBackData>>;
   }
 
 

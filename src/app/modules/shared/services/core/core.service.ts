@@ -3,7 +3,7 @@ import {BehaviorSubject, Subject} from 'rxjs';
 import {MandalaParamsModel} from '../../models/mandala-params.model';
 import {MandalaModel, PaperOptions} from '../../models/mandala.model';
 import {cloneDeep} from 'lodash';
-import {defaultModel} from '../../../../constants';
+import {defaultModel, MandalaVariant, PaperSize} from '../../../../constants';
 import * as svgPanZoom from 'svg-pan-zoom';
 import {ApplicationOptionModel} from '../../models/application-option.model';
 
@@ -50,6 +50,65 @@ export class CoreService {
 
   public set image(data: string) {
     this.imageData = data;
+  }
+
+  public isDoubleString(value?: boolean): string{
+    if (typeof value === 'undefined'){
+      value = this.mandalaParamsObj?.double;
+    }
+    return value ? '_Удвоенная' : '_Без_удвоен';
+  }
+
+  public isAbbreviationString(value?: boolean): string{
+    if (typeof value === 'undefined'){
+      value = this.mandalaParamsObj?.abbreviation;
+    }
+    return value ? '_Сокращенная' : '_Без_сокращ';
+  }
+
+  public isLandscapeString(value?: boolean): string{
+    if (typeof value === 'undefined'){
+      value = this.mandalaParamsObj?.landscape;
+    }
+    return value ? '_Альбомная' : '_Портретная';
+  }
+
+  public paperVariant(value?: PaperSize): string {
+    if (typeof value === 'undefined'){
+      value = this.mandalaParamsObj?.paperVariant;
+    }
+    switch (value) {
+      case PaperSize.A4:
+        return 'a4';
+      case PaperSize.A3:
+        return 'a3';
+      case PaperSize.A2:
+        return 'a2';
+      case PaperSize.A1:
+        return 'a1';
+      default:
+        return 'a4';
+    }
+  }
+
+  public mandalaVariantString(value?: MandalaVariant): string{
+    if (typeof value === 'undefined'){
+      value = this.mandalaParamsObj?.generationVariant;
+    }
+    switch (value) {
+      case MandalaVariant.LIGHT_FROM_CENTER_MAND:
+        return '_ЛУЧ_от_центра';
+      case MandalaVariant.LIGHT_IN_CENTER_MAND:
+        return '_ЛУЧ_к_центру';
+      case MandalaVariant.LIGHT_FROM_CENTER_LIGHT:
+        return '_ЛУЧ_от_центра';
+      case MandalaVariant.LIGHT_IN_CENTER_LIGHT:
+        return '_ЛУЧ_к_центру';
+      case MandalaVariant.MARGIN_FROM_CENTER_TO_APEX:
+        return '_ГРАНЬ_от_центра';
+      case MandalaVariant.MARGIN_FROM_APEX_TO_CENTER:
+        return '_ГРАНЬ_к_центру';
+    }
   }
 
   public replacePtToMm(valuePT: number): number{

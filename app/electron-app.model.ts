@@ -53,7 +53,7 @@ export class MainWindow extends BaseWindow {
       frame: true, autoHideMenuBar: true,
       title: `MandalaApp v${app.getVersion()}`,
       show: true,
-      webPreferences: {nodeIntegration: true, allowRunningInsecureContent: (this.serve), contextIsolation: false},
+      webPreferences: {nodeIntegration: true, allowRunningInsecureContent: (this.serve), contextIsolation: false, devTools: this.isDevMode},
     });
     this.webContext = this.window.webContents;
 
@@ -85,7 +85,7 @@ export class PreloaderWindow extends BaseWindow {
   }
 
   public createLoaderWindow(callback: () => void): void {
-    this.window = new BrowserWindow({width: 600, height: 400, frame: this.isDevMode, autoHideMenuBar: true, opacity: 0.9});
+    this.window = new BrowserWindow({width: 600, height: 400, frame: this.isDevMode, autoHideMenuBar: true, opacity: 0.9, webPreferences: {devTools: this.isDevMode}});
     this.webContext = this.window.webContents;
     this.loadingUrl();
     this.webContext.on('did-fail-load', () => this.loadingUrl());
@@ -194,7 +194,7 @@ export class AppUpdater {
     vPrefixedTagName: false,
     host: 'api.github.com',
     protocol: "https",
-    token: '',
+    token: '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',
     private: true,
     channel: 'latest',
     releaseType: "release",
@@ -227,8 +227,8 @@ export class AppUpdater {
         this.showDialog(
           window,
           'error',
-          'Странно.... Ошибка: нет доступа к репозиторию. Зови фиксика!',
-          message,
+          'Странно.... Зови фиксика!',
+          'Ошибка: нет доступа к репозиторию. Лог сохранен в файл',
           () => {
             callback();
           }
@@ -268,8 +268,8 @@ export class AppUpdater {
         //   'Обновление программы',
         //   'Новая версия доступна для установки. Программа обновится автоматически после закрытия.',
         //   () => {
-            callback();
-          // }
+        callback();
+        // }
         // );
       });
   }

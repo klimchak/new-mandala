@@ -306,7 +306,7 @@ knexAdapter ERROR:  TypeError: callback is not a function
 {"id":1658169264798,"sessionStart":"2022-07-18T18:34:24.798Z","sessionStop":null,"firstAfterUpdate":false}
 {"id":1658169362656,"sessionStart":"2022-07-18T18:36:02.656Z","sessionStop":null,"firstAfterUpdate":false}
 knexAdapter ERROR:  TypeError: callback is not a function
-{"id":1658169517836,"sessionStart":"2022-07-18T18:38:37.836Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658169517836,"sessionStart":"2022-07-18T18:38:37.836Z","sessionStop":"2022-07-18T18:38:37.836Z","firstAfterUpdate":false}
 knexAdapter ERROR:  TypeError: callback is not a function
 {"id":1658169782587,"sessionStart":"2022-07-18T18:43:02.587Z","sessionStop":null,"firstAfterUpdate":false}
 knexAdapter ERROR:  TypeError: callback is not a function
@@ -327,21 +327,111 @@ knexAdapter ERROR:  TypeError: callback is not a function
 {"id":1658170866660,"sessionStart":"2022-07-18T19:01:06.660Z","sessionStop":null,"firstAfterUpdate":false}
 knexAdapter ERROR:  TypeError: callback is not a function
 {"id":1658170866660,"sessionStart":"2022-07-18T19:01:06.660Z","sessionStop":null,"firstAfterUpdate":false}
-{"id":1658242577295,"sessionStart":"2022-07-19T14:56:17.295Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658242577295,"sessionStart":"2022-07-19T14:56:17.295Z","sessionStop":"2022-07-18T18:38:37.836Z","firstAfterUpdate":false}
 knexAdapter ERROR:  TypeError: callback is not a function
 {"id":1658304894945,"sessionStart":"2022-07-20T08:14:54.945Z","sessionStop":null,"firstAfterUpdate":false}
 knexAdapter ERROR:  TypeError: callback is not a function
 {"id":1658305011901,"sessionStart":"2022-07-20T08:16:51.901Z","sessionStop":null,"firstAfterUpdate":false}
 knexAdapter ERROR:  TypeError: callback is not a function
 {"id":1658305011901,"sessionStart":"2022-07-20T08:16:51.901Z","sessionStop":null,"firstAfterUpdate":false}
-{"id":1658312885276,"sessionStart":"2022-07-20T10:28:05.276Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658312885276,"sessionStart":"2022-07-20T10:28:05.276Z","sessionStop":"2022-07-18T18:38:37.836Z","firstAfterUpdate":false}
 knexAdapter ERROR:  TypeError: callback is not a function
 {"id":1658312885276,"sessionStart":"2022-07-20T10:28:05.276Z","sessionStop":null,"firstAfterUpdate":false}
 {"id":1658313373502,"sessionStart":"2022-07-20T10:36:13.502Z","sessionStop":null,"firstAfterUpdate":false}
 {"id":1658313373502,"sessionStart":"2022-07-20T10:36:13.502Z","sessionStop":null,"firstAfterUpdate":false}
 {"id":1658313461752,"sessionStart":"2022-07-20T10:37:41.752Z","sessionStop":null,"firstAfterUpdate":false}
 {"id":1658313461752,"sessionStart":"2022-07-20T10:37:41.752Z","sessionStop":null,"firstAfterUpdate":false}
-{"id":1669470229330,"sessionStart":"2022-11-26T13:43:49.330Z","sessionStop":null,"firstAfterUpdate":false}
-knexAdapter ERROR:  Error: insert into `serviceInfo` (`firstAfterUpdate`, `id`, `sessionStart`, `sessionStop`) values (false, 1669470875339, '2022-11-26T13:54:35.339Z', NULL) - SQLITE_ERROR: table serviceInfo has no column named firstAfterUpdate
-{"id":1669471083415,"sessionStart":"2022-11-26T13:58:03.415Z","sessionStop":null,"firstAfterUpdate":false}
-{"id":1669476804491,"sessionStart":"2022-11-26T15:33:24.491Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658655455424,"sessionStart":"2022-07-24T09:37:35.424Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658655455424,"sessionStart":"2022-07-24T09:37:35.424Z","sessionStop":"2022-07-18T18:38:37.836Z","firstAfterUpdate":false}
+{"id":1658655561529,"sessionStart":"2022-07-24T09:39:21.529Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1658655561529,"sessionStart":"2022-07-24T09:39:21.529Z","sessionStop":null,"firstAfterUpdate":false}
+{"id":1669554176716,"sessionStart":"2022-11-27T13:02:56.716Z","sessionStop":null,"firstAfterUpdate":false}
+{"severity":"success","summary":"Success","detail":"Настройки успешно сохранены"}
+{"severity":"success","summary":"Успех","detail":"Настройки успешно сохранены"}
+{"severity":"info","summary":"Слово: дружба, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная","detail":"Начинаю генерацию мандалы"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: дружба, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: дружба, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: дружба 2, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: дружба2, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: дружба3, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Начинаю сохранение мандалы в базу","detail":"Слово: дружба3, для чел3 чел3"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: дружба4, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Начинаю сохранение мандалы в базу","detail":"Слово: дружба4, для чел4 чел4"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Начинаю сохранение мандалы в базу","detail":"Слово: дружба5, для чел5 чел5"}
+{"severity":"success","summary":"Выключено","detail":"Настройки программы успешно сохранены"}
+{"severity":"info","summary":"Начинаю сохранение мандалы в базу","detail":"Слово: дружба5, для чел5 чел5"}
+{"severity":"success","summary":"Выключено","detail":"Настройки программы успешно сохранены"}
+{"severity":"success","summary":"Выключено","detail":"Настройки программы успешно сохранены"}
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю последнюю сохраненную мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружба2, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю последнюю сохраненную мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Уведомление","detail":"Данная опция будет добавлена с обновлениями."}
+{"severity":"info","summary":"Открываю последнюю сохраненную мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю последнюю сохраненную мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю последнюю сохраненную мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю последнюю сохраненную мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"success","summary":"Выключено","detail":"Настройки программы успешно сохранены"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_от_центра, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_к_центру, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_от_центра, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_от_центра, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_от_центра, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_от_центра, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_от_центра, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_к_центру, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_от_центра, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_от_центра, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_от_центра, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_от_центра, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: семья, параметры: _ГРАНЬ_к_центру, _Сокращенная, _Удвоенная, _Альбомная"}
+{"severity":"success","summary":"Выключено","detail":"Настройки программы успешно сохранены"}
+{"severity":"info","summary":"Открываю последнюю сохраненную мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю последнюю сохраненную мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю последнюю сохраненную мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю последнюю сохраненную мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: дружбадружбадружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю генерацию мандалы","detail":"Слово: дружбадружбадружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю сохранение мандалы в базу","detail":"Слово: дружбадружбадружба5, для a1 чел рандом чел рандом"}
+{"severity":"info","summary":"Открываю последнюю сохраненную мандалу","detail":"Слово: дружбадружбадружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Открываю последнюю сохраненную мандалу","detail":"Слово: дружбадружбадружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Удвоенная, _Альбомная"}
+{"severity":"success","summary":"Выключено","detail":"Настройки программы успешно сохранены"}
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружбадружбадружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Удвоенная, _Альбомная"}
+{"severity":"info","summary":"Начинаю сохранение мандалы в базу","detail":"Слово: дружбадружбадружба5, для a1 чел рандом чел рандом"}
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружба4, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружба4, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружба5, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружба3, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"id":1669554176716,"sessionStart":"2022-11-27T13:02:56.716Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572575787,"sessionStart":"2022-11-27T18:09:35.787Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572650167,"sessionStart":"2022-11-27T18:10:50.167Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572650243,"sessionStart":"2022-11-27T18:10:50.243Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572650167,"sessionStart":"2022-11-27T18:10:50.167Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572650243,"sessionStart":"2022-11-27T18:10:50.243Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572735119,"sessionStart":"2022-11-27T18:12:15.119Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572782710,"sessionStart":"2022-11-27T18:13:02.710Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572782714,"sessionStart":"2022-11-27T18:13:02.714Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572782710,"sessionStart":"2022-11-27T18:13:02.710Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572782714,"sessionStart":"2022-11-27T18:13:02.714Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572858221,"sessionStart":"2022-11-27T18:14:18.221Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572890343,"sessionStart":"2022-11-27T18:14:50.343Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572890356,"sessionStart":"2022-11-27T18:14:50.356Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572890343,"sessionStart":"2022-11-27T18:14:50.343Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669572890356,"sessionStart":"2022-11-27T18:14:50.356Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669573097360,"sessionStart":"2022-11-27T18:18:17.360Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669573097360,"sessionStart":"2022-11-27T18:18:17.360Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669573167699,"sessionStart":"2022-11-27T18:19:27.699Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669573213980,"sessionStart":"2022-11-27T18:20:13.980Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669573214065,"sessionStart":"2022-11-27T18:20:14.065Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669573214065,"sessionStart":"2022-11-27T18:20:14.065Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669573213980,"sessionStart":"2022-11-27T18:20:13.980Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669573413835,"sessionStart":"2022-11-27T18:23:33.835Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669573464193,"sessionStart":"2022-11-27T18:24:24.193Z","sessionStop":null,"firstAfterUpdate":false} 
+{"id":1669573464207,"sessionStart":"2022-11-27T18:24:24.207Z","sessionStop":null,"firstAfterUpdate":false} 
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружба4, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружба3, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружба4, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}
+{"severity":"info","summary":"Открываю мандалу","detail":"Слово: дружба3, параметры: _ЛУЧ_от_центра, _Без_сокращ, _Без_удвоен, _Альбомная"}

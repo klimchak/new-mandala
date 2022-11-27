@@ -11,9 +11,10 @@ import {SharedModalsModule} from './modals/shared-modals.module';
 import {ProgressComponent} from './components/progress/progress.component';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {SharedPipesModule} from './pipes/shared-pipes.module';
+import {WheelDirective} from "./wheel.directive";
 
 @NgModule({
-  declarations: [SpinnerComponent, ColorPickerComponent, ShadowHelpTextComponent, ProgressComponent],
+  declarations: [SpinnerComponent, ColorPickerComponent, ShadowHelpTextComponent, ProgressComponent, WheelDirective],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -25,7 +26,7 @@ import {SharedPipesModule} from './pipes/shared-pipes.module';
     ProgressBarModule,
     SharedPipesModule
   ],
-  exports: [SpinnerComponent, ColorPickerComponent, ShadowHelpTextComponent, ProgressComponent],
+  exports: [SpinnerComponent, ColorPickerComponent, ShadowHelpTextComponent, ProgressComponent, WheelDirective],
   providers: [DatePipe],
 })
 export class SharedModule {

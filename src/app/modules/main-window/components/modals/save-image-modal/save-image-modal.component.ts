@@ -2,16 +2,15 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {jsPDF} from 'jspdf';
 import {CoreService} from '../../../../shared/services/core/core.service';
 import {FormControl, FormGroup} from '@angular/forms';
-import {MandalaVariant, PaperSize} from '../../../../../constants';
 import {ALL_WORDS} from '../../../../shared/constants';
 import {MovingDialogComponent} from '../../../../shared/modals/moving-dialog/moving-dialog.component';
 import {svg2pdf} from 'svg2pdf.js';
 import {PaperOptions} from '../../../../shared/models/mandala.model';
 import {LoadingService} from '../../../../shared/services/loader/loader.service';
 import {Canvg} from 'canvg';
-import {
-  ToastNotificationsService
-} from '../../../../shared/services/toast-notifications/toast-notifications.service';
+import {ToastNotificationsService} from '../../../../shared/services/toast-notifications/toast-notifications.service';
+import {ToastNotificationsModel} from "../../../../shared/models/toast-notifications.model";
+import ToastVariant = ToastNotificationsModel.ToastVariant;
 
 @Component({
   selector: 'app-save-image-modal',
@@ -23,11 +22,12 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
   public modalForm: FormGroup;
   public ALL_WORDS = ALL_WORDS;
   private sizes: PaperOptions;
+  public readonly messagesStrings = ALL_WORDS.otherStrings.messages;
 
   constructor(
     private coreService: CoreService,
     private loadingService: LoadingService,
-    private toastService: ToastNotificationsService
+    private toastNotificationsService: ToastNotificationsService
   ) {
     super();
 
@@ -48,31 +48,11 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
   }
 
   public get autoName(): string {
-    let version = '';
-    const setAddWord = this.coreService.mandalaParamsObj?.double ? '_Удвоенная' : '_Без_удвоен';
-    const abbrMand = this.coreService.mandalaParamsObj?.abbreviation ? '_Сокращенная' : '_Без_сокращ';
-    const setAlbum = this.coreService.mandalaParamsObj?.landscape ? '_Альбомная' : '_Портретная';
-    const choicePaper = `_${this.paperVariant}`;
-    switch (this.coreService.mandalaParamsObj?.generationVariant) {
-      case MandalaVariant.LIGHT_FROM_CENTER_MAND:
-        version = '_ЛУЧ_от_центра';
-        break;
-      case MandalaVariant.LIGHT_IN_CENTER_MAND:
-        version = '_ЛУЧ_к_центру';
-        break;
-      case MandalaVariant.LIGHT_FROM_CENTER_LIGHT:
-        version = '_ЛУЧ_от_центра';
-        break;
-      case MandalaVariant.LIGHT_IN_CENTER_LIGHT:
-        version = '_ЛУЧ_к_центру';
-        break;
-      case MandalaVariant.MARGIN_FROM_CENTER_TO_APEX:
-        version = '_ГРАНЬ_от_центра';
-        break;
-      case MandalaVariant.MARGIN_FROM_APEX_TO_CENTER:
-        version = '_ГРАНЬ_к_центру';
-        break;
-    }
+    let version = this.coreService.mandalaVariantString();
+    const setAddWord = this.coreService.isDoubleString();
+    const abbrMand = this.coreService.isAbbreviationString();
+    const setAlbum = this.coreService.isLandscapeString();
+    const choicePaper = `_${this.coreService.paperVariant()}`;
     const schemaWord = this.modalForm.get('activeSchema')?.value ? '_Схема' : '_Цвет';
     let answer = `${this.modalForm.get('additionalName')?.value ? this.modalForm.get('additionalName')?.value : ''}`;
     answer += `${this.modalForm.get('additionalName')?.value ? '_' + this.coreService.mandalaParamsObj?.baseWord : this.coreService.mandalaParamsObj?.baseWord}`;
@@ -83,21 +63,6 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
     answer += `${this.modalForm.get('activeSchema')?.value ? schemaWord : ''}`;
     answer += `${this.modalForm.get('paperVariant')?.value ? choicePaper : ''}`;
     return answer;
-  }
-
-  private get paperVariant(): string {
-    switch (this.coreService.mandalaParamsObj?.paperVariant) {
-      case PaperSize.A4:
-        return 'a4';
-      case PaperSize.A3:
-        return 'a3';
-      case PaperSize.A2:
-        return 'a2';
-      case PaperSize.A1:
-        return 'a1';
-      default:
-        return 'a4';
-    }
   }
 
   private get additionalName(): string {
@@ -132,10 +97,7 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
 
   public switchOnSchema(): void {
     if (this.onlySchema) {
-      this.toastService.showNotification(
-        'info',
-        {message: 'Полигоны будут очищены от раскраски. Рекомендуется сохранить, перед экспортом схемы.'}
-      );
+      this.toastNotificationsService.showNotification(ToastVariant.INFO, {message: this.messagesStrings.infoAboutClearColor});
     }
   }
 
@@ -150,7 +112,7 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
 
   private savePdfFile(elem: HTMLElement): void {
     setTimeout(() => this.loadingService.setProgress(45), 10);
-    const tmpPdf = new jsPDF(this.sizes.orientation, 'mm', this.paperVariant, false);
+    const tmpPdf = new jsPDF(this.sizes.orientation, 'mm', this.coreService.paperVariant(), false);
     svg2pdf(elem, tmpPdf, {
       x: 0,
       y: 0,
@@ -161,6 +123,7 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
       setTimeout(() => {
         this.loadingService.setProgress(0);
         value.save(`${this.autoName}.pdf`);
+        this.toastNotificationsService.showNotification(ToastVariant.SUCCESS, {message: this.messagesStrings.savePdfFileSuccessful});
         this.activateZoom();
       }, 500);
     });
@@ -179,6 +142,7 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
       a.setAttribute('href', canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream'));
       a.setAttribute('target', '_blank');
 
+      this.toastNotificationsService.showNotification(ToastVariant.SUCCESS, {message: this.messagesStrings.settingSaveSuccessful});
       setTimeout(() => this.loadingService.setProgress(100), 10);
       setTimeout(() => {
         this.loadingService.setProgress(0);
@@ -188,11 +152,7 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
     }).catch((e) => {
       setTimeout(() => this.loadingService.setProgress(0), 10);
       this.activateZoom();
-      this.toastService.showNotification(
-        'error',
-        {message: 'Экспорт в PNG ранее созданной мандалы пока не доступен. Воспользуйтесь экспортом в PDF.'}
-      );
-      console.warn('canvg error', e);
+      this.toastNotificationsService.showNotification(ToastVariant.ERROR, {message: this.messagesStrings.saveImageFileError});
     });
   }
 
@@ -202,6 +162,7 @@ export class SaveImageModalComponent extends MovingDialogComponent implements On
         mandala.childNodes[0].childNodes[i].attributes.fill.value = '#ffffff';
       }
     }
+    this.toastNotificationsService.showNotification(ToastVariant.SUCCESS, {message: this.messagesStrings.resetColorSuccessful});
     return mandala;
   }
 

@@ -52,12 +52,15 @@ export class AppComponent implements OnInit {
     if (this.electronService.isElectron) {
       this.electronService.getDataFromDatabase<ApplicationOptionModel>(
         'applicationOptions',
-        'id', 'noRemandDelete', 'noRemandEdit', 'noRemandUpdate')
+        'id', 'noRemandDelete', 'noRemandEdit', 'noRemandUpdate', 'openRecent', 'autoSaveEditor', 'darkMode')
         .then((item) => {
           this.coreService.applicationOption = {
             noRemandDelete: Boolean(item[item.length - 1].noRemandDelete),
             noRemandUpdate: Boolean(item[item.length - 1].noRemandUpdate),
             noRemandEdit: Boolean(item[item.length - 1].noRemandEdit),
+            openRecent: Boolean(item[item.length - 1].openRecent),
+            autoSaveEditor: Boolean(item[item.length - 1].autoSaveEditor),
+            darkMode: Boolean(item[item.length - 1].darkMode),
           };
         });
     }

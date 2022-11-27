@@ -86,13 +86,43 @@ export const ALL_WORDS = {
   otherStrings: {
     on: 'Включено',
     off: 'Выключено',
+    success: 'Успех',
+    info: 'Уведомление',
+    warning: 'Внимание',
+    error: 'Ошибка',
+    messages: {
+      paramsForGenerateError: 'Проверьте правильность заполнения полей',
+      startMandalaGeneration: 'Начинаю генерацию мандалы',
+      startRestoreMandala: 'Открываю мандалу',
+      startRestoreLastMandala: 'Открываю последнюю сохраненную мандалу',
+      startMandalaSaveDb: 'Начинаю сохранение мандалы в базу',
+      saveDbSuccessful: 'Успешное сохранение мандалы в базу',
+      saveDbByLastVersionSuccessful: 'Мандала перезаписана',
+      settingSaveSuccessful: 'Настройки программы успешно сохранены',
+      settingSaveError: 'Ошибка при сохранении настроек программы',
+      cleanLogsSuccessful: 'Логи успешно очищены',
+      saveImageFileSuccessful: 'Файл .PNG успешно экспортирован',
+      savePdfFileSuccessful: 'Файл .PDF успешно экспортирован',
+      saveImageFileError: 'Экспорт в PNG ранее созданной мандалы пока не доступен. Воспользуйтесь экспортом в PDF.',
+      resetColorSuccessful: 'Цвета успешно сброшены',
+      infoAboutClearColor: 'Полигоны будут очищены от раскраски. Рекомендуется сохранить, перед экспортом схемы.'
+    }
   },
   settings: {
     openRecent: 'Открывать последнюю мандалу',
-    autoSaveEditor: 'Автоматическое сохранение в базу',
+    fastSaveEditor: 'Включить быстрое сохранение в базу',
     darkMode: 'Темный режим приложения',
-    sessionStart: 'Приложение запущено',
-    sessionStop: 'Приложение закрыто',
+    notRemain: 'Не напоминать о: ',
+    notRemainForEdit: '- редактировании мандалы',
+    notRemainForDelete: '- удалении мандалы',
+    notRemainForUpdate: '- перезаписи мандалы',
+
+    sessionStart: 'Приложение запущено: ',
+    sessionStop: 'Приложение закрыто: ',
+    type: 'Вариант сообщения: ',
+    summary: 'Заголовок: ',
+    detail: 'Детали: ',
+
     appSetting: 'Настройки приложения',
     appSaveSetting: 'Сохранить настройки',
     appLogs: 'Логи приложения',
@@ -100,7 +130,7 @@ export const ALL_WORDS = {
     appLogsUpdate: 'Обновить логи',
     appFolder: 'Пака программы',
     appSureClearLogs: 'Уверены, что хотите очистить файл логов?',
-    appSureReloadLogs: 'Уверены, что хотите очистить файл логов?',
+    appSureReloadLogs: 'Обновить данные логов?',
     appSureSaveSetting: 'Уверены, что хотите сохранить настройки?',
     appLogFileIsEmpty: 'Файл логов пустой'
   }

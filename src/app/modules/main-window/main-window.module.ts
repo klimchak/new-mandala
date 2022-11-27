@@ -32,13 +32,14 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
 import {ContextMenuModule} from 'primeng/contextmenu';
 import {SharedPipesModule} from '../shared/pipes/shared-pipes.module';
 import {InputNumberModule} from 'primeng/inputnumber';
-import { SettingsComponent } from './components/settings/settings.component';
+import {SettingsComponent} from './components/settings/settings.component';
 import {SelectButtonModule} from "primeng/selectbutton";
 import {VirtualScrollerModule} from "primeng/virtualscroller";
 import {SplitterModule} from "primeng/splitter";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {ConfirmPopupModule} from "primeng/confirmpopup";
 import {EditorComponent} from "./components/editor/editor.component";
+import {AdvancedPreviewComponent} from './components/modals/advanced-preview/advanced-preview.component';
 
 const tabsComponents = [
   ParamsModalComponent,
@@ -51,7 +52,7 @@ const tabsComponents = [
 ];
 
 @NgModule({
-  declarations: [...tabsComponents, SettingsComponent],
+  declarations: [...tabsComponents, SettingsComponent, AdvancedPreviewComponent],
   imports: [
     MainWindowRouting,
     TabViewModule,

@@ -14,6 +14,9 @@ import {ElectronService} from '../../../../core/services';
 import {LoadingService} from '../../../shared/services/loader/loader.service';
 import {ConfirmationDialogComponent} from '../../../shared/modals/confirmation-dialog/confirmation-dialog.component';
 import {MandalaParamsModel} from '../../../shared/models/mandala-params.model';
+import {ToastNotificationsService} from "../../../shared/services/toast-notifications/toast-notifications.service";
+import {ToastNotificationsModel} from "../../../shared/models/toast-notifications.model";
+import ToastVariant = ToastNotificationsModel.ToastVariant;
 
 @Component({
   selector: 'app-page-tabs',
@@ -22,21 +25,10 @@ import {MandalaParamsModel} from '../../../shared/models/mandala-params.model';
   encapsulation: ViewEncapsulation.None,
 })
 export class PageTabsComponent implements OnInit, OnDestroy {
+  public readonly messagesStrings = ALL_WORDS.otherStrings.messages;
   public openTab = Tab.editor;
-  // public mandalaParams!: MandalaParamsModel;
   public mandalaCreated = false;
   public ALL_WORDS = ALL_WORDS;
-
-  private destroy: Subject<boolean> = new Subject<boolean>();
-  private menuItemsStandard: MenuItem[];
-
-  constructor(
-    private dialogService: DialogService,
-    private electronService: ElectronService<MandalaModel>,
-    private rendererService: CoreService,
-    private loadingService: LoadingService
-  ) {
-  }
 
   public get mandalaParams(): MandalaParamsModel {
     return this.rendererService.mandalaParamsObj;
@@ -94,9 +86,37 @@ export class PageTabsComponent implements OnInit, OnDestroy {
     return this.activeZoom ? ALL_WORDS.TOOLTIP.TOOLTIP_SWITCHER_HELP_TEXT.enable : ALL_WORDS.TOOLTIP.TOOLTIP_SWITCHER_HELP_TEXT.disable;
   }
 
+  private destroy: Subject<boolean> = new Subject<boolean>();
+  private menuItemsStandard: MenuItem[];
+
+  constructor(
+    private dialogService: DialogService,
+    private electronService: ElectronService<MandalaModel>,
+    private rendererService: CoreService,
+    private toastNotificationService: ToastNotificationsService,
+    private coreService: CoreService,
+    private loadingService: LoadingService
+  ) {
+  }
+
   public ngOnInit(): void {
     this.onChangeTab(this.openTab);
     this.rendererService.mandalaCreated.pipe(takeUntil(this.destroy)).subscribe((value) => this.mandalaCreated = value);
+    if (this.coreService.applicationOption.openRecent){
+      this.electronService.getLastRowDataFromDatabase<MandalaModelDB>(
+        'mandala', 'createDate',
+        'id', 'createDate', 'personalInfo', 'rayA',
+        'rayB', 'rayC', 'rayA2', 'rayB2',
+        'rayC2', 'imageData', 'source', 'drawForBase',
+        'gridThisFigure', 'drawThisFigure', 'mandalaParamsObj'
+      ).then((data) => {
+        if (data.length > 0){
+          const restoredMandala = new MandalaModelUtility(this.coreService, data[0]);
+          restoredMandala.setMandalaModel();
+          this.setRestoredView(true, true);
+        }
+      })
+    }
   }
 
   public ngOnDestroy(): void {
@@ -108,10 +128,14 @@ export class PageTabsComponent implements OnInit, OnDestroy {
     this.activeZoom ? this.rendererService.enableZoomSVG() : this.rendererService.disableZoomSVG();
   }
 
-  public setRestoredView(event: boolean) {
+  public setRestoredView(event: boolean, last?: boolean) {
     if (event) {
       this.openTab = Tab.editor;
       this.onChangeTab(this.openTab);
+      this.toastNotificationService.showNotification(ToastVariant.INFO, {
+        summary: last ? this.messagesStrings.startRestoreLastMandala : this.messagesStrings.startRestoreMandala,
+        message: `Слово: ${this.coreService.mandalaParamsObj.baseWord}, параметры: ${this.coreService.mandalaVariantString(this.coreService.mandalaParamsObj.generationVariant)}, ${this.coreService.isAbbreviationString(this.coreService.mandalaParamsObj.abbreviation)}, ${this.coreService.isDoubleString(this.coreService.mandalaParamsObj.double)}, ${this.coreService.isLandscapeString(this.coreService.mandalaParamsObj.landscape)}`
+      });
       this.rendererService.restoreMandala.next(true);
     }
   }

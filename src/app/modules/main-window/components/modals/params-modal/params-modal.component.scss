@@ -41,8 +41,12 @@
       justify-content: space-between;
 
       &-block {
+        margin-right: .5rem;
         .c-prime__button {
           padding: 0 !important;
+        }
+        &__label{
+          margin-bottom: .5rem;
         }
       }
     }
