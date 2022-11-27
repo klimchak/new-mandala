@@ -1,7 +1,7 @@
 import {MandalaModel} from './modules/shared/models/mandala.model';
 
-export const dataTablePath = '../src/assets/database/db.db';
-// export const dataTablePath = '\\assets\\database\\db.db';
+// export const dataTablePath = '../src/assets/database/db.db';
+export const dataTablePath = '\\assets\\database\\db.db';
 export const logsPath = 'mylog.txt';
 // export const logsPath = '..\\..\\..\\mylog.txt';
 

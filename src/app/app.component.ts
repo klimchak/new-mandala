@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ElectronService as CustomElectronService} from './core/services';
 import {TranslateService} from '@ngx-translate/core';
 import {ALL_WORDS} from './modules/shared/constants';
 import {PrimeNGConfig} from 'primeng/api';
@@ -7,6 +6,7 @@ import {ApplicationOptionModel} from './modules/shared/models/application-option
 import {MandalaModel} from './modules/shared/models/mandala.model';
 import {CoreService} from './modules/shared/services/core/core.service';
 import {DialogService} from 'primeng/dynamicdialog';
+import {ElectronService} from "./modules/shared/services/core/electron.service";
 
 
 @Component({
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   public strings = ALL_WORDS;
 
   constructor(
-    private electronService: CustomElectronService<MandalaModel>,
+    private electronService: ElectronService<MandalaModel>,
     private coreService: CoreService,
     private translateService: TranslateService,
     private config: PrimeNGConfig,

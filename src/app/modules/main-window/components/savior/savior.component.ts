@@ -1,5 +1,4 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {ElectronService} from '../../../../core/services';
 import {
   DBCallbackAbbreviated,
   MandalaModel,
@@ -19,12 +18,12 @@ import {ApplicationOptionModel} from '../../../shared/models/application-option.
 import {NoRemandType} from '../../../shared/models/confirm-popup.model';
 import {CoreService} from '../../../shared/services/core/core.service';
 import {AdvancedPreviewComponent} from "../modals/advanced-preview/advanced-preview.component";
+import {ElectronService} from "../../../shared/services/core/electron.service";
 
 @Component({
   selector: 'app-savior',
   templateUrl: './savior.component.html',
   styleUrls: ['./savior.component.scss'],
-  providers: [ElectronService],
   animations: [$animations]
 })
 export class SaviorComponent implements OnInit {

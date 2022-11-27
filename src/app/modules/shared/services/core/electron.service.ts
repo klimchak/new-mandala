@@ -7,9 +7,9 @@ import * as childProcess from 'child_process';
 import * as fs from 'fs';
 import {Knex} from 'knex';
 import * as path from 'path';
-import {dataTablePath} from '../../../constants';
-import {ElectronMessage} from '../../../modules/shared/models/electron-message';
-import {SessionModel} from '../../../modules/shared/models/session.model';
+import {dataTablePath} from '../../../../constants';
+import {ElectronMessage} from '../../models/electron-message';
+import {SessionModel} from '../../models/session.model';
 import {BehaviorSubject} from 'rxjs';
 
 @Injectable({

@@ -1,13 +1,12 @@
 import {Injectable} from '@angular/core';
-import {get} from 'lodash';
 import {MessageService} from 'primeng/api';
 import {ToastNotificationsModel} from "../../models/toast-notifications.model";
+import {logsPath} from "../../../../constants";
+import {ALL_WORDS} from "../../constants";
+import {ElectronService} from "../core/electron.service";
 import ToastVariant = ToastNotificationsModel.ToastVariant;
 import ToastOptions = ToastNotificationsModel.ToastOptions;
 import ToastVariantString = ToastNotificationsModel.ToastVariantString;
-import {ElectronService} from "../../../../core/services";
-import {logsPath} from "../../../../constants";
-import {ALL_WORDS} from "../../constants";
 
 @Injectable({providedIn: 'root'})
 export class ToastNotificationsService {

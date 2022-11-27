@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {ALL_WORDS} from "../../../shared/constants";
-import {ElectronService} from "../../../../core/services";
 import {logsPath} from "../../../../constants";
 import {ConfirmationService} from "primeng/api";
 import {cloneDeep, get, isObject, isString, uniqBy} from "lodash";
@@ -10,6 +9,7 @@ import {ApplicationOptionModel} from "../../../shared/models/application-option.
 import {ToastNotificationsService} from "../../../shared/services/toast-notifications/toast-notifications.service";
 import {ToastNotificationsModel} from "../../../shared/models/toast-notifications.model";
 import ToastVariant = ToastNotificationsModel.ToastVariant;
+import {ElectronService} from "../../../shared/services/core/electron.service";
 
 export enum ConfirmVariant {
   clear_log = 1,

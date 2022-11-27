@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {DynamicDialogRef} from 'primeng/dynamicdialog';
 import {MovingDialogComponent} from '../moving-dialog/moving-dialog.component';
-import {ElectronService} from '../../../../core/services';
+import {ElectronService} from "../../services/core/electron.service";
 
 @Component({
   templateUrl: './update-dialog.component.html',

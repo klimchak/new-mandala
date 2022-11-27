@@ -10,13 +10,13 @@ import {MenuItem} from 'primeng/api';
 import {SaveDbModalComponent} from '../modals/save-db-modal/save-db-modal.component';
 import {Tab} from '../../../../constants';
 import {MandalaModel, MandalaModelDB, MandalaModelUtility} from '../../../shared/models/mandala.model';
-import {ElectronService} from '../../../../core/services';
 import {LoadingService} from '../../../shared/services/loader/loader.service';
 import {ConfirmationDialogComponent} from '../../../shared/modals/confirmation-dialog/confirmation-dialog.component';
 import {MandalaParamsModel} from '../../../shared/models/mandala-params.model';
 import {ToastNotificationsService} from "../../../shared/services/toast-notifications/toast-notifications.service";
 import {ToastNotificationsModel} from "../../../shared/models/toast-notifications.model";
 import ToastVariant = ToastNotificationsModel.ToastVariant;
+import {ElectronService} from "../../../shared/services/core/electron.service";
 
 @Component({
   selector: 'app-page-tabs',

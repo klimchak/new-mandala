@@ -1,10 +1,10 @@
 import {ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MandalaModel, MandalaModelDB} from "../../../../shared/models/mandala.model";
-import {ElectronService} from "../../../../../core/services";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {CoreService} from "../../../../shared/services/core/core.service";
 import {get} from "lodash";
 import * as svgPanZoom from 'svg-pan-zoom';
+import {ElectronService} from "../../../../shared/services/core/electron.service";
 
 @Component({
   selector: 'app-advanced-preview',

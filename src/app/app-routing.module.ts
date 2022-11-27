@@ -1,8 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
-import { HomeRoutingModule } from './home/home-routing.module';
-import { DetailRoutingModule } from './detail/detail-routing.module';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {NotFoundComponent} from './modules/shared/components/notFoundComponent/notFound.component';
 
 const routes: Routes = [
@@ -19,8 +16,6 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
-    HomeRoutingModule,
-    DetailRoutingModule
   ],
   exports: [RouterModule]
 })
