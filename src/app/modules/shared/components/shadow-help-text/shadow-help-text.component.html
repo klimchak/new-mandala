@@ -1,0 +1,34 @@
+<div class="wrapper" (mousemove)="mouseMove($event)" (mousedown)="mouseDown($event)" (mouseup)="mouseUp($event)" [style]="moveStyle">
+  <div class="wrapper-content unselectable">
+    <div class="wrapper-content__item without-top-margin">
+      <span class="wrapper-content__item-title">Введено слово: </span>
+      <span class="wrapper-content__item-info">{{mandalaParamsObj?.baseWord}}</span>
+    </div>
+    <div class="wrapper-content__item">
+      <span class="wrapper-content__item-title">В переведенном виде: </span>
+      <span class="wrapper-content__item-info">{{modelMandala?.source?.wordInInt}}</span>
+    </div>
+    <div class="wrapper-content__item">
+      <span class="wrapper-content__item-title">Кол-во цифр: </span>
+      <span class="wrapper-content__item-info">{{modelMandala?.source?.countWord + 1}}</span>
+    </div>
+    <div class="wrapper-content__item">
+      <span class="wrapper-content__item-title">Сокращено: </span>
+      <span class="wrapper-content__item-info">{{booleanConvert(mandalaParamsObj?.abbreviation)}}</span>
+    </div>
+    <div class="wrapper-content__item without-bottom-margin">
+      <span class="wrapper-content__item-title">Удвоено: </span>
+      <span class="wrapper-content__item-info">{{booleanConvert(mandalaParamsObj?.double)}}</span>
+    </div>
+    <div class="wrapper-content__item without-bottom-margin">
+      <span class="wrapper-content__item-title">Размер шрифта: </span>
+      <span class="wrapper-content__item-info">{{mandalaParamsObj?.fontSize}}px или примерно {{fontSize}}</span>
+    </div>
+    <div class="wrapper-content__item without-bottom-margin">
+      <span class="wrapper-content__item-title">Вариант построения: </span>
+      <span class="wrapper-content__item-info">{{getMandalaVariant(mandalaParamsObj?.generationVariant)}}</span>
+    </div>
+  </div>
+</div>
+
+

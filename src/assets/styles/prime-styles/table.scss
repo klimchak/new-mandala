@@ -7,9 +7,28 @@
 .c-prime__table-middle{
   &.top-border {
     border-top: 1px solid $table-border-color;
+  }
 
-    .p-datatable-thead > tr {
-      padding: 10px 0;
+  .p-datatable-scrollable-header {
+    background: none !important;
+  }
+
+  .p-resizable-column {
+    &:hover{
+      background-color: $prime-grey-color !important;
+      .p-column-resizer{
+        &::after{
+          content: '';
+          position: absolute;
+          top: 14%;
+          bottom: 14%;
+          left: 0;
+          right: 0;
+          border-width: 0 2px 0 2px;
+          border-color: $table-border-color;
+          border-style: solid;
+        }
+      }
     }
   }
 
@@ -24,7 +43,7 @@
   }
 
   &.p-datatable-flex-scrollable{
-    height: calc(100vh - 154px) !important;
+    height: calc(100vh - 86px) !important;
   }
 
   .p-datatable-scrollable-header {
@@ -40,7 +59,6 @@
   }
 
   .p-datatable-wrapper {
-    //@include scroll-disable();
     @include scroll-styles();
   }
 

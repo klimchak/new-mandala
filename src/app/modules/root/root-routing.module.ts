@@ -10,7 +10,7 @@ const routes: Routes = [
     children: [
       {
         path: 'mainWindow',
-        loadChildren: () => import('../mainWindow/main-window.module').then((m) => m.MainWindowModule),
+        loadChildren: () => import('../main-window/main-window.module').then((m) => m.MainWindowModule),
       },
       {
         path: '',

@@ -1,0 +1,72 @@
+<div class="main">
+  <form [formGroup]="paramsForm" class="main_general">
+    <div class="c-base__form-field">
+      <label class="c-base__form-field-label">Слово для генерации</label>
+      <input type="text" formControlName="baseWord" pInputText placeholder="Введите слово">
+    </div>
+    <div class="c-base__form-field">
+      <label class="c-base__form-field-label">Метод расчета</label>
+      <p-dropdown [options]="generationVariant" formControlName="generationVariant"
+                  class="c-prime__dropdown" panelStyleClass="c-prime__dropdown--panel" placeholder="Выберите вариант" appendTo="body"
+                  optionLabel="title" optionValue="value" optionDisabled="inactive"></p-dropdown>
+    </div>
+    <div class="c-base__form-field main_general--additional">
+      <div class="main_general--additional-block">
+        <div class="main_general--additional-block__label">
+          Удвоение слова <i class="pi pi-question-circle" pTooltip="{{doubleTooltipText}}"></i>
+        </div>
+        <p-selectButton [options]="baseVariant" formControlName="double" optionLabel="name"
+                        optionValue="value" (onChange)="setDouble()"></p-selectButton>
+      </div>
+      <div class="main_general--additional-block">
+        <div class="main_general--additional-block__label">
+          Сокращение при удвоении <i class="pi pi-question-circle" pTooltip="{{abbreviationTooltipText}}"></i>
+        </div>
+        <p-selectButton [options]="baseVariant" formControlName="abbreviation" optionLabel="name"
+                        optionValue="value"></p-selectButton>
+      </div>
+      <div class="main_general--additional-block">
+        <div class="main_general--additional-block__label">
+          Альбомная ориентация <i class="pi pi-question-circle" pTooltip="{{landscapeTooltipText}}"></i>
+        </div>
+        <p-selectButton [options]="baseVariant" formControlName="landscape" optionLabel="name"
+                        optionValue="value"></p-selectButton>
+      </div>
+    </div>
+    <div class="c-base__form-field">
+      <label class="c-base__form-field-label">Размер бумаги</label>
+      <p-dropdown [options]="paperVariant" formControlName="paperVariant"
+                  class="c-prime__dropdown" panelStyleClass="c-prime__dropdown--panel" placeholder="Выберите размер полотна" appendTo="body"
+                  optionLabel="title" optionValue="value"></p-dropdown>
+    </div>
+    <div class="main_general__double-columns">
+
+      <div class="main_general__double-columns--left-column">
+        <label class="c-base__form-field-label" style="{{numberColor}}">Цвет цифр </label>
+        <p-colorPicker id="color" formControlName="numberColor" [inline]="true" appendTo="body"></p-colorPicker>
+      </div>
+
+      <div class="main_general__double-columns--right-column">
+        <div class="c-base__form-field">
+          <label class="c-base__form-field-label">Размер грани в мм.: {{marginSize}}</label>
+          <p-slider formControlName="marginSize" [min]="1" [max]="50" [step]="1"></p-slider>
+        </div>
+        <div class="c-base__form-field">
+          <label class="c-base__form-field-label">Толщина грани в мм.: {{strokeWidth}}</label>
+          <p-slider formControlName="strokeWidth" [min]="0.1" [max]="2" [step]="0.1"></p-slider>
+        </div>
+        <div class="c-base__form-field">
+          <label class="c-base__form-field-label">Размер цифр в пт.: {{fontSize}}, что соответствует примерно {{fontSizeMM}} с погрешностью {{fontSizeError}}</label>
+          <p-slider formControlName="fontSize" [min]="1" [max]="24" [step]="1"></p-slider>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+</div>
+
+<div class="popup__buttons">
+  <button pButton class="c-prime__button c-prime__button--grey-text" (click)="closeModalWindow()">Отмена</button>
+  <button pButton class="c-prime__button" (click)="processForm()">Создать</button>
+</div>

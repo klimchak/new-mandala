@@ -1,0 +1,39 @@
+@import '../../../../../../assets/styles/variables';
+@import '../../../../../../assets/styles/mixins';
+
+.main {
+  &_general {
+    width: 600px;
+
+    &__double-columns {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+      flex-wrap: wrap;
+      width: 100%;
+
+      &--left-column, &--right-column {
+        display: flex;
+        flex-direction: column;
+      }
+
+      &--left-column {
+        flex: 1;
+        margin-right: 1rem;
+      }
+
+      &--right-column {
+        flex: 1;
+      }
+    }
+  }
+}
+
+
+.c-base__form-field {
+  padding: 0 .5rem;
+}
+
+.p-calendar {
+  width: 100%;
+}

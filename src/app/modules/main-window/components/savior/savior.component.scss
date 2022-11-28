@@ -1,0 +1,76 @@
+@import '../../../../../assets/styles/variables';
+@import '../../../../../assets/styles/mixins';
+
+.savior-main {
+  width: 100%;
+
+  &__wrapper {
+    &--no-data {
+      @include text-base(20px);
+      @include no-data;
+    }
+    .header-with-filter{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    &__table {
+      &--caption{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        .search-wrapper{
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      &__item {
+        &__firstName,
+        &__lastName,
+        &__patronymic,
+        &__createDate{
+          flex-basis: 15% !important;
+        }
+        &__description{
+          flex-basis: 30% !important;
+        }
+        &__word{
+          flex-basis: 25% !important;
+        }
+        &__actions{
+          flex-basis: 25% !important;
+        }
+
+        &__firstName,
+        &__lastName,
+        &__patronymic,
+        &__createDate,
+        &__description,
+        &__word,
+        &__actions {
+          @include text-base(14px);
+          &__text {
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+  }
+
+  &--empty {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    margin-top: 10px;
+    @include text-base(30px);
+    filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.25));
+  }
+}

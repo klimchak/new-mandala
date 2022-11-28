@@ -1,0 +1,52 @@
+productName: "Mandala app"
+appId: "com.electron.new-mandala"
+asar: false
+
+publish:
+  provider: github
+  token: TOKEN
+
+directories:
+  output: "release"
+
+extraResources:
+  - from: "dist"
+    to: "app"
+    filter:
+      - "**/*"
+# Windows configuration
+win:
+  icon: "dist/assets/icons"
+  target:
+#    - "squirrel"
+#    - "portable"
+#    - "nsis"
+#    - "squirrel"
+    - "nsis-web"
+
+portable:
+  splashImage: "dist/assets/icons/electron.bmp"
+
+
+# Mac OS configuration
+mac:
+  icon: "dist/assets/icons"
+  target:
+    - "dmg"
+
+
+# Linux configuration
+linux:
+  icon: "dist/assets/icons"
+  category: Development
+  target:
+    - "AppImage"
+    - "deb"
+    - "rpm"
+
+## Config for the windows installer
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
