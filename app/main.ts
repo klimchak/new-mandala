@@ -27,12 +27,8 @@ function startProgram(): void {
             items = sortBy(items, (item) => {
               return item.id
             });
-            console.log('sessionLogs', items)
             if (!items[items.length - 1].firstAfterUpdate) {
-              console.log('backupDBFile start copy')
               knexAdapter.backupOrRestoreDBFile(true);
-              console.log('backupDBFile end copy')
-
               knexAdapter.addKnexConnection();
               preloaderWindow = new PreloaderWindow(knexAdapter);
               mainWindow = new MainWindow(knexAdapter);
@@ -48,22 +44,15 @@ function startProgram(): void {
                 );
               }, 1000);
             } else {
-              console.log('restoreDBFile start copy')
               if (knexAdapter.isConnected){
-                console.log('!!!!   isConnected    !!!!')
                 knexAdapter.knexAdapter.destroy();
                 knexAdapter.backupOrRestoreDBFile(false);
                 remove(knexAdapter.dataTablePath, (e) => {
-                  console.log('!@!@!@!@@ ', e)
                   copySync(knexAdapter.dataTableReqPath, knexAdapter.dataTablePath, {overwrite: true});
-
-
                   knexAdapter.addKnexConnection();
-
                   preloaderWindow = new PreloaderWindow(knexAdapter);
                   mainWindow = new MainWindow(knexAdapter);
                   appUpdater = new AppUpdater(knexAdapter);
-
                   preloaderWindow.createLoaderWindow(() => startMainWindowActions());
                   setTimeout(() => {
                     appUpdater.startCheckingUpdate(
@@ -74,23 +63,14 @@ function startProgram(): void {
                       }
                     );
                   }, 1000);
-
-
-                  console.log('restoreDBFile end copy')
                 });
               }else {
-                console.log('!!!!   is disconnected    !!!!')
                 remove(knexAdapter.dataTablePath, (e) => {
-                  console.log('!@!@!@!@@ ', e)
                   copySync(knexAdapter.dataTableReqPath, knexAdapter.dataTablePath, {overwrite: true});
-
-
                   knexAdapter.addKnexConnection();
-
                   preloaderWindow = new PreloaderWindow(knexAdapter);
                   mainWindow = new MainWindow(knexAdapter);
                   appUpdater = new AppUpdater(knexAdapter);
-
                   preloaderWindow.createLoaderWindow(() => startMainWindowActions());
                   setTimeout(() => {
                     appUpdater.startCheckingUpdate(
@@ -101,14 +81,12 @@ function startProgram(): void {
                       }
                     );
                   }, 1000);
-                  console.log('restoreDBFile end copy')
                 });
               }
             }
           }
         });
       } catch (e: any) {
-        console.log('error restore: ', e)
       }
     }
   }, 500);
@@ -133,7 +111,6 @@ try {
 
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
-      console.warn('outSession');
       if (typeof mainWindow.window !== 'undefined') {
         knexAdapter.updateSessionRecord();
       }

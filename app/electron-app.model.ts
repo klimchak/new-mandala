@@ -131,7 +131,6 @@ export class KnexAdapter {
       },
       useNullAsDefault: true
     });
-    console.log('@@@@@@@@@@@@@@@@@    new knex adapter       @@@@@@@@@@@@@@@@@@@@@@@@@')
   }
 
   public closeKnexConnection(): Promise<void> {
@@ -142,18 +141,18 @@ export class KnexAdapter {
     this.knexAdapter('serviceInfo').select('id', 'sessionStart', 'sessionStop', 'firstAfterUpdate').then((items) => {
       callback(items);
     }).catch((e) => {
-      this.addLogFileRecord('knexAdapter ERROR:  ' + e);
+      this.addLogFileRecord('knexAdapter ERROR:\r\n' + JSON.stringify(e));
     });
   }
 
   public addSessionRecord(callback?: () => void): void {
     this.knexAdapter('serviceInfo').insert([this.session]).then(() => {
-      this.addLogFileRecord(JSON.stringify(this.session));
+      this.addLogFileRecord(JSON.stringify(this.session) + '\r\n');
       if (typeof callback !== 'undefined'){
         callback();
       }
     }).catch((e) => {
-      this.addLogFileRecord('knexAdapter ERROR:  ' + e);
+      this.addLogFileRecord('knexAdapter ERROR:\r\n' + JSON.stringify(e));
     });
   }
 
@@ -163,7 +162,7 @@ export class KnexAdapter {
       firstAfterUpdate: false
     })
       .then((value) => {
-        this.addLogFileRecord(JSON.stringify(this.session));
+        this.addLogFileRecord(JSON.stringify(this.session) + '\r\n');
         if (typeof callback !== 'undefined'){
           callback();
         }
@@ -179,7 +178,6 @@ export class KnexAdapter {
       copySync(this.dataTablePath, this.dataTableReqPath, {overwrite: true});
     } else {
       remove(this.dataTablePath, (e) => {
-        console.log('!@!@!@!@@ ', e)
         copySync(this.dataTableReqPath, this.dataTablePath, {overwrite: true});
       });
     }
@@ -194,7 +192,7 @@ export class AppUpdater {
     vPrefixedTagName: false,
     host: 'api.github.com',
     protocol: "https",
-    token: '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',
+    token: 'TOKEN',
     private: true,
     channel: 'latest',
     releaseType: "release",
@@ -223,7 +221,7 @@ export class AppUpdater {
     this.appUpdater.on(
       UpdaterEventsType.error,
       (e, message) => {
-        this.knexAdapter.addLogFileRecord('start update error: ' + JSON.stringify(message));
+        this.knexAdapter.addLogFileRecord('start update error:\r\n ' + JSON.stringify(message));
         this.showDialog(
           window,
           'error',
@@ -237,14 +235,14 @@ export class AppUpdater {
   }
 
   public updaterCheckingForUpdate(): void {
-    this.appUpdater.on(UpdaterEventsType.checking_for_update, () => this.knexAdapter.addLogFileRecord('start checking_for_update'));
+    this.appUpdater.on(UpdaterEventsType.checking_for_update, () => this.knexAdapter.addLogFileRecord('start checking_for_update\r\n'));
   }
 
   public updaterUpdateNotAvailable(callback: () => void): void {
     this.appUpdater.on(
       UpdaterEventsType.update_not_available,
       (info: UpdateInfo) => {
-        this.knexAdapter.addLogFileRecord('start update_not_available: ' + JSON.stringify(info));
+        this.knexAdapter.addLogFileRecord('start update_not_available:\r\n ' + JSON.stringify(info));
         callback();
       }
     );
@@ -253,7 +251,7 @@ export class AppUpdater {
   public updaterUpdateAvailable(): void {
     this.appUpdater.on(
       UpdaterEventsType.update_available,
-      (info: UpdateInfo) => this.knexAdapter.addLogFileRecord('start update_available: ' + JSON.stringify(info))
+      (info: UpdateInfo) => this.knexAdapter.addLogFileRecord('start update_available:\r\n' + JSON.stringify(info))
     );
   }
 
@@ -261,7 +259,7 @@ export class AppUpdater {
     this.appUpdater.on(
       UpdaterEventsType.update_downloaded,
       (event: UpdateDownloadedEvent) => {
-        this.knexAdapter.addLogFileRecord('start-update update-downloaded: ' + event);
+        this.knexAdapter.addLogFileRecord('start-update update-downloaded:\r\n' + JSON.stringify(event));
         // this.showDialog(
         //   window,
         //   'question',

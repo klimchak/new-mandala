@@ -125,11 +125,11 @@ export class SettingsComponent implements OnInit {
       case ToastVariant.SUCCESS:
         return logString.toLowerCase().includes('Success'.toLowerCase());
       case ToastVariant.INFO:
-        return logString.toLowerCase().includes('Information'.toLowerCase());
+        return logString.toLowerCase().includes('Information'.toLowerCase()) || logString.toLowerCase().includes('info');
       case ToastVariant.WARN:
-        return logString.toLowerCase().includes('Warning'.toLowerCase());
+        return logString.toLowerCase().includes('Warning'.toLowerCase()) || logString.toLowerCase().includes('warn') ;
       case ToastVariant.ERROR:
-        return logString.toLowerCase().includes('Error'.toLowerCase());
+        return logString.toLowerCase().includes('Error'.toLowerCase()) || logString.toLowerCase().includes('err');
     }
   }
 

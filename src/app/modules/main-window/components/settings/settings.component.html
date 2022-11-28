@@ -53,51 +53,50 @@
           <div class="app-setting__container__logs__title">{{settingsStrings.appLogs}}</div>
           <p-scrollPanel [style]="{width: '100%', height: logsContainer.clientHeight - 250 + 'px'}" *ngIf="!logIsCleared">
             <ng-container *ngFor="let item of logScrollerData; index as i">
-              <div class="app-setting__container__logs__wrapper">
+              <div class="app-setting__container__logs__wrapper" *ngIf="item.logData">
+                <p-fieldset legend="Log {{item.logIndex}}" [collapsed]="true" [toggleable]="true">
+                  <ng-container *ngIf="logIsString(item.logData)">
+                    <div class="app-setting__container__logs__content simple-string-log"
+                         [ngClass]="{'content-error': setStateClass(item.logData, toastVariant.ERROR)}">{{item.logData}}</div>
+                  </ng-container>
 
-                <div class="app-setting__container__logs--title">Log {{item.logIndex}}</div>
+                  <ng-container *ngIf="logIsObject(item.logData)">
+                    <div class="app-setting__container__logs__content">
 
-                <ng-container *ngIf="logIsString(item.logData)">
-                  <div class="app-setting__container__logs__content simple-string-log"
-                       [ngClass]="{'content-error': setStateClass(item.logData, toastVariant.ERROR)}">{{item.logData}}</div>
-                </ng-container>
+                      <div class="app-setting__container__logs__content sessionStart-log" *ngIf="getDataFromObject(item.logData, 'sessionStart')">
+                        {{settingsStrings.sessionStart}}
+                        <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'sessionStart') | date}}</span>
+                      </div>
 
-                <ng-container *ngIf="logIsObject(item.logData)">
-                  <div class="app-setting__container__logs__content">
+                      <div class="app-setting__container__logs__content sessionStop-log" *ngIf="getDataFromObject(item.logData, 'sessionStop')">
+                        {{settingsStrings.sessionStop}}
+                        <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'sessionStop') | date}}</span>
+                      </div>
 
-                    <div class="app-setting__container__logs__content sessionStart-log" *ngIf="getDataFromObject(item.logData, 'sessionStart')">
-                      {{settingsStrings.sessionStart}}
-                      <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'sessionStart') | date}}</span>
-                    </div>
-
-                    <div class="app-setting__container__logs__content sessionStop-log" *ngIf="getDataFromObject(item.logData, 'sessionStop')">
-                      {{settingsStrings.sessionStop}}
-                      <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'sessionStop') | date}}</span>
-                    </div>
-
-                    <ng-container *ngIf="getDataFromObject(item.logData, 'severity') && getDataFromObject(item.logData, 'summary')">
-                      <div class="app-setting__container__logs__content message-log">
-                        {{settingsStrings.type}}
-                        <span class="app-setting__container__logs__content--value"
-                              [ngClass]="{'content-success': setStateClass(getDataFromObject(item.logData, 'severity'), toastVariant.SUCCESS),
+                      <ng-container *ngIf="getDataFromObject(item.logData, 'severity') && getDataFromObject(item.logData, 'summary')">
+                        <div class="app-setting__container__logs__content message-log">
+                          {{settingsStrings.type}}
+                          <span class="app-setting__container__logs__content--value"
+                                [ngClass]="{'content-success': setStateClass(getDataFromObject(item.logData, 'severity'), toastVariant.SUCCESS),
                               'content-info': setStateClass(getDataFromObject(item.logData, 'severity'), toastVariant.INFO),
                               'content-warn': setStateClass(getDataFromObject(item.logData, 'severity'), toastVariant.WARN),
                               'content-error': setStateClass(getDataFromObject(item.logData, 'severity'), toastVariant.ERROR)}">
                           {{getDataFromObject(item.logData, 'severity')}}
                         </span>
-                      </div>
-                      <div class="app-setting__container__logs__content message-log">
-                        {{settingsStrings.summary}}
-                        <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'summary')}}</span>
-                      </div>
-                      <div class="app-setting__container__logs__content message-log" *ngIf="getDataFromObject(item.logData, 'detail')">
-                        {{settingsStrings.detail}}
-                        <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'detail')}}</span>
-                      </div>
-                    </ng-container>
+                        </div>
+                        <div class="app-setting__container__logs__content message-log">
+                          {{settingsStrings.summary}}
+                          <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'summary')}}</span>
+                        </div>
+                        <div class="app-setting__container__logs__content message-log" *ngIf="getDataFromObject(item.logData, 'detail')">
+                          {{settingsStrings.detail}}
+                          <span class="app-setting__container__logs__content--value">{{getDataFromObject(item.logData, 'detail')}}</span>
+                        </div>
+                      </ng-container>
 
-                  </div>
-                </ng-container>
+                    </div>
+                  </ng-container>
+                </p-fieldset>
               </div>
             </ng-container>
           </p-scrollPanel>
